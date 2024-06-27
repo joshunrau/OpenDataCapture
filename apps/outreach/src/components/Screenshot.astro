@@ -46,7 +46,7 @@ if (!(sources.light && sources.dark)) {
 const id = crypto.randomUUID();
 ---
 
-<div class="image-container relative">
+<div class="image-container relative shadow-xl">
   <Image style="display: none;" data-variant="light" id={id} src={sources.light} alt={alt} />
   <Image style="display: none;" data-variant="dark" id={id} src={sources.dark} alt={alt} />
 </div>
