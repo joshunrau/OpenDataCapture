@@ -1,6 +1,6 @@
 ---
-title: How to Visualize Data
-slug: en/docs/guides/how-to-visualize-data
+title: How to Export Data
+slug: en/docs/guides/how-to-export-data
 sidebar:
   order: 1
 ---
@@ -8,7 +8,7 @@ sidebar:
 import { Steps } from '@astrojs/starlight/components';
 import Screenshot from '@/components/Screenshot.astro';
 
-Open Data Capture allows you to visualize numeric measures over time in a single subject. These measures must be defined in the instrument.
+Open Data Capture allows you to download data on demand, either in JSON format or an ultra-wide CSV. When downloading a CSV, a README.txt file is downloaded that includes documentation for the format.
 
 ### Steps
 
@@ -21,10 +21,6 @@ Open Data Capture allows you to visualize numeric measures over time in a single
     <Screenshot alt="login page" name="login" />
 
 2.  **Select Your Group**
-
-    Next, select the group that you were using when you collected the data for this subject
-    (or were using to send the subject a remote assignment). It is very important that
-    you select the correct group, otherwise you will not see the expected data.
 
     <Screenshot alt="dashboard page" name="dashboard" />
 
