@@ -5,6 +5,7 @@
  * the rest of our stuff uses 'data-mode', as seems to be a defacto
  * standard in tailwind. This script synchronizes the two.
  */
+
 const PRIMARY_THEME_KEY = 'theme';
 const DOCS_THEME_KEY = 'starlight-theme';
 const DOCS_THEME_ATTRIBUTE = 'data-theme';

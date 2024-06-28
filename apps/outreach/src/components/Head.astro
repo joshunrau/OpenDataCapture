@@ -1,4 +1,5 @@
 ---
+import themeInitScript from '@/scripts/theme-init.js?url';
 import { useTranslations } from '@/i18n';
 
 type Props = {
@@ -41,18 +42,7 @@ const path = Astro.url.pathname.replace(/^(\/en|\/fr)/, '');
   }
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="sitemap" href="/sitemap-index.xml" />
+  <script is:inline src={themeInitScript}></script>
   <!-- prettier-ignore -->
   <script is:inline defer data-domain="opendatacapture.org" src="http://analytics.douglasneuroinformatics.ca/js/script.js"></script>
-  <script is:inline>
-    const getThemePreference = () => {
-      const savedTheme = window.localStorage.getItem('theme');
-      if (savedTheme === 'dark' || savedTheme === 'light') {
-        return savedTheme;
-      }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    };
-    const theme = getThemePreference();
-    document.documentElement.setAttribute('data-mode', theme);
-    window.localStorage.setItem('theme', theme);
-  </script>
 </head>
