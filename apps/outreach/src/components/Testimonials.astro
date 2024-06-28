@@ -1,0 +1,57 @@
+---
+import ArrowLeft from '@/components/ArrowLeft.astro';
+import ArrowRight from '@/components/ArrowRight.astro';
+
+const testimonials = [1, 2, 3];
+---
+
+<div class="flex items-center justify-between border">
+  <button
+    class="text-muted-foreground rounded-full border border-slate-300 bg-slate-200 p-2 dark:border-slate-700 dark:bg-slate-800"
+    id="left-testimonial-button"
+  >
+    <ArrowLeft />
+  </button>
+  <div class="relative h-[500px] w-[800px] overflow-hidden border">
+    {
+      testimonials.map((testimonial, i) => (
+        <div class="testimonial absolute h-full w-full border" style={`transform: translateX(${i * 100}%);`}>
+          <h1>{testimonial}</h1>
+        </div>
+      ))
+    }
+  </div>
+  <button
+    class="text-muted-foreground rounded-full border border-slate-300 bg-slate-200 p-2 dark:border-slate-700 dark:bg-slate-800"
+    id="right-testimonial-button"
+  >
+    <ArrowRight />
+  </button>
+</div>
+<script>
+  const leftButton = document.getElementById('left-testimonial-button')!;
+  const rightButton = document.getElementById('right-testimonial-button')!;
+
+  const testimonials = document.querySelectorAll<HTMLDivElement>('.testimonial');
+
+  let index = 0;
+
+  function slide() {
+    testimonials.forEach((testimonial) => {
+      console.log(testimonial.style);
+    });
+  }
+
+  leftButton.addEventListener('click', () => {
+    if (index > 0) {
+      index--;
+    }
+    slide();
+  });
+
+  rightButton.addEventListener('click', () => {
+    if (index < testimonials.length) {
+      index++;
+    }
+  });
+</script>
