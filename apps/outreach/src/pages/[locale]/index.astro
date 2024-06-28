@@ -35,7 +35,7 @@ export const getStaticPaths = () => {
       </p>
       <div class="mt-5 flex justify-center gap-3 lg:justify-start">
         <a
-          class="flex items-center justify-center rounded-md bg-slate-800 px-6 py-2 font-medium text-slate-100 shadow-md hover:bg-slate-700 focus:outline-none disabled:cursor-not-allowed disabled:opacity-70 dark:bg-sky-700 dark:hover:bg-sky-600"
+          class="flex items-center justify-center rounded-md bg-slate-800 px-6 py-2 font-medium text-slate-100 shadow-md hover:bg-slate-700 focus:outline-none dark:bg-sky-700 dark:hover:bg-sky-600"
           href="https://demo.opendatacapture.org"
           rel="noreferrer"
           target="_blank"
@@ -43,7 +43,7 @@ export const getStaticPaths = () => {
           {t('landing.hero.viewDemo')}
         </a>
         <button
-          class="flex items-center justify-center rounded-md border bg-inherit px-6 py-2 font-medium shadow-md focus:outline-none disabled:cursor-not-allowed disabled:opacity-70"
+          class="flex items-center justify-center rounded-md border bg-inherit px-6 py-2 font-medium shadow-md focus:outline-none"
           id="learn-more-btn"
           type="button"
         >
@@ -114,17 +114,15 @@ export const getStaticPaths = () => {
   </Section>
 </Page>
 <script>
-  window.addEventListener('load', () => {
-    const heroSection = document.getElementById('hero-section')!;
-    const startSessionSection = document.getElementById('start-session-section')!;
+  const heroSection = document.getElementById('hero-section')!;
+  const startSessionSection = document.getElementById('start-session-section')!;
 
-    heroSection.children.item(0)?.classList.replace('opacity-0', 'opacity-100');
-    heroSection.children.item(1)?.classList.replace('opacity-0', 'opacity-100');
+  heroSection.children.item(0)?.classList.replace('opacity-0', 'opacity-100');
+  heroSection.children.item(1)?.classList.replace('opacity-0', 'opacity-100');
 
-    document.getElementById('learn-more-btn')?.addEventListener('click', () => {
-      startSessionSection?.scrollIntoView({
-        behavior: 'smooth'
-      });
+  document.getElementById('learn-more-btn')?.addEventListener('click', () => {
+    startSessionSection?.scrollIntoView({
+      behavior: 'smooth'
     });
   });
 </script>
