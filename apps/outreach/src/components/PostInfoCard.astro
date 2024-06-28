@@ -1,7 +1,9 @@
 ---
-import { useTranslations } from '@/i18n';
-import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+
+import { useTranslations } from '@/i18n';
+
+import Headshot from './Headshot.astro';
 
 type Props = {
   author: CollectionEntry<'team'>;
@@ -16,12 +18,7 @@ const { resolvedLanguage } = useTranslations(Astro.url);
 
 <div class:list={['flex items-center', className]}>
   <div class="flex-shrink-0">
-    <span class="sr-only">{author.data.fullName}</span>
-    <Image
-      alt={author.data.fullName}
-      class="h-10 w-10 rounded-full bg-slate-200 shadow dark:bg-slate-700"
-      src={author.data.image}
-    />
+    <Headshot alt={author.data.fullName} className="h-10 w-10" src={author.data.image} />
   </div>
   <div class="ml-3">
     <p class="text-sm font-semibold">
