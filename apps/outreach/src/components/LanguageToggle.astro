@@ -1,6 +1,5 @@
 ---
 import { useTranslations } from '../i18n';
-import ChevronDownIcon from './ChevronDownIcon.astro';
 
 const { t, resolvedLanguage } = useTranslations(Astro.url);
 
@@ -16,7 +15,16 @@ const is404 = /^\/404\/?$/.test(Astro.url.pathname);
     type="button"
   >
     <span class="uppercase">{resolvedLanguage}</span>
-    <ChevronDownIcon class="ml-1 h-4 w-4" />
+    <svg
+      class="ml-1 h-4 w-4"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
+    </svg>
   </button>
   <div
     class="absolute mt-1 hidden w-full rounded-md bg-white shadow-xl ring-1 ring-black ring-opacity-10 dark:bg-slate-800"
