@@ -27,8 +27,8 @@ const { resolvedLanguage } = useTranslations(Astro.url);
     {
       testimonials.map(({ fullName, image, quote, position, suffix }, i) => (
         <div
-          class="testimonial absolute flex h-full w-full flex-col items-center justify-center gap-6 border"
-          style={`left: ${i * 100}%;`}
+          class="testimonial absolute flex h-full w-full flex-col items-center justify-center gap-6 border transition-all duration-1000"
+          style={`left: ${i * 100}%; opacity: ${i === 0 ? 100 : 0};`}
         >
           <Headshot alt={fullName} className="h-24 w-24" src={image} />
           <blockquote class="text-muted-foreground max-w-prose text-balance">{quote[resolvedLanguage]}</blockquote>
@@ -57,20 +57,25 @@ const { resolvedLanguage } = useTranslations(Astro.url);
   const rightButton = document.getElementById('right-testimonial-button')!;
 
   const testimonials = document.querySelectorAll<HTMLDivElement>('.testimonial');
-  const maxPosition = testimonials.length * 100;
 
-  const slide = (direction: 'LEFT' | 'RIGHT') => {
-    testimonials.forEach((testimonial) => {
-      let currentPosition = parseInt(testimonial.style.left);
-      if (direction === 'RIGHT') {
-        currentPosition = (currentPosition - 100) % maxPosition;
-      } else if (direction === 'LEFT') {
-        currentPosition = (currentPosition + 100) % maxPosition;
-      }
+  let currentIndex = 0;
+  const maxIndex = testimonials.length - 1;
+
+  const slide = () => {
+    console.log({ currentIndex });
+    testimonials.forEach((testimonial, position) => {
+      const currentPosition = position * 100 - currentIndex * 100;
       testimonial.style.left = `${currentPosition}%`;
+      testimonial.style.opacity = currentPosition === 0 ? '100' : '0';
     });
   };
 
-  leftButton.addEventListener('click', () => slide('LEFT'));
-  rightButton.addEventListener('click', () => slide('RIGHT'));
+  leftButton.addEventListener('click', () => {
+    currentIndex = currentIndex === 0 ? maxIndex : currentIndex - 1;
+    slide();
+  });
+  rightButton.addEventListener('click', () => {
+    currentIndex = currentIndex === maxIndex ? 0 : currentIndex + 1;
+    slide();
+  });
 </script>
