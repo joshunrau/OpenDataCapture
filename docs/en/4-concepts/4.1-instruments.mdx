@@ -11,6 +11,10 @@ Central to Open Data Capture is the concept of an instrument. Conceptually, an i
 
 Technically, an _Instrument_ is a [JavaScript Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object), which is composed of a key-value pairs, similar to a dictionary in Python. These objects define the properties of an instrument (e.g., a title and description).
 
+## Example of Form Instrument
+
+Before continuing, consider the following simple form instrument. As you can see, it is just a JavaScript object with a number of properties.
+
 ### Understanding TypeScript
 
 The structure of an _Instrument_ is defined in [TypeScript](https://www.typescriptlang.org/) by the `Instrument` type, located in the internal [`schemas`](https://github.com/DouglasNeuroInformatics/OpenDataCapture/tree/main/packages/schemas) package. This definition is essentially a set of rules to validate that the key-value pairs in an _Instrument_ conform with expectations in the codebase. These rules are quite complex and **heavily** rely on the concept of [discriminated unions](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) and [conditional types](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html). However, it is important to understand that TypeScript types do not exist at runtime; rather, they are used to provide compile-time checks (e.g., when developing a new _Instrument_). Ultimately, at runtime, an _Instrument_ is simply a JavaScript object.
@@ -103,7 +107,42 @@ const interactiveInstrument = {
 
 ### Instrument Sources
 
-Theoretically, an instrument could be defined in the codebase
+Theoretically, an instrument could be defined in the codebase. For instance, the two examples depicted above are both valid instruments.
+
+However, in real-world situations this is quite limiting for interactive instruments. Often, an interactive instrument includes a number of other files, such as CSS, HTML, JavaScript, as well as other assets such as fonts and images.
+
+These files could be considered instrument sources. Instrument sources are the files that define an instrument. For example, suppose we want to add the following files to the interactive instrument depicted above.
+
+**styles.css**
+
+```css
+button {
+  background-color: blue;
+  border-radius: 0.5rem;
+  color: white;
+  padding: 1rem 5rem;
+}
+```
+
+**logo.png**
+
+**index.ts**
+
+```diff lang="ts"
+import logoSrc from './logo.png';
+import './styles.css';
+
+const interactiveInstrument = {
+  content: {
+    render(done) {
++      const logo = document.createElement('img');
++      logo.alt = 'Open Data Capture Logo';
++      logo.src = logoSrc;
++      document.body.appendChild(logo);
+    }
+  }
+};
+```
 
 ### Instrument Bundle (I)
 
