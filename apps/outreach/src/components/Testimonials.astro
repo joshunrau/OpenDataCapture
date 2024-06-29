@@ -15,7 +15,7 @@ const testimonials = [1, 2, 3];
   <div class="relative h-[500px] w-[800px] overflow-hidden border">
     {
       testimonials.map((testimonial, i) => (
-        <div class="testimonial absolute h-full w-full border" style={`transform: translateX(${i * 100}%);`}>
+        <div class="testimonial absolute h-full w-full border" style={`left: ${i * 100}%;`}>
           <h1>{testimonial}</h1>
         </div>
       ))
@@ -33,25 +33,20 @@ const testimonials = [1, 2, 3];
   const rightButton = document.getElementById('right-testimonial-button')!;
 
   const testimonials = document.querySelectorAll<HTMLDivElement>('.testimonial');
+  const maxPosition = testimonials.length * 100;
 
-  let index = 0;
-
-  function slide() {
+  const slide = (direction: 'LEFT' | 'RIGHT') => {
     testimonials.forEach((testimonial) => {
-      console.log(testimonial.style);
+      let currentPosition = parseInt(testimonial.style.left);
+      if (direction === 'RIGHT') {
+        currentPosition = (currentPosition - 100) % maxPosition;
+      } else if (direction === 'LEFT') {
+        currentPosition = (currentPosition + 100) % maxPosition;
+      }
+      testimonial.style.left = `${currentPosition}%`;
     });
-  }
+  };
 
-  leftButton.addEventListener('click', () => {
-    if (index > 0) {
-      index--;
-    }
-    slide();
-  });
-
-  rightButton.addEventListener('click', () => {
-    if (index < testimonials.length) {
-      index++;
-    }
-  });
+  leftButton.addEventListener('click', () => slide('LEFT'));
+  rightButton.addEventListener('click', () => slide('RIGHT'));
 </script>
