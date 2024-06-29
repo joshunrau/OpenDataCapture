@@ -16,18 +16,18 @@ const testimonials = await getCollection('testimonials').then((collection) => {
 const { resolvedLanguage } = useTranslations(Astro.url);
 ---
 
-<div class="flex items-center justify-between border">
+<div class="flex items-center justify-between">
   <button
     class="text-muted-foreground rounded-full border border-slate-300 bg-slate-200 p-2 dark:border-slate-700 dark:bg-slate-800"
     id="left-testimonial-button"
   >
     <ArrowLeft />
   </button>
-  <div class="relative h-[500px] w-[800px] overflow-hidden border">
+  <div class="relative h-[500px] w-[800px] overflow-hidden">
     {
       testimonials.map(({ fullName, image, quote, position, suffix }, i) => (
         <div
-          class="testimonial absolute flex h-full w-full flex-col items-center justify-center gap-6 border transition-all duration-1000"
+          class="testimonial absolute flex h-full w-full flex-col items-center justify-center gap-6 transition-all duration-1000"
           style={`left: ${i * 100}%; opacity: ${i === 0 ? 100 : 0};`}
         >
           <Headshot alt={fullName} className="h-24 w-24" src={image} />
@@ -53,27 +53,34 @@ const { resolvedLanguage } = useTranslations(Astro.url);
   </button>
 </div>
 <script>
-  const leftButton = document.getElementById('left-testimonial-button')!;
-  const rightButton = document.getElementById('right-testimonial-button')!;
+  const leftButton = document.getElementById('left-testimonial-button') as HTMLButtonElement;
+  const rightButton = document.getElementById('right-testimonial-button') as HTMLButtonElement;
 
   const testimonials = document.querySelectorAll<HTMLDivElement>('.testimonial');
 
   let currentIndex = 0;
   const maxIndex = testimonials.length - 1;
 
+  const setButtonsDisabled = (value: boolean) => {
+    leftButton.disabled = value;
+    rightButton.disabled = value;
+  };
+
   const slide = () => {
-    console.log({ currentIndex });
+    setButtonsDisabled(true);
     testimonials.forEach((testimonial, position) => {
       const currentPosition = position * 100 - currentIndex * 100;
       testimonial.style.left = `${currentPosition}%`;
       testimonial.style.opacity = currentPosition === 0 ? '100' : '0';
     });
+    setTimeout(() => setButtonsDisabled(false), 1000);
   };
 
   leftButton.addEventListener('click', () => {
     currentIndex = currentIndex === 0 ? maxIndex : currentIndex - 1;
     slide();
   });
+
   rightButton.addEventListener('click', () => {
     currentIndex = currentIndex === maxIndex ? 0 : currentIndex + 1;
     slide();
