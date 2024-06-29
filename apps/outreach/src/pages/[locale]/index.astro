@@ -1,21 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
-
 import Hero from '@/components/Hero.astro';
 import Page from '@/layouts/Page.astro';
 import Section from '@/layouts/Section.astro';
-import Testimonial from '@/components/Testimonial.astro';
+import Testimonials from '@/components/Testimonials.astro';
 
 import { useTranslations } from '@/i18n';
 import Screenshot from '@/components/Screenshot.astro';
 
-const { resolvedLanguage, t } = useTranslations(Astro.url);
-
-const testimonials = await getCollection('testimonials').then((testimonials) => ({
-  simon: testimonials.find(({ id }) => id === 'simon-ducharme')!.data,
-  maxime: testimonials.find(({ id }) => id === 'maxime-montembeault')!.data,
-  massi: testimonials.find(({ id }) => id === 'massimiliano-orri')!.data
-}));
+const { t } = useTranslations(Astro.url);
 
 export const getStaticPaths = () => {
   return [{ params: { locale: 'en' } }, { params: { locale: 'fr' } }];
@@ -83,34 +75,7 @@ export const getStaticPaths = () => {
   </Section>
   <Section class="flex flex-col items-center justify-center">
     <h3 class="pb-12 text-3xl font-extrabold">{t('landing.testimonials.heading')}</h3>
-    <div
-      class="grid auto-cols-fr divide-y divide-slate-300 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-16 lg:divide-none dark:divide-slate-700"
-    >
-      <Testimonial
-        format={testimonials.simon.format}
-        image={testimonials.simon.image}
-        quote={testimonials.simon.quote[resolvedLanguage]}
-        fullName={testimonials.simon.fullName}
-        suffix={testimonials.simon.suffix}
-        position={testimonials.simon.position[resolvedLanguage]}
-      />
-      <Testimonial
-        format={testimonials.maxime.format}
-        image={testimonials.maxime.image}
-        quote={testimonials.maxime.quote[resolvedLanguage]}
-        fullName={testimonials.maxime.fullName}
-        suffix={testimonials.maxime.suffix}
-        position={testimonials.maxime.position[resolvedLanguage]}
-      />
-      <Testimonial
-        format={testimonials.massi.format}
-        image={testimonials.massi.image}
-        quote={testimonials.massi.quote[resolvedLanguage]}
-        fullName={testimonials.massi.fullName}
-        suffix={testimonials.massi.suffix}
-        position={testimonials.massi.position[resolvedLanguage]}
-      />
-    </div>
+    <Testimonials />
   </Section>
 </Page>
 <script>
