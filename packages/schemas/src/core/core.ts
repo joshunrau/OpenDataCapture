@@ -1,6 +1,6 @@
 import type { PureAbility, RawRuleOf } from '@casl/ability';
 import { isObject } from '@douglasneuroinformatics/libjs';
-import { type LicenseIdentifier, licenses } from '@opendatacapture/licenses';
+import { type LicenseIdentifier, licenses } from '@opendatacapture/runtime-v1/opendatacapture@1.0.0/licenses.js';
 import type { Simplify } from 'type-fest';
 import { z } from 'zod';
 

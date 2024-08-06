@@ -1,5 +1,5 @@
 import { isUnique } from '@douglasneuroinformatics/libjs';
-import type { LicenseIdentifier } from '@opendatacapture/licenses';
+import type { LicenseIdentifier } from '@opendatacapture/runtime-v1/opendatacapture@1.0.0/licenses.js';
 import type { ConditionalKeys, Merge, Simplify, ValueOf } from 'type-fest';
 import { z } from 'zod';
 

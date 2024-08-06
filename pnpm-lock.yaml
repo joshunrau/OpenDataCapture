@@ -1091,9 +1091,9 @@ importers:
       '@douglasneuroinformatics/libjs':
         specifier: ^0.3.1
         version: 0.3.1(typescript@5.4.5)
-      '@opendatacapture/licenses':
+      '@opendatacapture/runtime-v1':
         specifier: workspace:*
-        version: link:../licenses
+        version: link:../../runtime/v1
       zod:
         specifier: ^3.23.8
         version: 3.23.8
