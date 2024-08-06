@@ -286,6 +286,7 @@ export type {
   InstrumentLanguage,
   InstrumentMeasureValue,
   InstrumentMeasures,
+  InstrumentSummary,
   InstrumentUIOption,
   MultilingualInstrumentMeasures,
   MultilingualInstrumentSummary,
