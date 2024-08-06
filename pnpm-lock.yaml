@@ -1086,22 +1086,13 @@ importers:
       '@casl/ability':
         specifier: ^6.7.1
         version: 6.7.1
-      '@douglasneuroinformatics/libjs':
-        specifier: ^0.3.1
-        version: 0.3.1(typescript@5.4.5)
       '@opendatacapture/runtime-v1':
         specifier: workspace:*
         version: link:../../runtime/v1
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
     devDependencies:
       '@casl/prisma':
         specifier: ^1.4.1
         version: 1.4.1(@casl/ability@6.7.1)(@prisma/client@5.15.0(prisma@5.15.0))
-      '@opendatacapture/instrument-stubs':
-        specifier: workspace:*
-        version: link:../instrument-stubs
 
   packages/stats:
     devDependencies:

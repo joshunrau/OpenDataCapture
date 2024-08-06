@@ -1,5 +1,5 @@
+import { z } from '@opendatacapture/runtime-v1/zod@3.23.6/index.js';
 import { describe, expect, it } from 'vitest';
-import { z } from 'zod';
 
 import { $BooleanString, $Uint8Array, isZodType } from './core.js';
 

@@ -22,12 +22,9 @@
   },
   "dependencies": {
     "@casl/ability": "^6.7.1",
-    "@douglasneuroinformatics/libjs": "^0.3.1",
-    "@opendatacapture/runtime-v1": "workspace:*",
-    "zod": "^3.23.8"
+    "@opendatacapture/runtime-v1": "workspace:*"
   },
   "devDependencies": {
-    "@casl/prisma": "^1.4.1",
-    "@opendatacapture/instrument-stubs": "workspace:*"
+    "@casl/prisma": "^1.4.1"
   }
 }

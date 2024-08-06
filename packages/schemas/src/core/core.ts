@@ -1,8 +1,8 @@
 import type { PureAbility, RawRuleOf } from '@casl/ability';
-import { isObject } from '@douglasneuroinformatics/libjs';
+import { isObject } from '@opendatacapture/runtime-v1/@douglasneuroinformatics/libjs@0.x/index.js';
 import { type LicenseIdentifier, licenses } from '@opendatacapture/runtime-v1/opendatacapture@1.0.0/licenses.js';
+import { z } from '@opendatacapture/runtime-v1/zod@3.23.6/index.js';
 import type { Simplify } from 'type-fest';
-import { z } from 'zod';
 
 export type AppAction = 'create' | 'delete' | 'manage' | 'read' | 'update';
 

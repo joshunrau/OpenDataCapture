@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from '@opendatacapture/runtime-v1/zod@3.23.6/index.js';
 
 import { $BaseModel } from '../core/core.js';
 
