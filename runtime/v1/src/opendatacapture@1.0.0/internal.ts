@@ -6,4 +6,7 @@
  * TO THIS IS ON A COMPLETELY STATIC WEBSITE THAT NEVER INTERACTS WITH OUR SERVERS (I.E., THE INSTRUMENT
  * PLAYGROUND).**
  */
-export declare function evaluateInstrument(bundle: string): Promise<any>;
+export async function evaluateInstrument(bundle: string): Promise<any> {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return await new Function(`return ${bundle}`)();
+}
