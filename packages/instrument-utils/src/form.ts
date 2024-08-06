@@ -1,4 +1,7 @@
-import type { FormDataType, PartialFormDataType } from '@douglasneuroinformatics/libui-form-types';
+import type {
+  FormDataType,
+  PartialFormDataType
+} from '@opendatacapture/runtime-v1/@douglasneuroinformatics/libui-form-types@0.x/index.js';
 import type { Language } from '@opendatacapture/schemas/core';
 import type { FormInstrument, FormInstrumentContent, FormInstrumentFields } from '@opendatacapture/schemas/instrument';
 

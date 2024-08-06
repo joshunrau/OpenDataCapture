@@ -8,7 +8,7 @@ import type {
   RequiredFieldValue,
   ScalarFormField,
   StaticFormField
-} from '@douglasneuroinformatics/libui-form-types';
+} from '@opendatacapture/runtime-v1/@douglasneuroinformatics/libui-form-types@0.x/index.js';
 import type { Language } from '@opendatacapture/schemas/core';
 import type {
   AnyInstrument,

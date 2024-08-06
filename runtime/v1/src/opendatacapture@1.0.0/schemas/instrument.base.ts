@@ -284,6 +284,7 @@ export type {
   InstrumentDetails,
   InstrumentKind,
   InstrumentLanguage,
+  InstrumentMeasure,
   InstrumentMeasureValue,
   InstrumentMeasures,
   InstrumentSummary,

@@ -8,7 +8,7 @@ import type {
 import type { Prisma } from '@prisma/client';
 import { match } from 'ts-pattern';
 
-import type { FormDataType } from '/runtime/v1/@douglasneuroinformatics/libui-form-types@0.x';
+import type { FormDataType } from '@opendatacapture/runtime-v1/@douglasneuroinformatics/libui-form-types@0.x/index.js';
 
 @Injectable()
 export class InstrumentMeasuresService {
