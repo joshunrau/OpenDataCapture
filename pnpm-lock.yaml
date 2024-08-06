@@ -887,9 +887,6 @@ importers:
       '@opendatacapture/json-utils':
         specifier: workspace:*
         version: link:../json-utils
-      '@opendatacapture/licenses':
-        specifier: workspace:*
-        version: link:../licenses
       '@opendatacapture/react-core':
         specifier: workspace:*
         version: link:../react-core
