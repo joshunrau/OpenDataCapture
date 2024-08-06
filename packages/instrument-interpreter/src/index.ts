@@ -6,8 +6,12 @@ import {
   $FormInstrument,
   $InteractiveInstrument,
   $SeriesInstrument
-} from '@opendatacapture/schemas/instrument';
-import type { AnyInstrument, InstrumentKind, SomeInstrument } from '@opendatacapture/schemas/instrument';
+} from '@opendatacapture/runtime-v1/opendatacapture@1.0.0/schemas/instrument.js';
+import type {
+  AnyInstrument,
+  InstrumentKind,
+  SomeInstrument
+} from '@opendatacapture/runtime-v1/opendatacapture@1.0.0/schemas/instrument.js';
 import type { Promisable } from 'type-fest';
 
 export type InstrumentInterpreterOptions = {
