@@ -992,8 +992,6 @@ importers:
         specifier: ^0.3.1
         version: 0.3.1(typescript@5.4.5)
 
-  packages/licenses: {}
-
   packages/password:
     dependencies:
       '@opendatacapture/schemas':
@@ -1160,6 +1158,12 @@ importers:
 
   runtime/v1:
     devDependencies:
+      '@douglasneuroinformatics/libjs__0.x':
+        specifier: npm:@douglasneuroinformatics/libjs@^0.4.0
+        version: '@douglasneuroinformatics/libjs@0.4.0(typescript@5.4.5)'
+      '@douglasneuroinformatics/libui-form-types__0.x':
+        specifier: npm:@douglasneuroinformatics/libui-form-types@^0.9.2
+        version: '@douglasneuroinformatics/libui-form-types@0.9.2'
       '@jspsych/plugin-html-button-response__1.2.0':
         specifier: npm:@jspsych/plugin-html-button-response@1.2.0
         version: '@jspsych/plugin-html-button-response@1.2.0(jspsych@8.0.1)'
@@ -2321,6 +2325,12 @@ packages:
     peerDependencies:
       typescript: ^5.1.0
 
+  '@douglasneuroinformatics/libjs@0.4.0':
+    resolution:
+      { integrity: sha512-DtI8JSpx35aggOkrMZNSgoz+qcij+8/MR6Q0G/cjthwVglOUTu6o7y47+URg45c92UQVl217sM1lRWEeZesVBQ== }
+    peerDependencies:
+      typescript: ^5.1.0
+
   '@douglasneuroinformatics/libnest@0.1.0':
     resolution:
       { integrity: sha512-g2Rxx7Z45edPvU4rUgF5OUJotjT8gYWIes8xIbaJ2sqMc/EwSHFqToJdwUoLjp1J2eWUOEVFm3RRqVbcPxaeYg== }
@@ -2341,6 +2351,10 @@ packages:
   '@douglasneuroinformatics/libui-form-types@0.9.1':
     resolution:
       { integrity: sha512-w6rWNmTzUFchRSrrt3V0TTeIsKAnLQGKyhuXnvhvMdPUZk0uD9ZSoDms2arzoW6UqyAY4uDreIpOfhumFfjMLA== }
+
+  '@douglasneuroinformatics/libui-form-types@0.9.2':
+    resolution:
+      { integrity: sha512-/VLmiNDJ/BcFdPuEIFNxa8r/7wPOCACqiAAFVljmpQXb8NJhsZCJDUWxCBgruOup5PBm4KeQrP2pItAkGYzsog== }
 
   '@douglasneuroinformatics/libui@2.8.1':
     resolution:
@@ -14492,6 +14506,11 @@ snapshots:
       type-fest: 4.20.0
       typescript: 5.4.5
 
+  '@douglasneuroinformatics/libjs@0.4.0(typescript@5.4.5)':
+    dependencies:
+      type-fest: 4.20.1
+      typescript: 5.4.5
+
   '@douglasneuroinformatics/libnest@0.1.0(@nestjs/common@10.3.9(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9)(encoding@0.1.13)(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9(@nestjs/common@10.3.9(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@10.3.9))(@nestjs/testing@10.3.9(@nestjs/common@10.3.9(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@10.3.9(@nestjs/common@10.3.9(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9)(encoding@0.1.13)(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/platform-express@10.3.9(@nestjs/common@10.3.9(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@10.3.9)))(express@4.19.2)(mongodb@6.7.0(socks@2.8.3))(reflect-metadata@0.1.14)(rxjs@7.8.1)':
     dependencies:
       '@nestjs/common': 10.3.9(reflect-metadata@0.1.14)(rxjs@7.8.1)
@@ -14515,6 +14534,10 @@ snapshots:
       type-fest: 4.20.1
 
   '@douglasneuroinformatics/libui-form-types@0.9.1':
+    dependencies:
+      type-fest: 4.20.1
+
+  '@douglasneuroinformatics/libui-form-types@0.9.2':
     dependencies:
       type-fest: 4.20.1
 
