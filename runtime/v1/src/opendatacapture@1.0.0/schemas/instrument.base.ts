@@ -1,5 +1,5 @@
+import { isUnique } from '../../@douglasneuroinformatics/libjs@0.x';
 import { z } from '../../zod@3.23.6';
-import { isUnique } from '../utils';
 import { $Language, $LicenseIdentifier, $ZodTypeAny, type Language } from './core';
 
 import type { ConditionalKeys, Merge, Simplify, ValueOf } from '../../type-fest@4.23.0';
