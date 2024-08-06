@@ -1,3 +1,6 @@
+import { z } from '../zod@3.23.6';
+
+import type { Json, Language } from './schemas/core';
 import type {
   FormDataType,
   FormInstrument,
@@ -6,11 +9,7 @@ import type {
   InteractiveInstrument,
   SeriesInstrument,
   StrictFormInstrument
-} from '@opendatacapture/schemas/instrument';
-
-import { z } from '../zod@3.23.6';
-
-import type { Json, Language } from './schemas/core';
+} from './schemas/instrument';
 
 type DiscriminatedInstrumentData<TKind extends InstrumentKind> = [TKind] extends ['FORM']
   ? FormDataType
