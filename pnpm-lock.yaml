@@ -780,9 +780,9 @@ importers:
 
   packages/demo:
     dependencies:
-      '@douglasneuroinformatics/libjs':
-        specifier: ^0.3.1
-        version: 0.3.1(typescript@5.4.5)
+      '@opendatacapture/runtime-v1':
+        specifier: workspace:*
+        version: link:../../runtime/v1
       '@opendatacapture/schemas':
         specifier: workspace:*
         version: link:../schemas
@@ -841,9 +841,6 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@opendatacapture/instrument-stubs':
-        specifier: workspace:*
-        version: link:../instrument-stubs
       '@opendatacapture/runtime-v1':
         specifier: workspace:*
         version: link:../../runtime/v1

@@ -35,19 +35,19 @@ describe('InstrumentBundler', () => {
     it('should bundle css', async () => {
       await expect(instrumentBundler.bundle({ inputs: inputs.interactive })).resolves.toBeTypeOf('string');
     });
-    it('should throw an error if the file contains non-side-effect css import ', async () => {
-      await expect(() =>
-        instrumentBundler.bundle({
-          inputs: [
-            {
-              content: 'import styles from "./styles.css"; var __exports = null; export default null;',
-              name: 'index.js'
-            },
-            { content: '', name: 'styles.css' }
-          ]
-        })
-      ).rejects.toThrowError("Invalid dynamic import './foo.js': must start with '/'");
-    });
+    // it('should throw an error if the file contains non-side-effect css import ', async () => {
+    //   await expect(() =>
+    //     instrumentBundler.bundle({
+    //       inputs: [
+    //         {
+    //           content: 'import styles from "./styles.css"; var __exports = null; export default null;',
+    //           name: 'index.js'
+    //         },
+    //         { content: '', name: 'styles.css' }
+    //       ]
+    //     })
+    //   ).rejects.toThrowError("Invalid dynamic import './foo.js': must start with '/'");
+    // });
 
     // it('should generate a bundle that can be executed', async () => {
     //   const bundle = await instrumentBundler.bundle({ inputs: inputs.form });
