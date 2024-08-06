@@ -270,6 +270,7 @@ export {
   $BaseInstrument,
   $InstrumentDetails,
   $InstrumentKind,
+  $InstrumentLanguage,
   $InstrumentSummary,
   $ScalarInstrument,
   $ScalarInstrumentInternal,

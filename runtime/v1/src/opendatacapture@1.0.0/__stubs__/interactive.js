@@ -1,11 +1,13 @@
+// @ts-check
+
 /* eslint-disable no-console */
 /* eslint-disable perfectionist/sort-objects */
 
 import { createInstrumentStub } from './utils.js';
 
-/** @type {import('./utils.js').InstrumentStub<import('../../').InteractiveInstrument<{ message: string }>>} */
+/** @type {import('./utils.js').InstrumentStub<import('../schemas/instrument').InteractiveInstrument<{ message: string }>>} */
 export const interactiveInstrument = await createInstrumentStub(async () => {
-  const { z } = await import('zod');
+  const { z } = await import('../../zod@3.23.6/index.js');
   return {
     kind: 'INTERACTIVE',
     language: 'en',
