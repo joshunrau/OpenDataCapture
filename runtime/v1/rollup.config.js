@@ -74,6 +74,9 @@ const declarationOptions = {
 /** @type {(dir: string) => AsyncGenerator<string>} */
 async function* walk(dir) {
   for await (const dirent of await fs.opendir(dir)) {
+    if (/^__(.*)__$/.test(dirent.name)) {
+      continue;
+    }
     const entry = path.join(dir, dirent.name);
     if (dirent.isDirectory()) {
       yield* walk(entry);
