@@ -1,4 +1,3 @@
-import type { FormDataType } from '@douglasneuroinformatics/libui-form-types';
 import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import type { Json } from '@opendatacapture/schemas/core';
 import type {
@@ -8,6 +7,8 @@ import type {
 } from '@opendatacapture/schemas/instrument';
 import type { Prisma } from '@prisma/client';
 import { match } from 'ts-pattern';
+
+import type { FormDataType } from '/runtime/v1/@douglasneuroinformatics/libui-form-types@0.x';
 
 @Injectable()
 export class InstrumentMeasuresService {
