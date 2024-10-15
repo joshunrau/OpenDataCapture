@@ -68,6 +68,7 @@ model GroupModel {
   accessibleInstrumentIds String[]
   accessibleInstruments   InstrumentModel[]       @relation(fields: [accessibleInstrumentIds], references: [id])
   assignments             AssignmentModel[]
+  idValidationRegex       String?
   instrumentRecords       InstrumentRecordModel[]
   name                    String                  @unique
   settings                GroupSettings
