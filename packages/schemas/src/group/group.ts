@@ -5,7 +5,8 @@ import { $SubjectIdentificationMethod } from '../subject/subject.js';
 
 export type GroupSettings = z.infer<typeof $GroupSettings>;
 export const $GroupSettings = z.object({
-  defaultIdentificationMethod: $SubjectIdentificationMethod
+  defaultIdentificationMethod: $SubjectIdentificationMethod,
+  idValidationRegex: z.string().min(1).nullish()
 });
 
 export type GroupType = z.infer<typeof $GroupType>;
@@ -14,7 +15,6 @@ export const $GroupType = z.enum(['CLINICAL', 'RESEARCH']);
 export type Group = z.infer<typeof $Group>;
 export const $Group = $BaseModel.extend({
   accessibleInstrumentIds: z.array(z.string()),
-  idValidationRegex: z.string().min(1).nullish(),
   name: z.string().min(1),
   settings: $GroupSettings,
   subjectIds: z.array(z.string()),

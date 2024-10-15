@@ -23,6 +23,7 @@ export type ManageGroupFormProps = {
   onSubmit: (data: Partial<UpdateGroupData>) => Promisable<any>;
 };
 
+// eslint-disable-next-line max-lines-per-function
 export const ManageGroupForm = ({ availableInstruments, onSubmit }: ManageGroupFormProps) => {
   const currentGroup = useAppStore((store) => store.currentGroup);
   const { resolvedLanguage } = useTranslation();
@@ -96,6 +97,14 @@ export const ManageGroupForm = ({ availableInstruments, onSubmit }: ManageGroupF
                 PERSONAL_INFO: t('common.personalInfo')
               },
               variant: 'select'
+            },
+            idValidationRegex: {
+              kind: 'string',
+              label: t({
+                en: 'ID Validation Pattern',
+                fr: 'TBD'
+              }),
+              variant: 'input'
             }
           },
           title: t('group.manage.groupSettings')
@@ -107,13 +116,15 @@ export const ManageGroupForm = ({ availableInstruments, onSubmit }: ManageGroupF
       validationSchema={z.object({
         accessibleFormInstrumentIds: z.set(z.string()),
         accessibleInteractiveInstrumentIds: z.set(z.string()),
-        defaultIdentificationMethod: $SubjectIdentificationMethod.optional()
+        defaultIdentificationMethod: $SubjectIdentificationMethod.optional(),
+        idValidationRegex: z.string().optional()
       })}
       onSubmit={(data) =>
         void onSubmit({
           accessibleInstrumentIds: [...data.accessibleFormInstrumentIds, ...data.accessibleInteractiveInstrumentIds],
           settings: {
-            defaultIdentificationMethod: data.defaultIdentificationMethod
+            defaultIdentificationMethod: data.defaultIdentificationMethod,
+            idValidationRegex: data.idValidationRegex
           }
         })
       }
