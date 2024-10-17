@@ -16,8 +16,8 @@ catalogs:
       specifier: latest
       version: 1.0.0
     '@douglasneuroinformatics/eslint-config':
-      specifier: 5.2.1
-      version: 5.2.1
+      specifier: 5.2.2
+      version: 5.2.2
     '@douglasneuroinformatics/libcrypto':
       specifier: latest
       version: 0.0.2
@@ -96,7 +96,7 @@ importers:
         version: 19.5.0
       '@douglasneuroinformatics/eslint-config':
         specifier: 'catalog:'
-        version: 5.2.1(astro-eslint-parser@1.0.3(typescript@5.5.4))(eslint@9.11.0(jiti@1.21.6))(svelte-eslint-parser@0.41.1)(typescript@5.5.4)
+        version: 5.2.2(astro-eslint-parser@1.0.3(typescript@5.5.4))(eslint@9.11.0(jiti@1.21.6))(svelte-eslint-parser@0.41.1)(typescript@5.5.4)
       '@douglasneuroinformatics/prettier-config':
         specifier: 'catalog:'
         version: 0.0.1(husky@9.1.6)(prettier-plugin-astro@0.14.1)(prettier-plugin-tailwindcss@0.6.6(prettier-plugin-astro@0.14.1)(prettier@3.3.3))(prettier@3.3.3)
@@ -1946,9 +1946,9 @@ packages:
       esbuild: 0.x
       prisma: 5.x
 
-  '@douglasneuroinformatics/eslint-config@5.2.1':
+  '@douglasneuroinformatics/eslint-config@5.2.2':
     resolution:
-      { integrity: sha512-VGY815hswUvcXJBqKxrWjgmKTX+RBvs1XEw6rq3taPlaAz+1RTLHg9cm6CfUm+eM2mxli+YWaSE1bV7QZB0d9w== }
+      { integrity: sha512-rUJLzt5q/MD7gMx9rURFd5NNvhpYk9hBCLnRybnGDWHv58BdC0YE1n9swxeuF0HUJdyZuy+zSip+4oVmTUaoRg== }
     peerDependencies:
       eslint: 9.x
       typescript: 5.x
@@ -12857,7 +12857,7 @@ snapshots:
       esbuild: 0.23.1
       prisma: 5.19.1
 
-  '@douglasneuroinformatics/eslint-config@5.2.1(astro-eslint-parser@1.0.3(typescript@5.5.4))(eslint@9.11.0(jiti@1.21.6))(svelte-eslint-parser@0.41.1)(typescript@5.5.4)':
+  '@douglasneuroinformatics/eslint-config@5.2.2(astro-eslint-parser@1.0.3(typescript@5.5.4))(eslint@9.11.0(jiti@1.21.6))(svelte-eslint-parser@0.41.1)(typescript@5.5.4)':
     dependencies:
       eslint: 9.11.0(jiti@1.21.6)
       eslint-plugin-astro: 1.2.4(eslint@9.11.0(jiti@1.21.6))(typescript@5.5.4)
