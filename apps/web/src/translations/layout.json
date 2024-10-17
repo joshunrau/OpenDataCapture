@@ -51,8 +51,8 @@
       "fr": "Centre de données"
     },
     "upload": {
-      "en": "Upload",
-      "fr": "Téléverser"
+      "en": "Upload Data",
+      "fr": "Téléverser les données"
     },
     "endSession": {
       "en": "End Current Session",
