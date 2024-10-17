@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { Heading } from '@douglasneuroinformatics/libui/components';
+import { Heading, SearchBar } from '@douglasneuroinformatics/libui/components';
 import { useTranslation } from '@douglasneuroinformatics/libui/hooks';
 import { useNavigate } from 'react-router-dom';
 
 import { PageHeader } from '@/components/PageHeader';
 import { useInstrumentInfoQuery } from '@/hooks/useInstrumentInfoQuery';
+import { useSearch } from '@/hooks/useSearch';
 
 import { UploadSelectTable } from '../components/UploadSelectTable';
 
@@ -19,6 +20,8 @@ export const UploadSelectPage = () => {
     }
   });
 
+  const { filteredData, searchTerm, setSearchTerm } = useSearch(data ?? [], (instrument) => instrument.details.title);
+
   return (
     <React.Fragment>
       <PageHeader>
@@ -29,14 +32,21 @@ export const UploadSelectPage = () => {
           })}
         </Heading>
       </PageHeader>
-      <div>
-        <UploadSelectTable
-          data={data ?? []}
-          onSelect={(instrument) => {
-            navigate(instrument.id);
-          }}
-        />
-      </div>
+      <SearchBar
+        className="mb-3"
+        placeholder={t({
+          en: 'Search by Instrument Title',
+          fr: "Recherche par titre de l'instrument"
+        })}
+        value={searchTerm}
+        onValueChange={setSearchTerm}
+      />
+      <UploadSelectTable
+        data={filteredData}
+        onSelect={(instrument) => {
+          navigate(instrument.id);
+        }}
+      />
     </React.Fragment>
   );
 };
