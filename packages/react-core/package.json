@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@douglasneuroinformatics/libjs": "catalog:",
-    "@douglasneuroinformatics/libui": "file:/Users/joshua/Developer/DNP/Libraries/libui",
+    "@douglasneuroinformatics/libui": "catalog:",
     "@opendatacapture/runtime-core": "workspace:*",
     "framer-motion": "^11.5.4",
     "lucide-react": "^0.439.0",
