@@ -1,14 +1,11 @@
-import { useMemo } from 'react';
-
 import { Form } from '@douglasneuroinformatics/libui/components';
 import { useTranslation } from '@douglasneuroinformatics/libui/hooks';
 import type { UpdateGroupData } from '@opendatacapture/schemas/group';
-import type { UnilingualInstrumentInfo } from '@opendatacapture/schemas/instrument';
 import { $SubjectIdentificationMethod, type SubjectIdentificationMethod } from '@opendatacapture/schemas/subject';
 import type { Promisable } from 'type-fest';
 import { z } from 'zod';
 
-export type AccessibleInstrumentOptions = {
+export type AvailableInstrumentOptions = {
   form: { [key: string]: string };
   interactive: { [key: string]: string };
   series: { [key: string]: string };
@@ -16,50 +13,23 @@ export type AccessibleInstrumentOptions = {
 };
 
 export type ManageGroupFormProps = {
-  accessibleInstrumentIds?: string[];
-  availableInstruments: UnilingualInstrumentInfo[];
-  defaultIdentificationMethod?: SubjectIdentificationMethod;
+  availableInstrumentOptions: AvailableInstrumentOptions;
+  initialValues: {
+    accessibleFormInstrumentIds: Set<string>;
+    accessibleInteractiveInstrumentIds: Set<string>;
+    defaultIdentificationMethod?: SubjectIdentificationMethod;
+  };
   onSubmit: (data: Partial<UpdateGroupData>) => Promisable<any>;
   readOnly: boolean;
 };
 
 export const ManageGroupForm = ({
-  accessibleInstrumentIds,
-  availableInstruments,
-  defaultIdentificationMethod,
+  availableInstrumentOptions,
+  initialValues,
   onSubmit,
   readOnly
 }: ManageGroupFormProps) => {
-  const { resolvedLanguage } = useTranslation();
   const { t } = useTranslation();
-
-  const { initialValues, options } = useMemo(() => {
-    const options: AccessibleInstrumentOptions = {
-      form: {},
-      interactive: {},
-      series: {},
-      unknown: {}
-    };
-    const initialValues = {
-      accessibleFormInstrumentIds: new Set<string>(),
-      accessibleInteractiveInstrumentIds: new Set<string>(),
-      defaultIdentificationMethod: defaultIdentificationMethod
-    };
-    for (const instrument of availableInstruments) {
-      if (instrument.kind === 'FORM') {
-        options.form[instrument.id] = instrument.details.title;
-        if (accessibleInstrumentIds?.includes(instrument.id)) {
-          initialValues.accessibleFormInstrumentIds.add(instrument.id);
-        }
-      } else if (instrument.kind === 'INTERACTIVE') {
-        options.interactive[instrument.id] = instrument.details.title;
-        if (accessibleInstrumentIds?.includes(instrument.id)) {
-          initialValues.accessibleInteractiveInstrumentIds.add(instrument.id);
-        }
-      }
-    }
-    return { initialValues, options };
-  }, [accessibleInstrumentIds, availableInstruments, defaultIdentificationMethod, resolvedLanguage]);
 
   let description = t('group.manage.accessibleInstrumentsDesc');
   if (readOnly) {
@@ -76,13 +46,13 @@ export const ManageGroupForm = ({
             accessibleFormInstrumentIds: {
               kind: 'set',
               label: t('group.manage.forms'),
-              options: options.form,
+              options: availableInstrumentOptions.form,
               variant: 'listbox'
             },
             accessibleInteractiveInstrumentIds: {
               kind: 'set',
               label: t('group.manage.interactive'),
-              options: options.interactive,
+              options: availableInstrumentOptions.interactive,
               variant: 'listbox'
             }
           },
