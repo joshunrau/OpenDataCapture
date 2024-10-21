@@ -8,10 +8,9 @@ import { $SubjectIdentificationMethod } from '@opendatacapture/schemas/subject';
 import type { Promisable } from 'type-fest';
 import { z } from 'zod';
 
-import { useSetupState } from '@/hooks/useSetupState';
 import { useAppStore } from '@/store';
 
-type InstrumentOptions = {
+export type AccessibleInstrumentOptions = {
   form: { [key: string]: string };
   interactive: { [key: string]: string };
   series: { [key: string]: string };
@@ -21,16 +20,16 @@ type InstrumentOptions = {
 export type ManageGroupFormProps = {
   availableInstruments: UnilingualInstrumentInfo[];
   onSubmit: (data: Partial<UpdateGroupData>) => Promisable<any>;
+  readOnly: boolean;
 };
 
-export const ManageGroupForm = ({ availableInstruments, onSubmit }: ManageGroupFormProps) => {
+export const ManageGroupForm = ({ availableInstruments, onSubmit, readOnly }: ManageGroupFormProps) => {
   const currentGroup = useAppStore((store) => store.currentGroup);
   const { resolvedLanguage } = useTranslation();
   const { t } = useTranslation();
-  const setupState = useSetupState();
 
   const { initialValues, options } = useMemo(() => {
-    const options: InstrumentOptions = {
+    const options: AccessibleInstrumentOptions = {
       form: {},
       interactive: {},
       series: {},
@@ -57,10 +56,8 @@ export const ManageGroupForm = ({ availableInstruments, onSubmit }: ManageGroupF
     return { initialValues, options };
   }, [availableInstruments, currentGroup, resolvedLanguage]);
 
-  const isDisabled = Boolean(setupState.data?.isDemo && import.meta.env.PROD);
-
   let description = t('group.manage.accessibleInstrumentsDesc');
-  if (isDisabled) {
+  if (readOnly) {
     description += ` ${t('group.manage.accessibleInstrumentDemoNote')}`;
   }
 
@@ -111,7 +108,7 @@ export const ManageGroupForm = ({ availableInstruments, onSubmit }: ManageGroupF
       ]}
       initialValues={initialValues}
       preventResetValuesOnReset={true}
-      readOnly={isDisabled}
+      readOnly={readOnly}
       validationSchema={z.object({
         accessibleFormInstrumentIds: z.set(z.string()),
         accessibleInteractiveInstrumentIds: z.set(z.string()),

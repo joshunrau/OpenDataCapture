@@ -5,6 +5,7 @@ import { useTranslation } from '@douglasneuroinformatics/libui/hooks';
 
 import { PageHeader } from '@/components/PageHeader';
 import { useInstrumentInfoQuery } from '@/hooks/useInstrumentInfoQuery';
+import { useSetupState } from '@/hooks/useSetupState';
 import { useAppStore } from '@/store';
 
 import { ManageGroupForm } from '../components/ManageGroupForm';
@@ -15,6 +16,7 @@ export const ManageGroupPage = () => {
   const instrumentInfoQuery = useInstrumentInfoQuery();
   const updateGroupMutation = useUpdateGroup();
   const changeGroup = useAppStore((store) => store.changeGroup);
+  const setupState = useSetupState();
 
   return (
     <React.Fragment>
@@ -25,6 +27,7 @@ export const ManageGroupPage = () => {
       </PageHeader>
       <ManageGroupForm
         availableInstruments={instrumentInfoQuery.data ?? []}
+        readOnly={Boolean(setupState.data?.isDemo && import.meta.env.PROD)}
         onSubmit={async (data) => {
           const updatedGroup = await updateGroupMutation.mutateAsync(data);
           changeGroup(updatedGroup);
