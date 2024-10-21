@@ -23,7 +23,6 @@ export type ManageGroupFormProps = {
   onSubmit: (data: Partial<UpdateGroupData>) => Promisable<any>;
 };
 
-// eslint-disable-next-line max-lines-per-function
 export const ManageGroupForm = ({ availableInstruments, onSubmit }: ManageGroupFormProps) => {
   const currentGroup = useAppStore((store) => store.currentGroup);
   const { resolvedLanguage } = useTranslation();
