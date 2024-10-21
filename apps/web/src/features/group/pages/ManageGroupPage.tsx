@@ -15,6 +15,7 @@ export const ManageGroupPage = () => {
   const { t } = useTranslation('group');
   const instrumentInfoQuery = useInstrumentInfoQuery();
   const updateGroupMutation = useUpdateGroup();
+  const currentGroup = useAppStore((store) => store.currentGroup);
   const changeGroup = useAppStore((store) => store.changeGroup);
   const setupState = useSetupState();
 
@@ -25,8 +26,11 @@ export const ManageGroupPage = () => {
           {t('manage.pageTitle')}
         </Heading>
       </PageHeader>
+
       <ManageGroupForm
+        accessibleInstrumentIds={currentGroup?.accessibleInstrumentIds}
         availableInstruments={instrumentInfoQuery.data ?? []}
+        defaultIdentificationMethod={currentGroup?.settings.defaultIdentificationMethod}
         readOnly={Boolean(setupState.data?.isDemo && import.meta.env.PROD)}
         onSubmit={async (data) => {
           const updatedGroup = await updateGroupMutation.mutateAsync(data);

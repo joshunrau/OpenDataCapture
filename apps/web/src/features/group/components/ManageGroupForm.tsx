@@ -4,11 +4,9 @@ import { Form } from '@douglasneuroinformatics/libui/components';
 import { useTranslation } from '@douglasneuroinformatics/libui/hooks';
 import type { UpdateGroupData } from '@opendatacapture/schemas/group';
 import type { UnilingualInstrumentInfo } from '@opendatacapture/schemas/instrument';
-import { $SubjectIdentificationMethod } from '@opendatacapture/schemas/subject';
+import { $SubjectIdentificationMethod, type SubjectIdentificationMethod } from '@opendatacapture/schemas/subject';
 import type { Promisable } from 'type-fest';
 import { z } from 'zod';
-
-import { useAppStore } from '@/store';
 
 export type AccessibleInstrumentOptions = {
   form: { [key: string]: string };
@@ -18,13 +16,20 @@ export type AccessibleInstrumentOptions = {
 };
 
 export type ManageGroupFormProps = {
+  accessibleInstrumentIds?: string[];
   availableInstruments: UnilingualInstrumentInfo[];
+  defaultIdentificationMethod?: SubjectIdentificationMethod;
   onSubmit: (data: Partial<UpdateGroupData>) => Promisable<any>;
   readOnly: boolean;
 };
 
-export const ManageGroupForm = ({ availableInstruments, onSubmit, readOnly }: ManageGroupFormProps) => {
-  const currentGroup = useAppStore((store) => store.currentGroup);
+export const ManageGroupForm = ({
+  accessibleInstrumentIds,
+  availableInstruments,
+  defaultIdentificationMethod,
+  onSubmit,
+  readOnly
+}: ManageGroupFormProps) => {
   const { resolvedLanguage } = useTranslation();
   const { t } = useTranslation();
 
@@ -38,23 +43,23 @@ export const ManageGroupForm = ({ availableInstruments, onSubmit, readOnly }: Ma
     const initialValues = {
       accessibleFormInstrumentIds: new Set<string>(),
       accessibleInteractiveInstrumentIds: new Set<string>(),
-      defaultIdentificationMethod: currentGroup?.settings.defaultIdentificationMethod
+      defaultIdentificationMethod: defaultIdentificationMethod
     };
     for (const instrument of availableInstruments) {
       if (instrument.kind === 'FORM') {
         options.form[instrument.id] = instrument.details.title;
-        if (currentGroup?.accessibleInstrumentIds.includes(instrument.id)) {
+        if (accessibleInstrumentIds?.includes(instrument.id)) {
           initialValues.accessibleFormInstrumentIds.add(instrument.id);
         }
       } else if (instrument.kind === 'INTERACTIVE') {
         options.interactive[instrument.id] = instrument.details.title;
-        if (currentGroup?.accessibleInstrumentIds.includes(instrument.id)) {
+        if (accessibleInstrumentIds?.includes(instrument.id)) {
           initialValues.accessibleInteractiveInstrumentIds.add(instrument.id);
         }
       }
     }
     return { initialValues, options };
-  }, [availableInstruments, currentGroup, resolvedLanguage]);
+  }, [accessibleInstrumentIds, availableInstruments, defaultIdentificationMethod, resolvedLanguage]);
 
   let description = t('group.manage.accessibleInstrumentsDesc');
   if (readOnly) {
