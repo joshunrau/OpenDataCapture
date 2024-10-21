@@ -34,7 +34,7 @@ catalogs:
       specifier: latest
       version: 0.1.0
     '@douglasneuroinformatics/libui':
-      specifier: latest
+      specifier: 3.6.5
       version: 3.6.5
     '@douglasneuroinformatics/libui-form-types':
       specifier: latest
