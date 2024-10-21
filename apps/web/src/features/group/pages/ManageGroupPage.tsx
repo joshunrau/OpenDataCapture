@@ -21,6 +21,9 @@ export const ManageGroupPage = () => {
 
   const availableInstruments = instrumentInfoQuery.data ?? [];
 
+  const accessibleInstrumentIds = currentGroup?.accessibleInstrumentIds;
+  const defaultIdentificationMethod = currentGroup?.settings.defaultIdentificationMethod;
+
   const { availableInstrumentOptions, initialValues } = useMemo(() => {
     const availableInstrumentOptions: AvailableInstrumentOptions = {
       form: {},
@@ -31,23 +34,23 @@ export const ManageGroupPage = () => {
     const initialValues = {
       accessibleFormInstrumentIds: new Set<string>(),
       accessibleInteractiveInstrumentIds: new Set<string>(),
-      defaultIdentificationMethod: currentGroup?.settings.defaultIdentificationMethod
+      defaultIdentificationMethod
     };
     for (const instrument of availableInstruments) {
       if (instrument.kind === 'FORM') {
         availableInstrumentOptions.form[instrument.id] = instrument.details.title;
-        if (currentGroup?.accessibleInstrumentIds.includes(instrument.id)) {
+        if (accessibleInstrumentIds?.includes(instrument.id)) {
           initialValues.accessibleFormInstrumentIds.add(instrument.id);
         }
       } else if (instrument.kind === 'INTERACTIVE') {
         availableInstrumentOptions.interactive[instrument.id] = instrument.details.title;
-        if (currentGroup?.accessibleInstrumentIds.includes(instrument.id)) {
+        if (accessibleInstrumentIds?.includes(instrument.id)) {
           initialValues.accessibleInteractiveInstrumentIds.add(instrument.id);
         }
       }
     }
     return { availableInstrumentOptions, initialValues };
-  }, [currentGroup, availableInstruments, resolvedLanguage]);
+  }, [accessibleInstrumentIds, availableInstruments, defaultIdentificationMethod, resolvedLanguage]);
 
   return (
     <React.Fragment>
