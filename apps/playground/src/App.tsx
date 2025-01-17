@@ -4,6 +4,7 @@ import { NotificationHub } from '@douglasneuroinformatics/libui/components';
 import { ErrorPage, LoadingPage } from '@opendatacapture/react-core';
 import { ErrorBoundary } from 'react-error-boundary';
 
+const DatabaseProvider = React.lazy(() => import('./providers/DatabaseProvider'));
 const IndexPage = React.lazy(() => import('./pages/IndexPage'));
 
 export const App = () => {
@@ -14,8 +15,10 @@ export const App = () => {
       }
     >
       <ErrorBoundary FallbackComponent={ErrorPage}>
-        <NotificationHub />
-        <IndexPage />
+        <DatabaseProvider>
+          <NotificationHub />
+          <IndexPage />
+        </DatabaseProvider>
       </ErrorBoundary>
     </React.Suspense>
   );
