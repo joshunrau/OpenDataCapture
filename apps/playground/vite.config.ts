@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => ({
     esbuildOptions: {
       target: 'es2022'
     },
-    exclude: ['@swc/wasm-web'],
+    exclude: ['@electric-sql/pglite', '@swc/wasm-web'],
     include: ['react/*', 'react-dom/*']
   },
   plugins: [
