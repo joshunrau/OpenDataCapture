@@ -1,3 +1,9 @@
+import { snakeToCamelCase } from '@douglasneuroinformatics/libjs';
+
+type CamelCased<T extends { [key: string]: any }> = {
+  [K in keyof T]: T[K];
+};
+
 export function formatSize(bytes: number, si = false, dp = 1) {
   const thresh = si ? 1000 : 1024;
 
@@ -18,4 +24,12 @@ export function formatSize(bytes: number, si = false, dp = 1) {
   } while (Math.round(Math.abs(bytes) * r) / r >= thresh && u < units.length - 1);
 
   return bytes.toFixed(dp) + ' ' + units[u];
+}
+
+export function mapKeysToCamelCase<T extends { [key: string]: any }>(obj: T) {
+  const result: Partial<CamelCased<T>> = {};
+  for (const key in obj) {
+    result[snakeToCamelCase(key)] = obj[key];
+  }
+  return result as CamelCased<T>;
 }
