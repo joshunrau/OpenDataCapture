@@ -1,8 +1,9 @@
 import { snakeToCamelCase } from '@douglasneuroinformatics/libjs';
+import type { CamelCase, Simplify } from 'type-fest';
 
-type CamelCased<T extends { [key: string]: any }> = {
-  [K in keyof T]: T[K];
-};
+type CamelCased<T extends { [key: string]: any }> = Simplify<{
+  [K in keyof T as CamelCase<K>]: T[K];
+}>;
 
 export function formatSize(bytes: number, si = false, dp = 1) {
   const thresh = si ? 1000 : 1024;
@@ -27,7 +28,7 @@ export function formatSize(bytes: number, si = false, dp = 1) {
 }
 
 export function mapKeysToCamelCase<T extends { [key: string]: any }>(obj: T) {
-  const result: Partial<CamelCased<T>> = {};
+  const result: { [key: string]: any } = {};
   for (const key in obj) {
     result[snakeToCamelCase(key)] = obj[key];
   }

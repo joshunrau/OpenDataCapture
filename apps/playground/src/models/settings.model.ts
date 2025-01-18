@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 export const $Settings = z.object({
-  apiBaseUrl: z.string().optional(),
-  enableVimMode: z.boolean().optional(),
+  apiBaseUrl: z.string().nullish(),
+  enableVimMode: z.boolean().nullish(),
   refreshInterval: z.number().positive().int()
 });
 
