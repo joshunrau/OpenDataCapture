@@ -42,7 +42,7 @@ export type TranslatorInitOptions = {
 /** @public */
 export type TranslatorInstance<T extends { [key: string]: unknown }> = {
   changeLanguage(language: Language): void;
-  init(options: TranslatorInitOptions): void;
+  init(options?: TranslatorInitOptions): void;
   readonly isInitialized: boolean;
   onLanguageChange: LanguageChangeHandler;
   readonly resolvedLanguage: Language;
