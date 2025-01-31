@@ -14,7 +14,6 @@ const $OptionalURL = z.preprocess(
 const $ParsedNumber = <TSchema extends z.ZodNumber>(schema: TSchema) => {
   return z
     .string()
-    .optional()
     .transform((arg) => (isNumberLike(arg) ? parseNumber(arg) : arg))
     .pipe(schema);
 };
