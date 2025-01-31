@@ -1,5 +1,6 @@
 import path from 'node:path';
 
+import { ConfigService } from '@douglasneuroinformatics/libnest/config';
 import { ValidationPipe } from '@douglasneuroinformatics/libnest/core';
 import { JSONLogger } from '@douglasneuroinformatics/libnest/logging';
 import { VersioningType } from '@nestjs/common';
@@ -8,17 +9,16 @@ import type { NestExpressApplication } from '@nestjs/platform-express';
 import { json } from 'express';
 
 import { AppModule } from './app.module';
-import { ConfigurationService } from './configuration/configuration.service';
 import { setupDocs } from './docs';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true
   });
-  const configurationService = app.get(ConfigurationService);
+  const configService = app.get(ConfigService);
   const logger = new JSONLogger(null, {
-    debug: configurationService.get('DEBUG'),
-    verbose: configurationService.get('VERBOSE')
+    debug: configService.get('DEBUG'),
+    verbose: configService.get('VERBOSE')
   });
   app.useLogger(logger);
   app.enableCors();
@@ -33,8 +33,8 @@ async function bootstrap() {
   app.useStaticAssets(path.resolve(import.meta.dirname, '..', 'public'));
   setupDocs(app);
 
-  const isProduction = configurationService.get('NODE_ENV') === 'production';
-  const port = configurationService.get(isProduction ? 'API_PROD_SERVER_PORT' : 'API_DEV_SERVER_PORT');
+  const isProduction = configService.get('NODE_ENV') === 'production';
+  const port = configService.get(isProduction ? 'API_PROD_SERVER_PORT' : 'API_DEV_SERVER_PORT')!;
 
   await app.listen(port);
 
