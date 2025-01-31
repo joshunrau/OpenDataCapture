@@ -3,7 +3,6 @@ import { ConditionalModule, ConfigModule } from '@nestjs/config';
 import type { ConditionalKeys } from 'type-fest';
 
 import { $Configuration, type Configuration } from './configuration.schema';
-import { ConfigurationService } from './configuration.service';
 
 type ConditionalModuleOptions =
   | {
@@ -25,7 +24,6 @@ type ConfigurationModuleOptions = {
 export class ConfigurationModule {
   static forRoot(options: ConfigurationModuleOptions): DynamicModule {
     return {
-      exports: [ConfigurationService],
       global: true,
       imports: [
         ...options.conditionalModules.flatMap(({ condition, module, modules }) =>
@@ -37,8 +35,7 @@ export class ConfigurationModule {
           validate: (config) => $Configuration.parse(config)
         })
       ],
-      module: ConfigurationModule,
-      providers: [ConfigurationService]
+      module: ConfigurationModule
     };
   }
 }
