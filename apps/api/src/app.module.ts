@@ -1,3 +1,4 @@
+import { ConfigModule, ConfigService } from '@douglasneuroinformatics/libnest/config';
 import { CryptoModule } from '@douglasneuroinformatics/libnest/crypto';
 import { LoggingModule } from '@douglasneuroinformatics/libnest/logging';
 import { Module } from '@nestjs/common';
@@ -10,7 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { AuthenticationGuard } from './auth/guards/authentication.guard';
 import { AuthorizationGuard } from './auth/guards/authorization.guard';
 import { ConfigurationModule } from './configuration/configuration.module';
-import { ConfigurationService } from './configuration/configuration.service';
+import { $Config } from './core/config';
 import { DelayMiddleware } from './core/middleware/delay.middleware';
 import { GatewayModule } from './gateway/gateway.module';
 import { GroupsModule } from './groups/groups.module';
@@ -22,9 +23,19 @@ import { SubjectsModule } from './subjects/subjects.module';
 import { SummaryModule } from './summary/summary.module';
 import { UsersModule } from './users/users.module';
 
+import type { Config } from './core/config';
+
+declare module '@douglasneuroinformatics/libnest/types' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type, @typescript-eslint/consistent-type-definitions
+  interface UserConfig extends Config {}
+}
+
 @Module({
   imports: [
     AuthModule,
+    ConfigModule.forRoot({
+      schema: $Config
+    }),
     ConfigurationModule.forRoot({
       conditionalModules: [
         {
@@ -34,13 +45,13 @@ import { UsersModule } from './users/users.module';
       ]
     }),
     CryptoModule.registerAsync({
-      inject: [ConfigurationService],
+      inject: [ConfigService],
       isGlobal: true,
-      useFactory: (configurationService: ConfigurationService) => ({
+      useFactory: (configService: ConfigService) => ({
         pbkdf2Params: {
-          iterations: configurationService.get('DANGEROUSLY_DISABLE_PBKDF2_ITERATION') ? 1 : 100_000
+          iterations: configService.get('DANGEROUSLY_DISABLE_PBKDF2_ITERATION') ? 1 : 100_000
         },
-        secretKey: configurationService.get('SECRET_KEY')
+        secretKey: configService.get('SECRET_KEY')
       })
     }),
     GroupsModule,
@@ -55,10 +66,10 @@ import { UsersModule } from './users/users.module';
     SummaryModule,
     SessionsModule,
     ThrottlerModule.forRootAsync({
-      inject: [ConfigurationService],
-      useFactory(configurationService: ConfigurationService) {
+      inject: [ConfigService],
+      useFactory(configService: ConfigService) {
         // this cannot be used with conditional module easily, since APP_GUARD requires something
-        return configurationService.get('THROTTLER_ENABLED')
+        return configService.get('THROTTLER_ENABLED')
           ? [
               {
                 limit: 25,
@@ -96,10 +107,10 @@ import { UsersModule } from './users/users.module';
   ]
 })
 export class AppModule implements NestModule {
-  constructor(private readonly configurationService: ConfigurationService) {}
+  constructor(private readonly configService: ConfigService) {}
 
   configure(consumer: MiddlewareConsumer) {
-    const isDev = this.configurationService.get('NODE_ENV') === 'development';
+    const isDev = this.configService.get('NODE_ENV') === 'development';
     if (isDev) {
       consumer.apply(DelayMiddleware).forRoutes('*');
     }
