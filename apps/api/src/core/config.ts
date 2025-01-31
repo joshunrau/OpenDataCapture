@@ -2,14 +2,10 @@ import { isNumberLike, parseNumber } from '@douglasneuroinformatics/libjs';
 import { $BooleanString } from '@opendatacapture/schemas/core';
 import { z } from 'zod';
 
-const $OptionalURL = z.preprocess(
-  (arg) => arg || undefined,
-  z
-    .string()
-    .url()
-    .optional()
-    .transform((arg) => (arg ? new URL(arg) : undefined))
-);
+const $ParsedURL = z
+  .string()
+  .url()
+  .transform((arg) => (typeof arg === 'string' ? new URL(arg) : arg));
 
 const $ParsedNumber = <TSchema extends z.ZodNumber>(schema: TSchema) => {
   return z
@@ -28,9 +24,9 @@ export const $Config = z
     GATEWAY_API_KEY: z.string().min(32),
     GATEWAY_DEV_SERVER_PORT: $ParsedNumber(z.number().positive().int()).optional(),
     GATEWAY_ENABLED: $BooleanString,
-    GATEWAY_INTERNAL_NETWORK_URL: $OptionalURL,
+    GATEWAY_INTERNAL_NETWORK_URL: $ParsedURL.optional(),
     GATEWAY_REFRESH_INTERVAL: $ParsedNumber(z.number().positive().int()),
-    GATEWAY_SITE_ADDRESS: $OptionalURL,
+    GATEWAY_SITE_ADDRESS: $ParsedURL.optional(),
     MONGO_DIRECT_CONNECTION: z.string().optional(),
     MONGO_REPLICA_SET: z.string().optional(),
     MONGO_RETRY_WRITES: z.string().optional(),
