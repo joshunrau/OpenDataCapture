@@ -1,3 +1,4 @@
+import { ConfigService } from '@douglasneuroinformatics/libnest/config';
 import { ValidationPipe } from '@douglasneuroinformatics/libnest/core';
 import { CryptoService } from '@douglasneuroinformatics/libnest/crypto';
 import { MockFactory } from '@douglasneuroinformatics/libnest/testing';
@@ -9,7 +10,6 @@ import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 import { AbilityFactory } from '@/ability/ability.factory';
-import { ConfigurationService } from '@/configuration/configuration.service';
 import { UsersService } from '@/users/users.service';
 
 import { AuthController } from '../auth.controller';
@@ -29,7 +29,7 @@ describe('/auth', () => {
         MockFactory.createForService(JwtService),
         MockFactory.createForService(UsersService),
         {
-          provide: ConfigurationService,
+          provide: ConfigService,
           useValue: {}
         }
       ]

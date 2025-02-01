@@ -1,3 +1,4 @@
+import { ConfigService } from '@douglasneuroinformatics/libnest/config';
 import { LoggingService } from '@douglasneuroinformatics/libnest/logging';
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
@@ -7,21 +8,20 @@ import type { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 import { AbilityFactory } from '@/ability/ability.factory';
-import { ConfigurationService } from '@/configuration/configuration.service';
 import { UsersService } from '@/users/users.service';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
-    config: ConfigurationService,
+    configService: ConfigService,
     private readonly abilityFactory: AbilityFactory,
     private readonly loggingService: LoggingService,
     private readonly usersService: UsersService
   ) {
     super({
-      ignoreExpiration: config.get('NODE_ENV') === 'development',
+      ignoreExpiration: configService.get('NODE_ENV') === 'development',
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: config.get('SECRET_KEY')
+      secretOrKey: configService.get('SECRET_KEY')
     });
   }
 

@@ -1,8 +1,8 @@
+import { ConfigService } from '@douglasneuroinformatics/libnest/config';
 import { HttpModule } from '@nestjs/axios';
 import { forwardRef, Module } from '@nestjs/common';
 
 import { AssignmentsModule } from '@/assignments/assignments.module';
-import { ConfigurationService } from '@/configuration/configuration.service';
 import { InstrumentRecordsModule } from '@/instrument-records/instrument-records.module';
 import { InstrumentsModule } from '@/instruments/instruments.module';
 import { SessionsModule } from '@/sessions/sessions.module';
@@ -19,25 +19,25 @@ import { GatewaySynchronizer } from './gateway.synchronizer';
   imports: [
     forwardRef(() => AssignmentsModule),
     HttpModule.registerAsync({
-      inject: [ConfigurationService],
-      useFactory: (configurationService: ConfigurationService) => {
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
         let baseURL: string;
-        if (configurationService.get('NODE_ENV') === 'production') {
-          const internalNetworkUrl = configurationService.get('GATEWAY_INTERNAL_NETWORK_URL');
-          const siteAddress = configurationService.get('GATEWAY_SITE_ADDRESS');
+        if (configService.get('NODE_ENV') === 'production') {
+          const internalNetworkUrl = configService.get('GATEWAY_INTERNAL_NETWORK_URL');
+          const siteAddress = configService.getOrThrow('GATEWAY_SITE_ADDRESS');
           if (siteAddress.hostname === 'localhost' && internalNetworkUrl) {
             baseURL = internalNetworkUrl.origin;
           } else {
             baseURL = siteAddress.origin;
           }
         } else {
-          const gatewayPort = configurationService.get('GATEWAY_DEV_SERVER_PORT');
+          const gatewayPort = configService.get('GATEWAY_DEV_SERVER_PORT');
           baseURL = `http://localhost:${gatewayPort}`;
         }
         return {
           baseURL,
           headers: {
-            Authorization: `Bearer ${configurationService.get('GATEWAY_API_KEY')}`
+            Authorization: `Bearer ${configService.get('GATEWAY_API_KEY')}`
           }
         };
       }

@@ -1,17 +1,17 @@
 import { type DynamicModule, Module, type ModuleMetadata } from '@nestjs/common';
-import { ConditionalModule, ConfigModule } from '@nestjs/config';
+import { ConditionalModule } from '@nestjs/config';
 import type { ConditionalKeys } from 'type-fest';
 
-import { $Configuration, type Configuration } from './configuration.schema';
+import type { Config } from '@/core/config';
 
 type ConditionalModuleOptions =
   | {
-      condition: ConditionalKeys<Configuration, boolean>;
+      condition: ConditionalKeys<Config, boolean>;
       module: Required<ModuleMetadata>['imports'][number];
       modules?: undefined;
     }
   | {
-      condition: ConditionalKeys<Configuration, boolean>;
+      condition: ConditionalKeys<Config, boolean>;
       module?: undefined;
       modules: Required<ModuleMetadata>['imports'][number][];
     };
@@ -30,10 +30,7 @@ export class ConfigurationModule {
           module
             ? ConditionalModule.registerWhen(module, condition)
             : modules.map((module) => ConditionalModule.registerWhen(module, condition))
-        ),
-        ConfigModule.forRoot({
-          validate: (config) => $Configuration.parse(config)
-        })
+        )
       ],
       module: ConfigurationModule
     };

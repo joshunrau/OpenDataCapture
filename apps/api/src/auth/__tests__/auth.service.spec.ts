@@ -1,3 +1,4 @@
+import { ConfigService } from '@douglasneuroinformatics/libnest/config';
 import { CryptoService } from '@douglasneuroinformatics/libnest/crypto';
 import { type MockedInstance, MockFactory } from '@douglasneuroinformatics/libnest/testing';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
@@ -6,7 +7,6 @@ import { Test } from '@nestjs/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { AbilityFactory } from '@/ability/ability.factory';
-import { ConfigurationService } from '@/configuration/configuration.service';
 import { UsersService } from '@/users/users.service';
 
 import { AuthService } from '../auth.service';
@@ -26,7 +26,7 @@ describe('AuthService', () => {
         MockFactory.createForService(JwtService),
         MockFactory.createForService(UsersService),
         {
-          provide: ConfigurationService,
+          provide: ConfigService,
           useValue: {
             get: (propertyPath: string) => propertyPath
           }

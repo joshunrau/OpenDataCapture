@@ -1,8 +1,7 @@
+import { ConfigService } from '@douglasneuroinformatics/libnest/config';
 import { LoggingService } from '@douglasneuroinformatics/libnest/logging';
 import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import type { OnApplicationShutdown, OnModuleInit } from '@nestjs/common';
-
-import { ConfigurationService } from '@/configuration/configuration.service';
 
 import { type ExtendedPrismaClient, PRISMA_CLIENT_TOKEN } from './prisma.factory';
 
@@ -10,7 +9,7 @@ import { type ExtendedPrismaClient, PRISMA_CLIENT_TOKEN } from './prisma.factory
 export class PrismaService implements OnModuleInit, OnApplicationShutdown {
   constructor(
     @Inject(PRISMA_CLIENT_TOKEN) public readonly client: ExtendedPrismaClient,
-    private readonly configurationService: ConfigurationService,
+    private readonly configService: ConfigService,
     private readonly loggingService: LoggingService
   ) {}
 
@@ -36,7 +35,7 @@ export class PrismaService implements OnModuleInit, OnApplicationShutdown {
 
   async onApplicationShutdown() {
     await this.client.$disconnect();
-    if (this.configurationService.get('NODE_ENV') === 'test') {
+    if (this.configService.get('NODE_ENV') === 'test') {
       await this.dropDatabase();
     }
   }

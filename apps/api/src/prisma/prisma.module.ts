@@ -1,7 +1,6 @@
+import { ConfigService } from '@douglasneuroinformatics/libnest/config';
 import { JSONLogger } from '@douglasneuroinformatics/libnest/logging';
 import { type DynamicModule, Module } from '@nestjs/common';
-
-import { ConfigurationService } from '@/configuration/configuration.service';
 
 import { type ExtendedPrismaClient, PRISMA_CLIENT_TOKEN, PrismaFactory } from './prisma.factory';
 import { PrismaService } from './prisma.service';
@@ -40,17 +39,17 @@ export class PrismaModule {
       module: PrismaModule,
       providers: [
         {
-          inject: [ConfigurationService],
+          inject: [ConfigService],
           provide: PRISMA_CLIENT_TOKEN,
-          useFactory: (configurationService: ConfigurationService) => {
-            const mongoUri = configurationService.get('MONGO_URI');
-            const dbName = configurationService.get('NODE_ENV');
+          useFactory: (configService: ConfigService) => {
+            const mongoUri = configService.get('MONGO_URI');
+            const dbName = configService.get('NODE_ENV');
             const url = new URL(`${mongoUri.href}/data-capture-${dbName}`);
             const params = {
-              directConnection: configurationService.get('MONGO_DIRECT_CONNECTION'),
-              replicaSet: configurationService.get('MONGO_REPLICA_SET'),
-              retryWrites: configurationService.get('MONGO_RETRY_WRITES'),
-              w: configurationService.get('MONGO_WRITE_CONCERN')
+              directConnection: configService.get('MONGO_DIRECT_CONNECTION'),
+              replicaSet: configService.get('MONGO_REPLICA_SET'),
+              retryWrites: configService.get('MONGO_RETRY_WRITES'),
+              w: configService.get('MONGO_WRITE_CONCERN')
             };
             for (const [key, value] of Object.entries(params)) {
               if (value) {
