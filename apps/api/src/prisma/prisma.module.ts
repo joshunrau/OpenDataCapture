@@ -1,5 +1,5 @@
 import { ConfigService } from '@douglasneuroinformatics/libnest/config';
-import { JSONLogger } from '@douglasneuroinformatics/libnest/logging';
+import { LoggingService } from '@douglasneuroinformatics/libnest/logging';
 import { type DynamicModule, Module } from '@nestjs/common';
 
 import { type ExtendedPrismaClient, PRISMA_CLIENT_TOKEN, PrismaFactory } from './prisma.factory';
@@ -10,11 +10,6 @@ import type { ModelEntityName } from './prisma.types';
 
 @Module({})
 export class PrismaModule {
-  private static logger = new JSONLogger(PrismaModule.name, {
-    debug: false,
-    verbose: false
-  });
-
   static forFeature<T extends ModelEntityName>(modelName: T): DynamicModule {
     const modelToken = getModelToken(modelName);
     return {
@@ -22,10 +17,10 @@ export class PrismaModule {
       module: PrismaModule,
       providers: [
         {
-          inject: [PRISMA_CLIENT_TOKEN],
+          inject: [PRISMA_CLIENT_TOKEN, LoggingService],
           provide: modelToken,
-          useFactory: (client: ExtendedPrismaClient) => {
-            this.logger.log(`Injecting model for resolved token: '${modelToken}'`);
+          useFactory: (client: ExtendedPrismaClient, loggingService: LoggingService) => {
+            loggingService.log(`Injecting model for resolved token: '${modelToken}'`);
             return client[getModelReferenceName(modelName)];
           }
         }
@@ -39,9 +34,9 @@ export class PrismaModule {
       module: PrismaModule,
       providers: [
         {
-          inject: [ConfigService],
+          inject: [ConfigService, LoggingService],
           provide: PRISMA_CLIENT_TOKEN,
-          useFactory: (configService: ConfigService) => {
+          useFactory: (configService: ConfigService, loggingService: LoggingService) => {
             const mongoUri = configService.get('MONGO_URI');
             const dbName = configService.get('NODE_ENV');
             const url = new URL(`${mongoUri.href}/data-capture-${dbName}`);
@@ -56,7 +51,7 @@ export class PrismaModule {
                 url.searchParams.append(key, value);
               }
             }
-            this.logger.log(`Attempting to create client with data source: '${url.href}'`);
+            loggingService.log(`Attempting to create client with data source: '${url.href}'`);
             return PrismaFactory.createClient({ datasourceUrl: url.href });
           }
         },
