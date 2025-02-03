@@ -7,25 +7,35 @@ const $ParsedURL = z
   .url()
   .transform((arg) => (typeof arg === 'string' ? new URL(arg) : arg));
 
-const $ParsedNumber = <TSchema extends z.ZodNumber>(schema: TSchema) => {
+const $ParsedNumber = <TSchema extends z.ZodDefault<z.ZodNumber> | z.ZodNumber | z.ZodOptional<z.ZodNumber>>(
+  schema: TSchema
+) => {
   return z
     .string()
-    .transform((arg) => (isNumberLike(arg) ? parseNumber(arg) : arg))
+    .optional()
+    .transform((arg) => {
+      if (isNumberLike(arg)) {
+        return parseNumber(arg);
+      } else if (arg === '') {
+        return undefined;
+      }
+      return arg;
+    })
     .pipe(schema);
 };
 
 export const $Config = z
   .object({
-    API_DEV_SERVER_PORT: $ParsedNumber(z.number().positive().int()).optional(),
-    API_PROD_SERVER_PORT: $ParsedNumber(z.number().positive().int()).default('80'),
-    API_RESPONSE_DELAY: $ParsedNumber(z.number().positive().int()).optional(),
+    API_DEV_SERVER_PORT: $ParsedNumber(z.number().positive().int().optional()),
+    API_PROD_SERVER_PORT: $ParsedNumber(z.number().positive().int().default(80)),
+    API_RESPONSE_DELAY: $ParsedNumber(z.number().positive().int().optional()),
     DANGEROUSLY_DISABLE_PBKDF2_ITERATION: $BooleanString.default('false'),
     DEBUG: $BooleanString,
     GATEWAY_API_KEY: z.string().min(32),
-    GATEWAY_DEV_SERVER_PORT: $ParsedNumber(z.number().positive().int()).optional(),
+    GATEWAY_DEV_SERVER_PORT: $ParsedNumber(z.number().positive().int().optional()),
     GATEWAY_ENABLED: $BooleanString,
     GATEWAY_INTERNAL_NETWORK_URL: $ParsedURL.optional(),
-    GATEWAY_REFRESH_INTERVAL: $ParsedNumber(z.number().positive().int()),
+    GATEWAY_REFRESH_INTERVAL: $ParsedNumber(z.number().positive().int().optional()),
     GATEWAY_SITE_ADDRESS: $ParsedURL.optional(),
     MONGO_DIRECT_CONNECTION: z.string().optional(),
     MONGO_REPLICA_SET: z.string().optional(),
