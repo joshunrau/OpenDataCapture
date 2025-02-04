@@ -7,9 +7,7 @@ const $ParsedURL = z
   .url()
   .transform((arg) => (typeof arg === 'string' ? new URL(arg) : arg));
 
-const $ParsedNumber = <TSchema extends z.ZodDefault<z.ZodNumber> | z.ZodNumber | z.ZodOptional<z.ZodNumber>>(
-  schema: TSchema
-) => {
+const $ParsedNumber = <TSchema extends z.ZodTypeAny>(schema: TSchema) => {
   return z
     .string()
     .optional()
