@@ -33,7 +33,7 @@ export const $Config = z
     GATEWAY_DEV_SERVER_PORT: $ParsedNumber(z.number().positive().int().optional()),
     GATEWAY_ENABLED: $BooleanString,
     GATEWAY_INTERNAL_NETWORK_URL: $ParsedURL.optional(),
-    GATEWAY_REFRESH_INTERVAL: $ParsedNumber(z.number().positive().int().optional()),
+    GATEWAY_REFRESH_INTERVAL: $ParsedNumber(z.number().positive().int()),
     GATEWAY_SITE_ADDRESS: $ParsedURL.optional(),
     MONGO_DIRECT_CONNECTION: z.string().optional(),
     MONGO_REPLICA_SET: z.string().optional(),
