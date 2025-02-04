@@ -1,4 +1,5 @@
 import { ConfigModule, ConfigService } from '@douglasneuroinformatics/libnest/config';
+import { delay } from '@douglasneuroinformatics/libnest/core';
 import { CryptoModule } from '@douglasneuroinformatics/libnest/crypto';
 import { LoggingModule } from '@douglasneuroinformatics/libnest/logging';
 import { Module } from '@nestjs/common';
@@ -11,7 +12,6 @@ import { AuthModule } from './auth/auth.module';
 import { AuthenticationGuard } from './auth/guards/authentication.guard';
 import { AuthorizationGuard } from './auth/guards/authorization.guard';
 import { $Config } from './core/config';
-import { DelayMiddleware } from './core/middleware/delay.middleware';
 import { GatewayModule } from './gateway/gateway.module';
 import { GroupsModule } from './groups/groups.module';
 import { InstrumentsModule } from './instruments/instruments.module';
@@ -112,8 +112,9 @@ export class AppModule implements NestModule {
 
   configure(consumer: MiddlewareConsumer) {
     const isDev = this.configService.get('NODE_ENV') === 'development';
-    if (isDev) {
-      consumer.apply(DelayMiddleware).forRoutes('*');
+    const responseDelay = this.configService.get('API_RESPONSE_DELAY');
+    if (isDev && responseDelay) {
+      consumer.apply(delay({ responseDelay })).forRoutes('*');
     }
   }
 }
