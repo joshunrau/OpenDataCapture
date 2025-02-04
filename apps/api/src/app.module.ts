@@ -10,7 +10,6 @@ import { AssignmentsModule } from './assignments/assignments.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthenticationGuard } from './auth/guards/authentication.guard';
 import { AuthorizationGuard } from './auth/guards/authorization.guard';
-import { ConfigurationModule } from './configuration/configuration.module';
 import { $Config } from './core/config';
 import { DelayMiddleware } from './core/middleware/delay.middleware';
 import { GatewayModule } from './gateway/gateway.module';
@@ -34,15 +33,17 @@ declare module '@douglasneuroinformatics/libnest/types' {
   imports: [
     AuthModule,
     ConfigModule.forRoot({
-      schema: $Config
-    }),
-    ConfigurationModule.forRoot({
       conditionalModules: [
         {
-          condition: 'GATEWAY_ENABLED',
-          modules: [AssignmentsModule, GatewayModule]
+          module: AssignmentsModule,
+          when: 'GATEWAY_ENABLED'
+        },
+        {
+          module: GatewayModule,
+          when: 'GATEWAY_ENABLED'
         }
-      ]
+      ],
+      schema: $Config
     }),
     CryptoModule.registerAsync({
       inject: [ConfigService],
