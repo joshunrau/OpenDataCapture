@@ -11,7 +11,7 @@ import { json } from 'express';
 
 import { AppModule } from './app.module';
 
-async function bootstrap() {
+export default async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true
   });
@@ -62,5 +62,3 @@ async function bootstrap() {
 
   logger.log(`Application is running on: ${await app.getUrl()}`);
 }
-
-void bootstrap();
