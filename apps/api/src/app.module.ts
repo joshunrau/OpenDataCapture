@@ -59,8 +59,15 @@ declare module '@douglasneuroinformatics/libnest/types' {
     InstrumentsModule,
     PrismaModule.forRoot(),
     SubjectsModule,
-    LoggingModule.forRoot({
-      debug: true
+    LoggingModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory(configService: ConfigService) {
+        return {
+          debug: configService.get('DEBUG'),
+          log: configService.get('NODE_ENV') !== 'test',
+          verbose: configService.get('VERBOSE')
+        };
+      }
     }),
     UsersModule,
     SetupModule,
