@@ -1,5 +1,6 @@
 import { ConfigService } from '@douglasneuroinformatics/libnest/config';
 import { CryptoService } from '@douglasneuroinformatics/libnest/crypto';
+import { LoggingService } from '@douglasneuroinformatics/libnest/logging';
 import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import type { AuthPayload, JwtPayload } from '@opendatacapture/schemas/auth';
@@ -15,7 +16,8 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly cryptoService: CryptoService,
     private readonly jwtService: JwtService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private readonly loggingService: LoggingService
   ) {}
 
   /** Validates the provided credentials and returns an access token */
@@ -52,6 +54,7 @@ export class AuthService {
       if (error instanceof NotFoundException) {
         throw new UnauthorizedException('Invalid username');
       }
+      this.loggingService.error(error);
       throw new InternalServerErrorException('Internal Server Error', {
         cause: error instanceof Error ? error : undefined
       });
