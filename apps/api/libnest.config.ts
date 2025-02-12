@@ -4,7 +4,7 @@
 import { defineUserConfig } from '@douglasneuroinformatics/libnest/user-config';
 import { getReleaseInfo } from '@opendatacapture/release-info';
 
-import type { Config } from '@/core/config';
+import type { Config } from '@/config';
 
 declare module '@douglasneuroinformatics/libnest/user-config' {
   export interface RuntimeConfig extends Config {}
