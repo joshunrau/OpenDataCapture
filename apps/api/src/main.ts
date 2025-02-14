@@ -1,5 +1,6 @@
-import { $BaseRuntimeConfig } from '@douglasneuroinformatics/libnest/config';
 import { AppFactory } from '@douglasneuroinformatics/libnest/core';
+
+import { $Config } from './config';
 
 export default async function main() {
   await AppFactory.createApp({
@@ -10,7 +11,7 @@ export default async function main() {
       logger.log(`Application is running on: ${url}`);
     },
     modules: [],
-    schema: $BaseRuntimeConfig,
+    schema: $Config,
     version: '1'
   });
 }

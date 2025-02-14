@@ -1967,6 +1967,10 @@ packages:
     resolution:
       { integrity: sha512-+Mvtcvt85OYvAUXRWJ6JAPclikvrlsLlCbzAGRuZG/AtImF3VCLxVet50cRJDCUWpT/REEeEjk9DCUUsJEwXWQ== }
 
+  '@douglasneuroinformatics/libjs@1.3.0':
+    resolution:
+      { integrity: sha512-3rXiAaubEemOAkz4aIUHSNOf8tX2AtxoPwSdAb573CfAbeCpVtCntgP7rnYZ18CNChW5ZTXHjwqVwG4P738dJw== }
+
   '@douglasneuroinformatics/libnest@file:../libnest':
     resolution: { directory: ../libnest, type: directory }
     engines: { node: 22.x }
@@ -11806,6 +11810,11 @@ packages:
       { integrity: sha512-s6zVrxuyKbbAsSAD5ZPTB77q4YIdRctkTbJ2/Dqlinwz+8ooH2gd+YA7VA6Pa93KML9GockVvoxjZ2vHP+mu8g== }
     engines: { node: '>=16' }
 
+  type-fest@4.34.1:
+    resolution:
+      { integrity: sha512-6kSc32kT0rbwxD6QL1CYe8IqdzN/J/ILMrNK+HMQCKH3insCDRY/3ITb0vcBss0a3t72fzh2YSzj8ko1HgwT3g== }
+    engines: { node: '>=16' }
+
   type-is@1.6.18:
     resolution:
       { integrity: sha512-TkRKr9sUTxEH8MdfuCSP7VizJyzRNMjj2J2do2Jr3Kym598JVdEksuzPQCnlFPW4ky9Q+iA+ma9BGm06XQBy8g== }
@@ -13223,9 +13232,14 @@ snapshots:
     dependencies:
       type-fest: 4.33.0
 
+  '@douglasneuroinformatics/libjs@1.3.0':
+    dependencies:
+      type-fest: 4.34.1
+      zod: 3.23.8
+
   '@douglasneuroinformatics/libnest@file:../libnest(@nestjs/common@11.0.6(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@11.0.6)(@nestjs/platform-express@11.0.6)(@nestjs/swagger@11.0.3(@nestjs/common@11.0.6(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@11.0.6)(reflect-metadata@0.1.14))(@nestjs/testing@11.0.6(@nestjs/common@11.0.6(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@11.0.6)(@nestjs/platform-express@11.0.6))(@prisma/client@6.3.0(prisma@6.3.0(typescript@5.6.3))(typescript@5.6.3))(@swc/helpers@0.5.15)(@swc/types@0.1.17)(express@5.0.1)(mongodb@6.12.0(socks@2.8.3))(reflect-metadata@0.1.14)(rxjs@7.8.1)(typescript@5.6.3)(zod@vendor+zod@3.23.x)':
     dependencies:
-      '@douglasneuroinformatics/libjs': 1.2.1
+      '@douglasneuroinformatics/libjs': 1.3.0
       '@nestjs/common': 11.0.6(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/core': 11.0.6(@nestjs/common@11.0.6(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/platform-express@11.0.6)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/platform-express': 11.0.6(@nestjs/common@11.0.6(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@11.0.6)
@@ -22931,6 +22945,8 @@ snapshots:
   type-fest@2.19.0: {}
 
   type-fest@4.33.0: {}
+
+  type-fest@4.34.1: {}
 
   type-is@1.6.18:
     dependencies:
