@@ -19,6 +19,6 @@
     "vite": "catalog:"
   },
   "devDependencies": {
-    "@douglasneuroinformatics/libjs": "catalog:"
+    "@douglasneuroinformatics/libjs": "file:/Users/joshua/Developer/DouglasNeuroinformatics/libjs"
   }
 }
