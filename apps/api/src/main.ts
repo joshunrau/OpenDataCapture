@@ -5,7 +5,8 @@ import { $Config } from './config';
 export default async function main() {
   await AppFactory.createApp({
     callback: async (app, config, logger) => {
-      const port = config.API_DEV_SERVER_PORT;
+      const isProduction = config.NODE_ENV === 'production';
+      const port = config[isProduction ? 'API_PROD_SERVER_PORT' : 'API_DEV_SERVER_PORT'];
       await app.listen(port);
       const url = await app.getUrl();
       logger.log(`Application is running on: ${url}`);
