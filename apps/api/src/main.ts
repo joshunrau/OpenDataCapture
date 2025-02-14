@@ -1,8 +1,7 @@
 import * as path from 'node:path';
 
-import { ConfigService } from '@douglasneuroinformatics/libnest/config';
 import { AppFactory } from '@douglasneuroinformatics/libnest/core';
-import { CryptoModule } from '@douglasneuroinformatics/libnest/crypto';
+// import { APP_GUARD } from '@nestjs/core';
 
 import { $Config } from './config';
 
@@ -38,17 +37,16 @@ export default async function main() {
       },
       path: '/spec.json'
     },
-    modules: [
-      CryptoModule.forRootAsync({
-        inject: [ConfigService],
-        useFactory: (configService: ConfigService) => ({
-          pbkdf2Params: {
-            iterations: configService.get('DANGEROUSLY_DISABLE_PBKDF2_ITERATION') ? 1 : 100_000
-          },
-          secretKey: configService.get('SECRET_KEY')
-        })
-      })
-    ],
+    // providers: [
+    //   {
+    //     provide: APP_GUARD,
+    //     useClass: AuthenticationGuard
+    //   },
+    //   {
+    //     provide: APP_GUARD,
+    //     useClass: AuthorizationGuard
+    //   }
+    // ],
     schema: $Config,
     version: '1'
   });

@@ -1,5 +1,5 @@
 import { $BooleanLike } from '@douglasneuroinformatics/libjs';
-import { $BaseRuntimeConfig } from '@douglasneuroinformatics/libnest/config';
+import { $BaseRuntimeConfig } from '@douglasneuroinformatics/libnest/core';
 import type { z } from 'zod';
 
 export type Config = z.infer<typeof $Config>;
