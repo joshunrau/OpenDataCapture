@@ -22,8 +22,8 @@ catalogs:
       specifier: ^0.0.4
       version: 0.0.4
     '@douglasneuroinformatics/libjs':
-      specifier: ^1.3.0
-      version: 1.3.0
+      specifier: ^1.3.1
+      version: 1.3.1
     '@douglasneuroinformatics/libpasswd':
       specifier: latest
       version: 0.0.3
@@ -227,7 +227,7 @@ importers:
         version: 0.0.4
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 1.3.0
+        version: 1.3.1
       '@douglasneuroinformatics/libnest':
         specifier: file:/Users/joshua/Developer/DouglasNeuroinformatics/libnest
         version: file:../libnest(@nestjs/common@11.0.6(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@11.0.6)(@nestjs/platform-express@11.0.6)(@nestjs/swagger@11.0.3(@nestjs/common@11.0.6(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@11.0.6)(reflect-metadata@0.1.14))(@nestjs/testing@11.0.6(@nestjs/common@11.0.6(reflect-metadata@0.1.14)(rxjs@7.8.1))(@nestjs/core@11.0.6)(@nestjs/platform-express@11.0.6))(@prisma/client@6.3.0(prisma@6.3.0(typescript@5.6.3))(typescript@5.6.3))(@swc/helpers@0.5.15)(@swc/types@0.1.17)(express@5.0.1)(mongodb@6.12.0(socks@2.8.3))(reflect-metadata@0.1.14)(rxjs@7.8.1)(typescript@5.6.3)(zod@vendor+zod@3.23.x)
@@ -557,7 +557,7 @@ importers:
         version: 0.0.4
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 1.3.0
+        version: 1.3.1
       '@douglasneuroinformatics/libui':
         specifier: 'catalog:'
         version: 3.8.7(@types/react@18.3.18)(immer@10.1.1)(react-dom@vendor+react-dom@18.x)(react@vendor+react@18.x)(tailwindcss@3.4.17)(zod@vendor+zod@3.23.x)
@@ -669,7 +669,7 @@ importers:
         version: 6.7.3
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 1.3.0
+        version: 1.3.1
       '@douglasneuroinformatics/libpasswd':
         specifier: 'catalog:'
         version: 0.0.3(typescript@5.6.3)
@@ -841,7 +841,7 @@ importers:
     dependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 1.3.0
+        version: 1.3.1
       '@opendatacapture/schemas':
         specifier: workspace:*
         version: link:../schemas
@@ -924,7 +924,7 @@ importers:
     dependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 1.3.0
+        version: 1.3.1
       '@douglasneuroinformatics/libui':
         specifier: 'catalog:'
         version: 3.8.7(@types/react@18.3.18)(immer@10.1.1)(react-dom@vendor+react-dom@18.x)(react@vendor+react@18.x)(tailwindcss@3.4.17)(zod@vendor+zod@3.23.x)
@@ -1003,7 +1003,7 @@ importers:
     dependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 1.3.0
+        version: 1.3.1
       '@opendatacapture/runtime-core':
         specifier: workspace:*
         version: link:../runtime-core
@@ -1015,7 +1015,7 @@ importers:
     dependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 1.3.0
+        version: 1.3.1
       '@opendatacapture/runtime-core':
         specifier: workspace:*
         version: link:../runtime-core
@@ -1035,7 +1035,7 @@ importers:
     dependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 1.3.0
+        version: 1.3.1
       '@douglasneuroinformatics/libui':
         specifier: 'catalog:'
         version: 3.8.7(@types/react@18.3.18)(immer@10.1.1)(react-dom@vendor+react-dom@18.x)(react@vendor+react@18.x)(tailwindcss@3.4.17)(zod@vendor+zod@3.23.x)
@@ -1099,7 +1099,7 @@ importers:
     dependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 1.3.0
+        version: 1.3.1
       esbuild:
         specifier: 'catalog:'
         version: 0.23.1
@@ -1139,7 +1139,7 @@ importers:
         version: 6.7.3
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 1.3.0
+        version: 1.3.1
       '@opendatacapture/licenses':
         specifier: workspace:*
         version: link:../licenses
@@ -1187,7 +1187,7 @@ importers:
     devDependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 1.3.0
+        version: 1.3.1
 
   runtime/v1:
     devDependencies:
@@ -1316,7 +1316,7 @@ importers:
         version: 6.7.3
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 1.3.0
+        version: 1.3.1
       '@faker-js/faker':
         specifier: ^9.4.0
         version: 9.4.0
@@ -1962,10 +1962,6 @@ packages:
   '@douglasneuroinformatics/libcrypto@0.0.4':
     resolution:
       { integrity: sha512-tiI4ThtlBUXGEVN3hZBcX/Ul4gdHBLdfMza/KwmGdE0tjG1u556Yn4HQhwnZyDn/c1/q7j4sL+XZc+yZy8TCOQ== }
-
-  '@douglasneuroinformatics/libjs@1.3.0':
-    resolution:
-      { integrity: sha512-3rXiAaubEemOAkz4aIUHSNOf8tX2AtxoPwSdAb573CfAbeCpVtCntgP7rnYZ18CNChW5ZTXHjwqVwG4P738dJw== }
 
   '@douglasneuroinformatics/libjs@1.3.1':
     resolution:
@@ -13228,11 +13224,6 @@ snapshots:
     dependencies:
       '@hpke/core': 1.7.1
 
-  '@douglasneuroinformatics/libjs@1.3.0':
-    dependencies:
-      type-fest: 4.34.1
-      zod: 3.23.8
-
   '@douglasneuroinformatics/libjs@1.3.1':
     dependencies:
       type-fest: 4.34.1
@@ -13315,7 +13306,7 @@ snapshots:
 
   '@douglasneuroinformatics/libui@3.8.7(@types/react@18.3.18)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@3.4.17)(zod@3.24.1)':
     dependencies:
-      '@douglasneuroinformatics/libjs': 1.3.0
+      '@douglasneuroinformatics/libjs': 1.3.1
       '@douglasneuroinformatics/libui-form-types': 0.11.0
       '@radix-ui/react-accordion': 1.2.2(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-alert-dialog': 1.1.5(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -13368,7 +13359,7 @@ snapshots:
 
   '@douglasneuroinformatics/libui@3.8.7(@types/react@18.3.18)(immer@10.1.1)(react-dom@vendor+react-dom@18.x)(react@vendor+react@18.x)(tailwindcss@3.4.17)(zod@vendor+zod@3.23.x)':
     dependencies:
-      '@douglasneuroinformatics/libjs': 1.3.0
+      '@douglasneuroinformatics/libjs': 1.3.1
       '@douglasneuroinformatics/libui-form-types': 0.11.0
       '@radix-ui/react-accordion': 1.2.2(@types/react@18.3.18)(react-dom@vendor+react-dom@18.x)(react@vendor+react@18.x)
       '@radix-ui/react-alert-dialog': 1.1.5(@types/react@18.3.18)(react-dom@vendor+react-dom@18.x)(react@vendor+react@18.x)
