@@ -1,7 +1,10 @@
-import { AppFactory } from '@douglasneuroinformatics/libnest/core';
+import { AppFactory, ConfigService } from '@douglasneuroinformatics/libnest/core';
 // import { APP_GUARD } from '@nestjs/core';
 
+import { PrismaModule } from '@douglasneuroinformatics/libnest/prisma';
+
 import { $Config } from './config';
+import { PrismaFactory } from './prisma/prisma.factory';
 
 export default AppFactory.create({
   docs: {
@@ -21,11 +24,32 @@ export default AppFactory.create({
         url: 'https://www.apache.org/licenses/LICENSE-2.0'
       },
       tags: ['Authentication', 'Groups', 'Instruments', 'Instrument Records', 'Subjects', 'Users'],
-      title: 'Open Data Capture',
-      version: '1'
+      title: 'Open Data Capture'
     },
     path: '/spec.json'
   },
+  imports: [
+    PrismaModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory(configService: ConfigService) {
+        const mongoUri = configService.get('MONGO_URI');
+        const dbName = configService.get('NODE_ENV');
+        const url = new URL(`${mongoUri.href}/data-capture-${dbName}`);
+        const params = {
+          directConnection: configService.get('MONGO_DIRECT_CONNECTION'),
+          replicaSet: configService.get('MONGO_REPLICA_SET'),
+          retryWrites: configService.get('MONGO_RETRY_WRITES'),
+          w: configService.get('MONGO_WRITE_CONCERN')
+        };
+        for (const [key, value] of Object.entries(params)) {
+          if (value) {
+            url.searchParams.append(key, String(value));
+          }
+        }
+        return PrismaFactory.createClient({ datasourceUrl: url.href });
+      }
+    })
+  ],
   schema: $Config,
   version: '1'
 });
