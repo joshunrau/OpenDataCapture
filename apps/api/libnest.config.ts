@@ -6,7 +6,7 @@ import { getReleaseInfo } from '@opendatacapture/release-info';
 
 declare module '@douglasneuroinformatics/libnest/config' {
   type Config = typeof config.infer;
-  export interface RuntimeConfig extends Config {}
+  export interface UserConfig extends Config {}
 }
 
 const config = defineConfig({

@@ -1,4 +1,4 @@
-import { AppFactory } from '@douglasneuroinformatics/libnest/core';
+import { AppFactory, ConfigService } from '@douglasneuroinformatics/libnest/core';
 import { PrismaClient } from '@prisma/generated-client';
 
 import { $Config } from './config';
@@ -25,10 +25,19 @@ export default AppFactory.create({
     },
     path: '/spec.json'
   },
+  envSchema: $Config,
   prisma: {
     client: new PrismaClient()
   },
-  schema: $Config,
+  providers: [
+    {
+      inject: [ConfigService],
+      provide: 'FOO',
+      useFactory: (configService: ConfigService) => {
+        return configService.get('SECRET_KEY');
+      }
+    }
+  ],
   version: '1'
 });
 
