@@ -1,10 +1,7 @@
-import { AppFactory, ConfigService } from '@douglasneuroinformatics/libnest/core';
-// import { APP_GUARD } from '@nestjs/core';
-
-import { PrismaModule } from '@douglasneuroinformatics/libnest/prisma';
+import { AppFactory } from '@douglasneuroinformatics/libnest/core';
+import { PrismaClient } from '@prisma/generated-client';
 
 import { $Config } from './config';
-import { PrismaFactory } from './prisma/prisma.factory';
 
 export default AppFactory.create({
   docs: {
@@ -28,28 +25,9 @@ export default AppFactory.create({
     },
     path: '/spec.json'
   },
-  imports: [
-    PrismaModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory(configService: ConfigService) {
-        const mongoUri = configService.get('MONGO_URI');
-        const dbName = configService.get('NODE_ENV');
-        const url = new URL(`${mongoUri.href}/data-capture-${dbName}`);
-        const params = {
-          directConnection: configService.get('MONGO_DIRECT_CONNECTION'),
-          replicaSet: configService.get('MONGO_REPLICA_SET'),
-          retryWrites: configService.get('MONGO_RETRY_WRITES'),
-          w: configService.get('MONGO_WRITE_CONCERN')
-        };
-        for (const [key, value] of Object.entries(params)) {
-          if (value) {
-            url.searchParams.append(key, String(value));
-          }
-        }
-        return PrismaFactory.createClient({ datasourceUrl: url.href });
-      }
-    })
-  ],
+  prisma: {
+    client: new PrismaClient()
+  },
   schema: $Config,
   version: '1'
 });
