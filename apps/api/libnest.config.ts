@@ -4,15 +4,16 @@
 import { defineConfig } from '@douglasneuroinformatics/libnest/config';
 import { getReleaseInfo } from '@opendatacapture/release-info';
 
-import type { Config } from '@/config';
-
 declare module '@douglasneuroinformatics/libnest/config' {
-  export interface RuntimeEnv extends Config {}
+  type Config = typeof config.infer;
+  export interface RuntimeConfig extends Config {}
 }
 
-export default defineConfig({
-  entry: 'src/main.ts',
+const config = defineConfig({
+  entry: () => import('./src/main.js'),
   globals: {
     __RELEASE__: await getReleaseInfo()
   }
 });
+
+export default config;
