@@ -56,7 +56,7 @@ export class SubjectsService {
     return subject;
   }
 
-  async updateById(id: string, data: Prisma.SubjectModelUpdateArgs, { ability }: EntityOperationOptions = {}) {
+  async updateById(id: string, data: Prisma.SubjectModelUpdateArgs['data'], { ability }: EntityOperationOptions = {}) {
     return this.subjectModel.update({
       data,
       where: { id, ...accessibleQuery(ability, 'update', 'SubjectModel') }
