@@ -1,6 +1,8 @@
 import { AppFactory } from '@douglasneuroinformatics/libnest/core';
 
 import { $Env } from './core/env.schema';
+import { GroupsModule } from './groups/groups.module';
+import { InstrumentsModule } from './instruments/instruments.module';
 
 export default AppFactory.create({
   docs: {
@@ -25,6 +27,7 @@ export default AppFactory.create({
     path: '/spec.json'
   },
   envSchema: $Env,
+  imports: [InstrumentsModule, GroupsModule],
   prisma: {},
   version: '1'
 });
