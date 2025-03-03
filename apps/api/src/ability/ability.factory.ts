@@ -3,7 +3,7 @@ import { createPrismaAbility } from '@casl/prisma';
 import { LoggingService } from '@douglasneuroinformatics/libnest/core';
 import { Injectable } from '@nestjs/common';
 import type { AppSubjectName } from '@opendatacapture/schemas/core';
-import { type UserModel } from '@prisma/generated-client';
+import { type UserModel } from '@prisma/client';
 
 import type { AppAbility } from '@/core/types';
 

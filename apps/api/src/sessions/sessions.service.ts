@@ -4,7 +4,7 @@ import { InternalServerErrorException, NotFoundException } from '@nestjs/common/
 import type { Group } from '@opendatacapture/schemas/group';
 import type { CreateSessionData, Session } from '@opendatacapture/schemas/session';
 import type { CreateSubjectData } from '@opendatacapture/schemas/subject';
-import type { SubjectModel } from '@prisma/generated-client';
+import type { SubjectModel } from '@prisma/client';
 
 import { accessibleQuery } from '@/ability/ability.utils';
 import type { EntityOperationOptions } from '@/core/types';

@@ -1,6 +1,6 @@
 import { InjectModel, type Model } from '@douglasneuroinformatics/libnest/core';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import type { Prisma } from '@prisma/generated-client';
+import type { Prisma } from '@prisma/client';
 
 import { accessibleQuery } from '@/ability/ability.utils';
 import type { EntityOperationOptions } from '@/core/types';

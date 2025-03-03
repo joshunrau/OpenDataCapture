@@ -1,7 +1,7 @@
 import { LoggingService } from '@douglasneuroinformatics/libnest/core';
 import { MockFactory } from '@douglasneuroinformatics/libnest/testing';
 import { Test, TestingModule } from '@nestjs/testing';
-import type { UserModel } from '@prisma/generated-client';
+import type { UserModel } from '@prisma/client';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { AbilityFactory } from '../ability.factory';
