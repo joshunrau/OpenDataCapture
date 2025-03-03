@@ -1,4 +1,4 @@
-import { ConfigService, CryptoService } from '@douglasneuroinformatics/libnest/core';
+import { ConfigService, CryptoService, LoggingService } from '@douglasneuroinformatics/libnest/core';
 import { type MockedInstance, MockFactory } from '@douglasneuroinformatics/libnest/testing';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -24,6 +24,7 @@ describe('AuthService', () => {
         MockFactory.createForService(CryptoService),
         MockFactory.createForService(JwtService),
         MockFactory.createForService(UsersService),
+        MockFactory.createForService(LoggingService),
         {
           provide: ConfigService,
           useValue: {
