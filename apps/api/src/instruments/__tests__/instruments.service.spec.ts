@@ -1,0 +1,31 @@
+import { CryptoService, getModelToken, LoggingService, type Model } from '@douglasneuroinformatics/libnest/core';
+import { type MockedInstance, MockFactory } from '@douglasneuroinformatics/libnest/testing';
+import { VirtualizationService } from '@douglasneuroinformatics/libnest/virtualization';
+import { Test } from '@nestjs/testing';
+import { beforeEach, describe, expect, it } from 'vitest';
+
+import { InstrumentsService } from '../instruments.service';
+
+describe('InstrumentsService', () => {
+  let instrumentsService: InstrumentsService;
+  let instrumentModel: MockedInstance<Model<'InstrumentModel'>>;
+
+  beforeEach(async () => {
+    const moduleRef = await Test.createTestingModule({
+      providers: [
+        InstrumentsService,
+        MockFactory.createForModelToken(getModelToken('InstrumentModel')),
+        MockFactory.createForService(CryptoService),
+        MockFactory.createForService(LoggingService),
+        MockFactory.createForService(VirtualizationService)
+      ]
+    }).compile();
+    instrumentsService = moduleRef.get(InstrumentsService);
+    instrumentModel = moduleRef.get(getModelToken('InstrumentModel'));
+  });
+
+  it('should be defined', () => {
+    expect(instrumentsService).toBeDefined();
+    expect(instrumentModel).toBeDefined();
+  });
+});
