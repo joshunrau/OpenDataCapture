@@ -11,6 +11,17 @@ import { CreateSubjectDto } from './dto/create-subject.dto';
 export class SubjectsService {
   constructor(@InjectModel('SubjectModel') private readonly subjectModel: Model<'SubjectModel'>) {}
 
+  async addGroupForSubject(subjectId: string, groupId: string, { ability }: EntityOperationOptions = {}) {
+    return this.subjectModel.update({
+      data: {
+        groupIds: {
+          push: groupId
+        }
+      },
+      where: { id: subjectId, ...accessibleQuery(ability, 'update', 'SubjectModel') }
+    });
+  }
+
   async count(where: Prisma.SubjectModelWhereInput = {}, { ability }: EntityOperationOptions = {}) {
     return this.subjectModel.count({
       where: { AND: [accessibleQuery(ability, 'read', 'SubjectModel'), where] }
@@ -54,12 +65,5 @@ export class SubjectsService {
       throw new NotFoundException(`Failed to find subject with id: ${id}`);
     }
     return subject;
-  }
-
-  async updateById(id: string, data: Prisma.SubjectModelUpdateArgs['data'], { ability }: EntityOperationOptions = {}) {
-    return this.subjectModel.update({
-      data,
-      where: { id, ...accessibleQuery(ability, 'update', 'SubjectModel') }
-    });
   }
 }
