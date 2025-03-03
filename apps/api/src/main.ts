@@ -1,7 +1,6 @@
 import { AppFactory } from '@douglasneuroinformatics/libnest/core';
-import { PrismaClient } from '@prisma/generated-client';
 
-import { $Config } from './config';
+import { $Env } from './core/env.schema';
 
 export default AppFactory.create({
   docs: {
@@ -25,11 +24,8 @@ export default AppFactory.create({
     },
     path: '/spec.json'
   },
-  envSchema: $Config,
-  prisma: {
-    client: new PrismaClient(),
-    modelNames: ['']
-  },
+  envSchema: $Env,
+  prisma: {},
   version: '1'
 });
 
