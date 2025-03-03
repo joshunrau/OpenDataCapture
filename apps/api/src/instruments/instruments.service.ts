@@ -183,7 +183,7 @@ export class InstrumentsService {
     return this.cryptoService.hash(instrument.content.map(({ edition, name }) => `${name}-${edition}`).join('--'));
   }
 
-  private async getInstrumentInstance(instrument: Pick<InstrumentBundleContainer, 'bundle' | 'id'>) {
+  async getInstrumentInstance(instrument: Pick<InstrumentBundleContainer, 'bundle' | 'id'>) {
     let instance = this.virtualizationService.context.instruments.get(instrument.id);
     if (!instance) {
       const result = await this.virtualizationService.eval(instrument.bundle);
