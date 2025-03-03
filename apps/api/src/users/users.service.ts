@@ -1,0 +1,120 @@
+import { CryptoService, InjectModel } from '@douglasneuroinformatics/libnest/core';
+import type { Model } from '@douglasneuroinformatics/libnest/core';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+
+import { accessibleQuery } from '@/ability/ability.utils';
+import type { EntityOperationOptions } from '@/core/types';
+import { GroupsService } from '@/groups/groups.service';
+
+import { CreateUserDto } from './dto/create-user.dto';
+
+import type { UpdateUserDto } from './dto/update-user.dto';
+
+@Injectable()
+export class UsersService {
+  constructor(
+    @InjectModel('UserModel') private readonly userModel: Model<'UserModel'>,
+    private readonly cryptoService: CryptoService,
+    private readonly groupsService: GroupsService
+  ) {}
+
+  async count(
+    filter: NonNullable<Parameters<Model<'UserModel'>['count']>[0]>['where'] = {},
+    { ability }: EntityOperationOptions = {}
+  ) {
+    return this.userModel.count({
+      where: { AND: [accessibleQuery(ability, 'read', 'UserModel'), filter] }
+    });
+  }
+
+  /** Adds a new user to the database with default permissions, verifying the provided groups exist */
+  async create(
+    { basePermissionLevel, dateOfBirth, firstName, groupIds, lastName, password, sex, username }: CreateUserDto,
+    options?: EntityOperationOptions
+  ) {
+    if (await this.userModel.exists({ username })) {
+      throw new ConflictException(`User with username '${username}' already exists!`);
+    }
+
+    // Check that all group exist and are accessible to the user
+    for (const id of groupIds) {
+      const group = await this.groupsService.findById(id, options);
+      if (!group) {
+        throw new NotFoundException(`Failed to resolve group with ID: ${id}`);
+      }
+    }
+
+    const hashedPassword = await this.cryptoService.hashPassword(password);
+
+    return this.userModel.create({
+      data: {
+        additionalPermissions: [],
+        basePermissionLevel,
+        dateOfBirth,
+        firstName,
+        groups: {
+          connect: groupIds.map((id) => ({ id }))
+        },
+        lastName,
+        password: hashedPassword,
+        sex,
+        username: username
+      }
+    });
+  }
+
+  async deleteById(id: string, { ability }: EntityOperationOptions = {}) {
+    return this.userModel.delete({
+      where: { AND: [accessibleQuery(ability, 'delete', 'UserModel')], id }
+    });
+  }
+
+  /** Delete the user with the provided username, otherwise throws */
+  async deleteByUsername(username: string, { ability }: EntityOperationOptions = {}) {
+    const user = await this.findByUsername(username);
+    return this.userModel.delete({
+      where: { AND: [accessibleQuery(ability, 'delete', 'UserModel')], id: user.id }
+    });
+  }
+
+  async find({ groupId }: { groupId?: string } = {}, { ability }: EntityOperationOptions = {}) {
+    return this.userModel.findMany({
+      where: {
+        AND: [accessibleQuery(ability, 'read', 'UserModel'), { groupIds: groupId ? { has: groupId } : undefined }]
+      }
+    });
+  }
+
+  async findById(id: string, { ability }: EntityOperationOptions = {}) {
+    const user = await this.userModel.findFirst({
+      where: { AND: [accessibleQuery(ability, 'read', 'UserModel')], id }
+    });
+    if (!user) {
+      throw new NotFoundException(`Failed to find user with ID: ${id}`);
+    }
+    return user;
+  }
+
+  async findByUsername(username: string, { ability }: EntityOperationOptions = {}) {
+    const user = await this.userModel.findFirst({
+      include: { groups: true },
+      where: { AND: [accessibleQuery(ability, 'read', 'UserModel'), { username }] }
+    });
+    if (!user) {
+      throw new NotFoundException(`Failed to find user with username: ${username}`);
+    }
+    return user;
+  }
+
+  async updateById(id: string, { groupIds, ...data }: UpdateUserDto, { ability }: EntityOperationOptions = {}) {
+    return this.userModel.update({
+      data: {
+        ...data,
+        groups: {
+          connect: groupIds?.map((id) => ({ id }))
+        }
+      },
+      where: { AND: [accessibleQuery(ability, 'update', 'UserModel')], id }
+    });
+  }
+}
