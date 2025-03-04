@@ -58,7 +58,7 @@ export async function generateTypeDoc(
   const outputPath = path.join(url.fileURLToPath(config.srcDir), 'content/docs', outputDirectory);
 
   if (options.watch) {
-    app.convertAndWatch(async (reflections) => {
+    await app.convertAndWatch(async (reflections) => {
       await app.generateDocs(reflections, outputPath);
     });
   } else {
