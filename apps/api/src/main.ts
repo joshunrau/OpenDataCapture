@@ -1,7 +1,10 @@
 import { AppFactory } from '@douglasneuroinformatics/libnest/core';
+import { APP_GUARD } from '@nestjs/core';
 
 import { AssignmentsModule } from './assignments/assignments.module';
 import { AuthModule } from './auth/auth.module';
+import { AuthenticationGuard } from './auth/guards/authentication.guard';
+import { AuthorizationGuard } from './auth/guards/authorization.guard';
 import { $Env } from './core/env.schema';
 import { GatewayModule } from './gateway/gateway.module';
 import { GroupsModule } from './groups/groups.module';
@@ -56,6 +59,16 @@ export default AppFactory.create({
     }
   ],
   prisma: {},
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthenticationGuard
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AuthorizationGuard
+    }
+  ],
   version: '1'
 });
 
