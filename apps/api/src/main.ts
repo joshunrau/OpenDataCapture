@@ -1,8 +1,16 @@
 import { AppFactory } from '@douglasneuroinformatics/libnest/core';
 
+import { AssignmentsModule } from './assignments/assignments.module';
+import { AuthModule } from './auth/auth.module';
 import { $Env } from './core/env.schema';
+import { GatewayModule } from './gateway/gateway.module';
 import { GroupsModule } from './groups/groups.module';
+import { InstrumentRecordsModule } from './instrument-records/instrument-records.module';
 import { InstrumentsModule } from './instruments/instruments.module';
+import { SessionsModule } from './sessions/sessions.module';
+import { SetupModule } from './setup/setup.module';
+import { SubjectsModule } from './subjects/subjects.module';
+import { SummaryModule } from './summary/summary.module';
 import { UsersModule } from './users/users.module';
 
 export default AppFactory.create({
@@ -28,7 +36,25 @@ export default AppFactory.create({
     path: '/spec.json'
   },
   envSchema: $Env,
-  imports: [GroupsModule, InstrumentsModule, UsersModule],
+  imports: [
+    AuthModule,
+    GroupsModule,
+    InstrumentRecordsModule,
+    InstrumentsModule,
+    SessionsModule,
+    SetupModule,
+    SubjectsModule,
+    SummaryModule,
+    UsersModule,
+    {
+      module: AssignmentsModule,
+      when: 'GATEWAY_ENABLED'
+    },
+    {
+      module: GatewayModule,
+      when: 'GATEWAY_ENABLED'
+    }
+  ],
   prisma: {},
   version: '1'
 });
