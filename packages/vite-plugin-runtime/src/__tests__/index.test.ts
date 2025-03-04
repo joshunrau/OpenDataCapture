@@ -50,7 +50,11 @@ describe('runtime', () => {
     it('should invoke fs.cp and fs.writeFile for each item returned by resolvePackages', async () => {
       vi.spyOn(fs, 'cp').mockImplementation(vi.fn());
       vi.spyOn(fs, 'writeFile').mockImplementation(vi.fn());
-      resolvePackages.mockResolvedValueOnce(range(3).map(() => structuredClone(runtimeVersionInfoStub)));
+      resolvePackages.mockResolvedValueOnce(
+        range(3)
+          ._unsafeUnwrap()
+          .map(() => structuredClone(runtimeVersionInfoStub))
+      );
       const plugin: any = runtime();
       await plugin.buildStart();
       expect(fs.cp).toHaveBeenCalledTimes(3);
@@ -61,7 +65,9 @@ describe('runtime', () => {
       vi.spyOn(fs, 'writeFile').mockImplementation(vi.fn());
       vi.spyOn(path, 'resolve');
       resolvePackages.mockResolvedValueOnce(
-        range(3).map(() => ({ ...structuredClone(runtimeVersionInfoStub), version: 'v0' }))
+        range(3)
+          ._unsafeUnwrap()
+          .map(() => ({ ...structuredClone(runtimeVersionInfoStub), version: 'v0' }))
       );
       const plugin: any = runtime({ packageRoot: '/home/dev/test' });
       await plugin.buildStart();
