@@ -3,7 +3,7 @@ import { createPrismaAbility } from '@casl/prisma';
 import { LoggingService } from '@douglasneuroinformatics/libnest/core';
 import { Injectable } from '@nestjs/common';
 import type { AppSubjectName } from '@opendatacapture/schemas/core';
-import { type UserModel } from '@prisma/client';
+import { Prisma, type UserModel } from '@prisma/client';
 
 import type { AppAbility } from '@/core/types';
 
@@ -45,12 +45,17 @@ export class AbilityFactory {
     });
     const appAbility = ability.build({
       detectSubjectType: (object: { [key: string]: any }) => {
-        if (object.__model__) {
-          return object.__model__ as AppSubjectName;
+        const modelName = object.__modelName as Prisma.ModelName | undefined;
+        if (modelName && modelName !== 'SetupStateModel') {
+          return this.removeModelSuffix(modelName);
         }
         return detectSubjectType(object) as AppSubjectName;
       }
     });
     return appAbility;
+  }
+
+  private removeModelSuffix<T extends Prisma.ModelName>(modelName: T) {
+    return modelName.replace(/Model$/, '') as T extends `${infer U}Model` ? U : never;
   }
 }
