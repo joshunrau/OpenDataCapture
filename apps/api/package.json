@@ -7,7 +7,7 @@
   "scripts": {
     "build": "NODE_ENV=production tsx scripts/build.ts",
     "db:generate": "prisma generate",
-    "dev": "NODE_ENV=development env-cmd -f ../../.env libnest dev -c libnest.config.ts",
+    "dev": "NODE_ENV=development NODE_OPTIONS='--conditions=development' env-cmd -f ../../.env libnest dev -c libnest.config.ts",
     "dev:test": "NODE_ENV=test env-cmd -f ../../.env libnest dev -c libnest.config.ts",
     "format": "prettier --write src",
     "lint": "tsc && eslint --fix src",
@@ -74,7 +74,10 @@
     "type-fest": "workspace:type-fest__4.x@*"
   },
   "imports": {
-    "#runtime/*": "./dist/runtime/*"
+    "#runtime/v1/*": {
+      "development": "../../runtime/v1/dist/*",
+      "default": "./dist/runtime/v1/*"
+    }
   },
   "trustedDependencies": [
     "prisma"
