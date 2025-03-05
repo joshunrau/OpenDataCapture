@@ -29,6 +29,7 @@ import type { EntityOperationOptions } from '@/core/types';
 import { CreateInstrumentDto } from './dto/create-instrument.dto';
 
 export type InstrumentVirtualizationContext = {
+  __resolveImport: (specifier: string) => string;
   instruments: Map<string, WithID<AnyInstrument>>;
 };
 

@@ -10,6 +10,12 @@ import { InstrumentsService, type InstrumentVirtualizationContext } from './inst
   imports: [
     VirtualizationModule.forRoot({
       context: {
+        __resolveImport: (specifier) => {
+          if (!specifier.startsWith('/runtime/')) {
+            throw new Error(`Unexpected non-runtime import: ${specifier}`);
+          }
+          return import.meta.resolve(specifier.replace(/^\/runtime/, '#runtime'));
+        },
         instruments: new Map()
       } satisfies InstrumentVirtualizationContext
     })
