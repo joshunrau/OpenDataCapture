@@ -41,7 +41,7 @@ export class InstrumentRecordsService {
     { ability }: EntityOperationOptions = {}
   ): Promise<number> {
     return this.instrumentRecordModel.count({
-      where: { AND: [accessibleQuery(ability, 'read', 'InstrumentRecordModel'), filter] }
+      where: { AND: [accessibleQuery(ability, 'read', 'InstrumentRecord'), filter] }
     });
   }
 
@@ -105,7 +105,7 @@ export class InstrumentRecordsService {
 
   async deleteById(id: string, { ability }: EntityOperationOptions = {}) {
     return this.instrumentRecordModel.delete({
-      where: { AND: [accessibleQuery(ability, 'delete', 'InstrumentRecordModel')], id }
+      where: { AND: [accessibleQuery(ability, 'delete', 'InstrumentRecord')], id }
     });
   }
 
@@ -131,7 +131,7 @@ export class InstrumentRecordsService {
           {
             subject: groupId ? { groupIds: { has: groupId } } : {}
           },
-          accessibleQuery(ability, 'read', 'InstrumentRecordModel')
+          accessibleQuery(ability, 'read', 'InstrumentRecord')
         ]
       }
     });
@@ -199,7 +199,7 @@ export class InstrumentRecordsService {
           { groupId },
           { instrumentId },
           { instrumentId: { in: instrumentKindIds } },
-          accessibleQuery(ability, 'read', 'InstrumentRecordModel'),
+          accessibleQuery(ability, 'read', 'InstrumentRecord'),
           { subjectId }
         ]
       }
@@ -229,7 +229,7 @@ export class InstrumentRecordsService {
 
     const records = await this.instrumentRecordModel.findMany({
       include: { instrument: true },
-      where: { AND: [accessibleQuery(ability, 'read', 'InstrumentRecordModel'), { groupId }, { instrumentId }] }
+      where: { AND: [accessibleQuery(ability, 'read', 'InstrumentRecord'), { groupId }, { instrumentId }] }
     });
 
     if (3 > records.length) {

@@ -104,7 +104,7 @@ export class InstrumentsService {
                 }
               : undefined
           },
-          accessibleQuery(ability, 'read', 'InstrumentModel')
+          accessibleQuery(ability, 'read', 'Instrument')
         ]
       }
     });
@@ -144,7 +144,7 @@ export class InstrumentsService {
     { ability }: EntityOperationOptions = {}
   ): Promise<AnyInstrument & { bundle: string; id: string }> {
     const instrument = await this.instrumentModel.findFirst({
-      where: { AND: [accessibleQuery(ability, 'read', 'InstrumentModel')], id }
+      where: { AND: [accessibleQuery(ability, 'read', 'Instrument')], id }
     });
     if (!instrument) {
       throw new NotFoundException(`Failed to find instrument with ID: ${id}`);

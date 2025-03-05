@@ -39,19 +39,19 @@ export class GroupsService {
 
   async deleteById(id: string, { ability }: EntityOperationOptions = {}) {
     return this.groupModel.delete({
-      where: { AND: [accessibleQuery(ability, 'delete', 'GroupModel')], id }
+      where: { AND: [accessibleQuery(ability, 'delete', 'Group')], id }
     });
   }
 
   async findAll({ ability }: EntityOperationOptions = {}) {
     return this.groupModel.findMany({
-      where: accessibleQuery(ability, 'read', 'GroupModel')
+      where: accessibleQuery(ability, 'read', 'Group')
     });
   }
 
   async findById(id: string, { ability }: EntityOperationOptions = {}) {
     const group = await this.groupModel.findFirst({
-      where: { AND: [accessibleQuery(ability, 'read', 'GroupModel')], id }
+      where: { AND: [accessibleQuery(ability, 'read', 'Group')], id }
     });
     if (!group) {
       throw new NotFoundException(`Failed to find group with ID: ${id}`);
@@ -64,7 +64,7 @@ export class GroupsService {
     { accessibleInstrumentIds, settings, ...data }: UpdateGroupDto,
     { ability }: EntityOperationOptions = {}
   ) {
-    const where: Prisma.GroupModelWhereInput = { AND: [accessibleQuery(ability, 'update', 'GroupModel')], id };
+    const where: Prisma.GroupModelWhereInput = { AND: [accessibleQuery(ability, 'update', 'Group')], id };
     const group = await this.groupModel.findFirst({ where });
     if (!group) {
       throw new NotFoundException(`Failed to find group with ID: ${id}`);
@@ -86,7 +86,7 @@ export class GroupsService {
         },
         ...data
       },
-      where: { AND: [accessibleQuery(ability, 'update', 'GroupModel')], id }
+      where: { AND: [accessibleQuery(ability, 'update', 'Group')], id }
     });
   }
 }

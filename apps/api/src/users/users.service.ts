@@ -23,7 +23,7 @@ export class UsersService {
     { ability }: EntityOperationOptions = {}
   ) {
     return this.userModel.count({
-      where: { AND: [accessibleQuery(ability, 'read', 'UserModel'), filter] }
+      where: { AND: [accessibleQuery(ability, 'read', 'User'), filter] }
     });
   }
 
@@ -65,7 +65,7 @@ export class UsersService {
 
   async deleteById(id: string, { ability }: EntityOperationOptions = {}) {
     return this.userModel.delete({
-      where: { AND: [accessibleQuery(ability, 'delete', 'UserModel')], id }
+      where: { AND: [accessibleQuery(ability, 'delete', 'User')], id }
     });
   }
 
@@ -73,21 +73,21 @@ export class UsersService {
   async deleteByUsername(username: string, { ability }: EntityOperationOptions = {}) {
     const user = await this.findByUsername(username);
     return this.userModel.delete({
-      where: { AND: [accessibleQuery(ability, 'delete', 'UserModel')], id: user.id }
+      where: { AND: [accessibleQuery(ability, 'delete', 'User')], id: user.id }
     });
   }
 
   async find({ groupId }: { groupId?: string } = {}, { ability }: EntityOperationOptions = {}) {
     return this.userModel.findMany({
       where: {
-        AND: [accessibleQuery(ability, 'read', 'UserModel'), { groupIds: groupId ? { has: groupId } : undefined }]
+        AND: [accessibleQuery(ability, 'read', 'User'), { groupIds: groupId ? { has: groupId } : undefined }]
       }
     });
   }
 
   async findById(id: string, { ability }: EntityOperationOptions = {}) {
     const user = await this.userModel.findFirst({
-      where: { AND: [accessibleQuery(ability, 'read', 'UserModel')], id }
+      where: { AND: [accessibleQuery(ability, 'read', 'User')], id }
     });
     if (!user) {
       throw new NotFoundException(`Failed to find user with ID: ${id}`);
@@ -98,7 +98,7 @@ export class UsersService {
   async findByUsername(username: string, { ability }: EntityOperationOptions = {}) {
     const user = await this.userModel.findFirst({
       include: { groups: true },
-      where: { AND: [accessibleQuery(ability, 'read', 'UserModel'), { username }] }
+      where: { AND: [accessibleQuery(ability, 'read', 'User'), { username }] }
     });
     if (!user) {
       throw new NotFoundException(`Failed to find user with username: ${username}`);
@@ -114,7 +114,7 @@ export class UsersService {
           connect: groupIds?.map((id) => ({ id }))
         }
       },
-      where: { AND: [accessibleQuery(ability, 'update', 'UserModel')], id }
+      where: { AND: [accessibleQuery(ability, 'update', 'User')], id }
     });
   }
 }

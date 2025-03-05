@@ -7,6 +7,8 @@ import { Prisma, type UserModel } from '@prisma/client';
 
 import type { AppAbility } from '@/core/types';
 
+import { getEntityName } from './ability.utils';
+
 @Injectable()
 export class AbilityFactory {
   constructor(private readonly loggingService: LoggingService) {}
@@ -47,15 +49,11 @@ export class AbilityFactory {
       detectSubjectType: (object: { [key: string]: any }) => {
         const modelName = object.__modelName as Prisma.ModelName | undefined;
         if (modelName && modelName !== 'SetupStateModel') {
-          return this.removeModelSuffix(modelName);
+          return getEntityName(modelName);
         }
         return detectSubjectType(object) as AppSubjectName;
       }
     });
     return appAbility;
-  }
-
-  private removeModelSuffix<T extends Prisma.ModelName>(modelName: T) {
-    return modelName.replace(/Model$/, '') as T extends `${infer U}Model` ? U : never;
   }
 }

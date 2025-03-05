@@ -76,14 +76,14 @@ export class AssignmentsService {
   ): Promise<Assignment[]> {
     return this.assignmentModel.findMany({
       where: {
-        AND: [accessibleQuery(ability, 'read', 'AssignmentModel'), { subjectId }]
+        AND: [accessibleQuery(ability, 'read', 'Assignment'), { subjectId }]
       }
     });
   }
 
   async findById(id: string, { ability }: EntityOperationOptions = {}) {
     const assignment = await this.assignmentModel.findFirst({
-      where: { AND: [accessibleQuery(ability, 'read', 'AssignmentModel')], id }
+      where: { AND: [accessibleQuery(ability, 'read', 'Assignment')], id }
     });
     if (!assignment) {
       throw new NotFoundException(`Failed to find assignment with ID: ${id}`);
@@ -97,7 +97,7 @@ export class AssignmentsService {
     }
     return this.assignmentModel.update({
       data,
-      where: { AND: [accessibleQuery(ability, 'update', 'AssignmentModel')], id }
+      where: { AND: [accessibleQuery(ability, 'update', 'Assignment')], id }
     });
   }
 }

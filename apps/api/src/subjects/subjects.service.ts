@@ -18,13 +18,13 @@ export class SubjectsService {
           push: groupId
         }
       },
-      where: { id: subjectId, ...accessibleQuery(ability, 'update', 'SubjectModel') }
+      where: { id: subjectId, ...accessibleQuery(ability, 'update', 'Subject') }
     });
   }
 
   async count(where: Prisma.SubjectModelWhereInput = {}, { ability }: EntityOperationOptions = {}) {
     return this.subjectModel.count({
-      where: { AND: [accessibleQuery(ability, 'read', 'SubjectModel'), where] }
+      where: { AND: [accessibleQuery(ability, 'read', 'Subject'), where] }
     });
   }
 
@@ -44,7 +44,7 @@ export class SubjectsService {
   async deleteById(id: string, { ability }: EntityOperationOptions = {}) {
     const subject = await this.findById(id);
     return this.subjectModel.delete({
-      where: { AND: [accessibleQuery(ability, 'delete', 'SubjectModel')], id: subject.id }
+      where: { AND: [accessibleQuery(ability, 'delete', 'Subject')], id: subject.id }
     });
   }
 
@@ -52,14 +52,14 @@ export class SubjectsService {
     const groupInput = groupId ? { groupIds: { has: groupId } } : {};
     return await this.subjectModel.findMany({
       where: {
-        AND: [accessibleQuery(ability, 'read', 'SubjectModel'), groupInput]
+        AND: [accessibleQuery(ability, 'read', 'Subject'), groupInput]
       }
     });
   }
 
   async findById(id: string, { ability }: EntityOperationOptions = {}) {
     const subject = await this.subjectModel.findFirst({
-      where: { AND: [accessibleQuery(ability, 'read', 'SubjectModel'), { id }] }
+      where: { AND: [accessibleQuery(ability, 'read', 'Subject'), { id }] }
     });
     if (!subject) {
       throw new NotFoundException(`Failed to find subject with id: ${id}`);
