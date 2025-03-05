@@ -17,7 +17,13 @@ import { InstrumentsService, type InstrumentVirtualizationContext } from './inst
           return import.meta.resolve(specifier.replace(/^\/runtime/, '#runtime'));
         },
         instruments: new Map()
-      } satisfies InstrumentVirtualizationContext
+      } satisfies InstrumentVirtualizationContext,
+      contextOptions: {
+        codeGeneration: {
+          strings: false,
+          wasm: false
+        }
+      }
     })
   ],
   providers: [InstrumentsService]
