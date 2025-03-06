@@ -58,7 +58,9 @@ export default AppFactory.create({
       when: 'GATEWAY_ENABLED'
     }
   ],
-  prisma: {},
+  prisma: {
+    dbPrefix: 'data-capture'
+  },
   providers: [
     {
       provide: APP_GUARD,
