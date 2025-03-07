@@ -1,4 +1,4 @@
-import { AppFactory } from '@douglasneuroinformatics/libnest';
+import { AppContainer } from '@douglasneuroinformatics/libnest';
 import { APP_GUARD } from '@nestjs/core';
 
 import { AssignmentsModule } from './assignments/assignments.module';
@@ -16,7 +16,17 @@ import { SubjectsModule } from './subjects/subjects.module';
 import { SummaryModule } from './summary/summary.module';
 import { UsersModule } from './users/users.module';
 
-export default AppFactory.create({
+export default AppContainer.create({
+  auth: {
+    userQueryFactory: () => {
+      return (username) => {
+        if (username !== 'admin') {
+          return null;
+        }
+        return { hashedPassword: '', tokenPayload: {} };
+      };
+    }
+  },
   docs: {
     config: {
       contact: {

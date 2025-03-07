@@ -194,7 +194,7 @@ model UserModel {
   groupIds              String[]             @db.ObjectId
   groups                GroupModel[]         @relation(fields: [groupIds], references: [id])
   lastName              String
-  password              String
+  hashedPassword        String               @map("password")
   username              String
   sex                   Sex?
   dateOfBirth           DateTime?            @db.Date

@@ -2,11 +2,11 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
 
 import { defineUserConfig } from '@douglasneuroinformatics/libnest/user-config';
+import type { InferUserConfig } from '@douglasneuroinformatics/libnest/user-config';
 import { getReleaseInfo } from '@opendatacapture/release-info';
 
 declare module '@douglasneuroinformatics/libnest/user-config' {
-  type Config = typeof config.infer;
-  export interface UserConfig extends Config {}
+  export interface UserConfig extends InferUserConfig<typeof config> {}
 }
 
 const config = defineUserConfig({

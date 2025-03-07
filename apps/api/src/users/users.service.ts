@@ -55,8 +55,8 @@ export class UsersService {
         groups: {
           connect: groupIds.map((id) => ({ id }))
         },
+        hashedPassword,
         lastName,
-        password: hashedPassword,
         sex,
         username: username
       }

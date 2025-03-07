@@ -22,7 +22,7 @@ export class AuthService {
   async login(username: string, password: string): Promise<AuthPayload> {
     const user = await this.getUser(username);
 
-    const isAuth = await this.cryptoService.comparePassword(password, user.password);
+    const isAuth = await this.cryptoService.comparePassword(password, user.hashedPassword);
     if (!isAuth) {
       throw new UnauthorizedException('Invalid password');
     }

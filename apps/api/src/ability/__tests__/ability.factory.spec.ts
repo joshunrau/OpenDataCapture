@@ -23,9 +23,9 @@ describe('AbilityFactory', () => {
       dateOfBirth: null,
       firstName: 'Jane',
       groupIds: [],
+      hashedPassword: 'Password123',
       id: '12345',
       lastName: 'Doe',
-      password: 'Password123',
       sex: null,
       updatedAt: new Date(),
       username: 'user'
