@@ -1,4 +1,4 @@
-import { LoggingService } from '@douglasneuroinformatics/libnest/core';
+import { LoggingService } from '@douglasneuroinformatics/libnest';
 import { Injectable } from '@nestjs/common';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';

@@ -1,4 +1,4 @@
-import { InjectModel, type Model } from '@douglasneuroinformatics/libnest/core';
+import { InjectModel, type Model } from '@douglasneuroinformatics/libnest';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import type { Prisma } from '@prisma/client';
 

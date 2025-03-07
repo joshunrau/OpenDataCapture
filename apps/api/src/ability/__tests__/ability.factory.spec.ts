@@ -1,4 +1,4 @@
-import { LoggingService } from '@douglasneuroinformatics/libnest/core';
+import { LoggingService } from '@douglasneuroinformatics/libnest';
 import { MockFactory } from '@douglasneuroinformatics/libnest/testing';
 import { Test, TestingModule } from '@nestjs/testing';
 import type { UserModel } from '@prisma/client';

@@ -1,4 +1,4 @@
-import { AppFactory } from '@douglasneuroinformatics/libnest/core';
+import { AppFactory } from '@douglasneuroinformatics/libnest';
 import { APP_GUARD } from '@nestjs/core';
 
 import { AssignmentsModule } from './assignments/assignments.module';

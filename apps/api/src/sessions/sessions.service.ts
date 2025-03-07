@@ -1,4 +1,4 @@
-import { InjectModel, LoggingService, type Model } from '@douglasneuroinformatics/libnest/core';
+import { InjectModel, LoggingService, type Model } from '@douglasneuroinformatics/libnest';
 import { Injectable } from '@nestjs/common';
 import { InternalServerErrorException, NotFoundException } from '@nestjs/common/exceptions';
 import type { Group } from '@opendatacapture/schemas/group';

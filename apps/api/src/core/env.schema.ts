@@ -1,5 +1,5 @@
 import { $BooleanLike, $NumberLike, $UrlLike } from '@douglasneuroinformatics/libjs';
-import { $BaseEnv } from '@douglasneuroinformatics/libnest/config';
+import { $BaseEnv } from '@douglasneuroinformatics/libnest';
 import { z } from 'zod';
 
 export type Env = z.infer<typeof $Env>;

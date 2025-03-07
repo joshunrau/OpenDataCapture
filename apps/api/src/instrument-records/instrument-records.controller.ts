@@ -1,6 +1,6 @@
 /* eslint-disable perfectionist/sort-classes */
 
-import { CurrentUser, ParseSchemaPipe } from '@douglasneuroinformatics/libnest/core';
+import { CurrentUser, ParseSchemaPipe } from '@douglasneuroinformatics/libnest';
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { InstrumentKind } from '@opendatacapture/runtime-core';

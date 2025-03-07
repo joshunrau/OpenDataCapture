@@ -1,5 +1,5 @@
-import { CryptoService, InjectModel } from '@douglasneuroinformatics/libnest/core';
-import type { Model } from '@douglasneuroinformatics/libnest/core';
+import { CryptoService, InjectModel } from '@douglasneuroinformatics/libnest';
+import type { Model } from '@douglasneuroinformatics/libnest';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { accessibleQuery } from '@/ability/ability.utils';

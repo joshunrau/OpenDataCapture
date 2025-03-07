@@ -1,7 +1,7 @@
 import crypto from 'node:crypto';
 
 import { HybridCrypto } from '@douglasneuroinformatics/libcrypto';
-import { ConfigService, InjectModel, type Model } from '@douglasneuroinformatics/libnest/core';
+import { ConfigService, InjectModel, type Model } from '@douglasneuroinformatics/libnest';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import type { Assignment, UpdateAssignmentData } from '@opendatacapture/schemas/assignment';
 

@@ -1,5 +1,5 @@
-import type { Model } from '@douglasneuroinformatics/libnest/core';
-import { getModelToken } from '@douglasneuroinformatics/libnest/core';
+import type { Model } from '@douglasneuroinformatics/libnest';
+import { getModelToken } from '@douglasneuroinformatics/libnest';
 import { type MockedInstance, MockFactory } from '@douglasneuroinformatics/libnest/testing';
 import { ConflictException, NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';

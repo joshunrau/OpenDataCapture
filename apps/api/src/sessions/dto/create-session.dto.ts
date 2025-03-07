@@ -1,4 +1,4 @@
-import { ValidationSchema } from '@douglasneuroinformatics/libnest/core';
+import { ValidationSchema } from '@douglasneuroinformatics/libnest';
 import { $CreateSessionData, type SessionType } from '@opendatacapture/schemas/session';
 import type { CreateSubjectData } from '@opendatacapture/schemas/subject';
 

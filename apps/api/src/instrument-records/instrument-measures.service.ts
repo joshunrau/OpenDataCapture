@@ -1,4 +1,4 @@
-import { LoggingService } from '@douglasneuroinformatics/libnest/core';
+import { LoggingService } from '@douglasneuroinformatics/libnest';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import type {
   FormInstrument,

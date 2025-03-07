@@ -1,6 +1,6 @@
 import { AbilityBuilder, detectSubjectType } from '@casl/ability';
 import { createPrismaAbility } from '@casl/prisma';
-import { LoggingService } from '@douglasneuroinformatics/libnest/core';
+import { LoggingService } from '@douglasneuroinformatics/libnest';
 import { Injectable } from '@nestjs/common';
 import type { AppSubjectName } from '@opendatacapture/schemas/core';
 import { Prisma, type UserModel } from '@prisma/client';

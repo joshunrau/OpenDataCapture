@@ -1,5 +1,5 @@
-import { ConfigService } from '@douglasneuroinformatics/libnest/core';
-import { LoggingService } from '@douglasneuroinformatics/libnest/core';
+import { ConfigService } from '@douglasneuroinformatics/libnest';
+import { LoggingService } from '@douglasneuroinformatics/libnest';
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import type { JwtPayload } from '@opendatacapture/schemas/auth';

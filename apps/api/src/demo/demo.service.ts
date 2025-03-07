@@ -1,6 +1,6 @@
 import { randomValue } from '@douglasneuroinformatics/libjs';
 import { toUpperCase } from '@douglasneuroinformatics/libjs';
-import { LoggingService, PrismaService } from '@douglasneuroinformatics/libnest/core';
+import { LoggingService, PrismaService } from '@douglasneuroinformatics/libnest';
 import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
 import { DEMO_GROUPS, DEMO_USERS } from '@opendatacapture/demo';

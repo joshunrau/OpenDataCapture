@@ -1,4 +1,4 @@
-import { CryptoService, InjectModel, LoggingService, type Model } from '@douglasneuroinformatics/libnest/core';
+import { CryptoService, InjectModel, LoggingService, type Model } from '@douglasneuroinformatics/libnest';
 import { VirtualizationService } from '@douglasneuroinformatics/libnest/virtualization';
 import { Injectable } from '@nestjs/common';
 import {

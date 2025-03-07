@@ -1,4 +1,4 @@
-import { ConfigService, CryptoService, LoggingService } from '@douglasneuroinformatics/libnest/core';
+import { ConfigService, CryptoService, LoggingService } from '@douglasneuroinformatics/libnest';
 import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import type { AuthPayload, JwtPayload } from '@opendatacapture/schemas/auth';

@@ -1,4 +1,4 @@
-import { ConfigService, CryptoService, LoggingService } from '@douglasneuroinformatics/libnest/core';
+import { ConfigService, CryptoService, LoggingService } from '@douglasneuroinformatics/libnest';
 import { type MockedInstance, MockFactory } from '@douglasneuroinformatics/libnest/testing';
 import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';

@@ -1,4 +1,4 @@
-import { CurrentUser } from '@douglasneuroinformatics/libnest/core';
+import { CurrentUser } from '@douglasneuroinformatics/libnest';
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { InstrumentKind } from '@opendatacapture/runtime-core';

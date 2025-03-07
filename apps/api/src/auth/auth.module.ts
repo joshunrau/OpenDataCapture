@@ -1,4 +1,4 @@
-import { ConfigService } from '@douglasneuroinformatics/libnest/core';
+import { ConfigService } from '@douglasneuroinformatics/libnest';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 

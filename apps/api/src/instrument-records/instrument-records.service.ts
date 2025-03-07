@@ -1,6 +1,6 @@
 import { replacer, yearsPassed } from '@douglasneuroinformatics/libjs';
 import { reviver } from '@douglasneuroinformatics/libjs';
-import { InjectModel, type Model } from '@douglasneuroinformatics/libnest/core';
+import { InjectModel, type Model } from '@douglasneuroinformatics/libnest';
 import { linearRegression } from '@douglasneuroinformatics/libstats';
 import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import type { ScalarInstrument } from '@opendatacapture/runtime-core';

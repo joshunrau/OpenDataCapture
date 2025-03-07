@@ -1,4 +1,4 @@
-import { ConfigService } from '@douglasneuroinformatics/libnest/core';
+import { ConfigService } from '@douglasneuroinformatics/libnest';
 import { HttpModule } from '@nestjs/axios';
 import { forwardRef, Module } from '@nestjs/common';
 
