@@ -1,5 +1,5 @@
 import { CryptoService, InjectModel, LoggingService, type Model } from '@douglasneuroinformatics/libnest';
-import { VirtualizationService } from '@douglasneuroinformatics/libnest/virtualization';
+import { VirtualizationService } from '@douglasneuroinformatics/libnest';
 import { Injectable } from '@nestjs/common';
 import {
   ConflictException,

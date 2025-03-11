@@ -1,6 +1,6 @@
 import { CryptoService, getModelToken, LoggingService, type Model } from '@douglasneuroinformatics/libnest';
+import { VirtualizationService } from '@douglasneuroinformatics/libnest';
 import { type MockedInstance, MockFactory } from '@douglasneuroinformatics/libnest/testing';
-import { VirtualizationService } from '@douglasneuroinformatics/libnest/virtualization';
 import { Test } from '@nestjs/testing';
 import { beforeEach, describe, expect, it } from 'vitest';
 

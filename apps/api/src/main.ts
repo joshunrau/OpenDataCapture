@@ -17,11 +17,6 @@ import { SummaryModule } from './summary/summary.module';
 import { UsersModule } from './users/users.module';
 
 export default AppContainer.create({
-  auth: {
-    enabled: true,
-    tokenPayload: ['basePermissionLevel'],
-    userModel: 'UserModel'
-  },
   docs: {
     config: {
       contact: {

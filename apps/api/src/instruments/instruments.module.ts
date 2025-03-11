@@ -1,4 +1,4 @@
-import { VirtualizationModule } from '@douglasneuroinformatics/libnest/virtualization';
+import { VirtualizationModule } from '@douglasneuroinformatics/libnest';
 import { Module } from '@nestjs/common';
 
 import { InstrumentsController } from './instruments.controller';
