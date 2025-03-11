@@ -1,8 +1,9 @@
-import { AppContainer } from '@douglasneuroinformatics/libnest';
+import { AppContainer, getModelToken, type Model } from '@douglasneuroinformatics/libnest';
+import { AuthModule } from '@douglasneuroinformatics/libnest';
 import { APP_GUARD } from '@nestjs/core';
+import { $LoginCredentials } from '@opendatacapture/schemas/auth';
 
 import { AssignmentsModule } from './assignments/assignments.module';
-import { AuthModule } from './auth/auth.module';
 import { AuthenticationGuard } from './auth/guards/authentication.guard';
 import { AuthorizationGuard } from './auth/guards/authorization.guard';
 import { $Env } from './core/env.schema';
@@ -40,7 +41,32 @@ export default AppContainer.create({
   },
   envSchema: $Env,
   imports: [
-    AuthModule,
+    AuthModule.forRootAsync({
+      inject: [getModelToken('UserModel')],
+      useFactory: (userModel: Model<'UserModel'>) => {
+        return {
+          loginCredentialsSchema: $LoginCredentials,
+          userQuery: async ({ username }) => {
+            const user = await userModel.findFirst({
+              include: { groups: true },
+              where: { username }
+            });
+            if (!user) {
+              return null;
+            }
+            return {
+              hashedPassword: user.hashedPassword,
+              tokenPayload: {
+                firstName: user.firstName,
+                groups: user.groups,
+                lastName: user.lastName,
+                username: user.username
+              }
+            };
+          }
+        };
+      }
+    }),
     GroupsModule,
     InstrumentRecordsModule,
     InstrumentsModule,
