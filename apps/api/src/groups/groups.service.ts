@@ -12,7 +12,7 @@ import { UpdateGroupDto } from './dto/update-group.dto';
 @Injectable()
 export class GroupsService {
   constructor(
-    @InjectModel('GroupModel') private readonly groupModel: Model<'GroupModel'>,
+    @InjectModel('Group') private readonly groupModel: Model<'Group'>,
     private readonly instrumentsService: InstrumentsService
   ) {}
 

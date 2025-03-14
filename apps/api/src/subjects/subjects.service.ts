@@ -9,7 +9,7 @@ import { CreateSubjectDto } from './dto/create-subject.dto';
 
 @Injectable()
 export class SubjectsService {
-  constructor(@InjectModel('SubjectModel') private readonly subjectModel: Model<'SubjectModel'>) {}
+  constructor(@InjectModel('Subject') private readonly subjectModel: Model<'Subject'>) {}
 
   async addGroupForSubject(subjectId: string, groupId: string, { ability }: EntityOperationOptions = {}) {
     return this.subjectModel.update({

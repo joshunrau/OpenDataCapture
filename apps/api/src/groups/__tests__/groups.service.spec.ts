@@ -11,7 +11,7 @@ import { GroupsService } from '../groups.service';
 
 describe('GroupsService', () => {
   let groupsService: GroupsService;
-  let groupModel: MockedInstance<Model<'GroupModel'>>;
+  let groupModel: MockedInstance<Model<'Group'>>;
   let instrumentsService: MockedInstance<InstrumentsService>;
 
   beforeEach(async () => {

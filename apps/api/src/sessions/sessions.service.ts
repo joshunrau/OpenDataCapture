@@ -14,7 +14,7 @@ import { SubjectsService } from '@/subjects/subjects.service';
 @Injectable()
 export class SessionsService {
   constructor(
-    @InjectModel('SessionModel') private readonly sessionModel: Model<'SessionModel'>,
+    @InjectModel('Session') private readonly sessionModel: Model<'Session'>,
     private readonly groupsService: GroupsService,
     private readonly loggingService: LoggingService,
     private readonly subjectsService: SubjectsService

@@ -41,7 +41,7 @@ type InstrumentQuery<TKind extends InstrumentKind> = {
 @Injectable()
 export class InstrumentsService {
   constructor(
-    @InjectModel('InstrumentModel') private readonly instrumentModel: Model<'InstrumentModel'>,
+    @InjectModel('Instrument') private readonly instrumentModel: Model<'Instrument'>,
     private readonly cryptoService: CryptoService,
     private readonly loggingService: LoggingService,
     private readonly virtualizationService: VirtualizationService<InstrumentVirtualizationContext>

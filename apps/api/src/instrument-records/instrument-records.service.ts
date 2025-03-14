@@ -28,7 +28,7 @@ import { InstrumentMeasuresService } from './instrument-measures.service';
 @Injectable()
 export class InstrumentRecordsService {
   constructor(
-    @InjectModel('InstrumentRecordModel') private readonly instrumentRecordModel: Model<'InstrumentRecordModel'>,
+    @InjectModel('InstrumentRecord') private readonly instrumentRecordModel: Model<'InstrumentRecord'>,
     private readonly groupsService: GroupsService,
     private readonly instrumentMeasuresService: InstrumentMeasuresService,
     private readonly instrumentsService: InstrumentsService,

@@ -9,7 +9,7 @@ import { UsersService } from '@/users/users.service';
 @Injectable()
 export class SetupService {
   constructor(
-    @InjectModel('SetupStateModel') private readonly setupStateModel: Model<'SetupStateModel'>,
+    @InjectModel('SetupState') private readonly setupStateModel: Model<'SetupState'>,
     private readonly configService: ConfigService,
     private readonly demoService: DemoService,
     private readonly usersService: UsersService,

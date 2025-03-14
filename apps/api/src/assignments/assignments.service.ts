@@ -16,7 +16,7 @@ export class AssignmentsService {
   private readonly assignmentBaseUrl: string;
 
   constructor(
-    @InjectModel('AssignmentModel') private readonly assignmentModel: Model<'AssignmentModel'>,
+    @InjectModel('Assignment') private readonly assignmentModel: Model<'Assignment'>,
     configService: ConfigService,
     private readonly gatewayService: GatewayService
   ) {

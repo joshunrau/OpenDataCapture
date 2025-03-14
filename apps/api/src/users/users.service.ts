@@ -13,13 +13,13 @@ import type { UpdateUserDto } from './dto/update-user.dto';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel('UserModel') private readonly userModel: Model<'UserModel'>,
+    @InjectModel('User') private readonly userModel: Model<'User'>,
     private readonly cryptoService: CryptoService,
     private readonly groupsService: GroupsService
   ) {}
 
   async count(
-    filter: NonNullable<Parameters<Model<'UserModel'>['count']>[0]>['where'] = {},
+    filter: NonNullable<Parameters<Model<'User'>['count']>[0]>['where'] = {},
     { ability }: EntityOperationOptions = {}
   ) {
     return this.userModel.count({
