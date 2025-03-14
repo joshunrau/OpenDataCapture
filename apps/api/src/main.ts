@@ -1,5 +1,4 @@
 import { AppContainer } from '@douglasneuroinformatics/libnest';
-import { ConfigurableAuthModule } from 'node_modules/@douglasneuroinformatics/libnest/dist/modules/auth/auth.config';
 
 import { AssignmentsModule } from './assignments/assignments.module';
 import { $Env } from './core/env.schema';
@@ -12,6 +11,7 @@ import { SetupModule } from './setup/setup.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { SummaryModule } from './summary/summary.module';
 import { UsersModule } from './users/users.module';
+import { ConfiguredAuthModule } from './vendor/configured.auth.module';
 
 export default AppContainer.create({
   docs: {
@@ -37,7 +37,7 @@ export default AppContainer.create({
   },
   envSchema: $Env,
   imports: [
-    ConfigurableAuthModule,
+    ConfiguredAuthModule,
     GroupsModule,
     InstrumentRecordsModule,
     InstrumentsModule,
