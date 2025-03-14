@@ -2,8 +2,8 @@ import fs from 'fs/promises';
 import path from 'path';
 
 import { deepFreeze, range } from '@douglasneuroinformatics/libjs';
-import { afterEach, beforeEach, describe, expect, it, type Mock, type MockInstance } from 'vitest';
-import { vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import type { Mock, MockInstance } from 'vitest';
 
 import { runtime } from '../index.js';
 import * as resolve from '../resolve.js';

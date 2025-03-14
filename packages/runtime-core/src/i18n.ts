@@ -122,7 +122,7 @@ export abstract class BaseTranslator<T extends { [key: string]: unknown } = { [k
 
   @InitializedOnly
   t(key: TranslationKey<T>) {
-    const value = get(this.translations, key) as { [key: string]: string } | string | undefined;
+    const value = get(this.translations, key) as string | undefined | { [key: string]: string };
     if (typeof value === 'string') {
       return value;
     }
