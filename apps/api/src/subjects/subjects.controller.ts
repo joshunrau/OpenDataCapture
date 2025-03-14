@@ -1,9 +1,9 @@
 import { CurrentUser } from '@douglasneuroinformatics/libnest';
+import type { AppAbility } from '@douglasneuroinformatics/libnest';
 import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { RouteAccess } from '@/core/decorators/route-access.decorator';
-import type { AppAbility } from '@douglasneuroinformatics/libnest';
 
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { SubjectsService } from './subjects.service';

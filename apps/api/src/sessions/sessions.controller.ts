@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
-import type { Session } from '@opendatacapture/schemas/session';
+import type { Session } from '@prisma/client';
 
 import { RouteAccess } from '@/core/decorators/route-access.decorator';
 

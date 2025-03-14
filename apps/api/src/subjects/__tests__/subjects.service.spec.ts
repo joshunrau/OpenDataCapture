@@ -17,10 +17,10 @@ describe('SubjectsService', () => {
       providers: [
         MockFactory.createForService(CryptoService),
         SubjectsService,
-        MockFactory.createForModelToken(getModelToken('SubjectModel'))
+        MockFactory.createForModelToken(getModelToken('Subject'))
       ]
     }).compile();
-    subjectModel = moduleRef.get(getModelToken('SubjectModel'));
+    subjectModel = moduleRef.get(getModelToken('Subject'));
     subjectsService = moduleRef.get(SubjectsService);
   });
 

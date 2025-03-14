@@ -14,14 +14,14 @@ describe('InstrumentsService', () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
         InstrumentsService,
-        MockFactory.createForModelToken(getModelToken('InstrumentModel')),
+        MockFactory.createForModelToken(getModelToken('Instrument')),
         MockFactory.createForService(CryptoService),
         MockFactory.createForService(LoggingService),
         MockFactory.createForService(VirtualizationService)
       ]
     }).compile();
     instrumentsService = moduleRef.get(InstrumentsService);
-    instrumentModel = moduleRef.get(getModelToken('InstrumentModel'));
+    instrumentModel = moduleRef.get(getModelToken('Instrument'));
   });
 
   it('should be defined', () => {

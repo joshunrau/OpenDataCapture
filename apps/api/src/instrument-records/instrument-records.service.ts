@@ -1,6 +1,7 @@
 import { replacer, yearsPassed } from '@douglasneuroinformatics/libjs';
 import { reviver } from '@douglasneuroinformatics/libjs';
 import { InjectModel, type Model } from '@douglasneuroinformatics/libnest';
+import { accessibleQuery } from '@douglasneuroinformatics/libnest';
 import { linearRegression } from '@douglasneuroinformatics/libstats';
 import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import type { ScalarInstrument } from '@opendatacapture/runtime-core';
@@ -12,10 +13,9 @@ import type {
   LinearRegressionResults,
   UploadInstrumentRecordsData
 } from '@opendatacapture/schemas/instrument-records';
-import { type InstrumentRecordModel, Prisma, type SessionModel } from '@prisma/client';
+import { Prisma, type Session } from '@prisma/client';
 import { isNumber, pickBy } from 'lodash-es';
 
-import { accessibleQuery } from '@douglasneuroinformatics/libnest';
 import type { EntityOperationOptions } from '@/core/types';
 import { GroupsService } from '@/groups/groups.service';
 import { InstrumentsService } from '@/instruments/instruments.service';
@@ -37,7 +37,7 @@ export class InstrumentRecordsService {
   ) {}
 
   async count(
-    filter: Prisma.InstrumentRecordModelWhereInput = {},
+    filter: Prisma.InstrumentRecordWhereInput = {},
     { ability }: EntityOperationOptions = {}
   ): Promise<number> {
     return this.instrumentRecordModel.count({
@@ -48,7 +48,7 @@ export class InstrumentRecordsService {
   async create(
     { data: rawData, date, groupId, instrumentId, sessionId, subjectId }: CreateInstrumentRecordData,
     options?: EntityOperationOptions
-  ): Promise<InstrumentRecordModel> {
+  ): Promise<InstrumentRecord> {
     if (groupId) {
       await this.groupsService.findById(groupId, options);
     }
@@ -109,7 +109,7 @@ export class InstrumentRecordsService {
     });
   }
 
-  async exists(where: Prisma.InstrumentRecordModelWhereInput): Promise<boolean> {
+  async exists(where: Prisma.InstrumentRecordWhereInput): Promise<boolean> {
     return this.instrumentRecordModel.exists(where);
   }
 
@@ -261,7 +261,7 @@ export class InstrumentRecordsService {
   async upload(
     { groupId, instrumentId, records }: UploadInstrumentRecordsData,
     options?: EntityOperationOptions
-  ): Promise<InstrumentRecordModel[]> {
+  ): Promise<InstrumentRecord[]> {
     if (groupId) {
       await this.groupsService.findById(groupId, options);
     }
@@ -273,7 +273,7 @@ export class InstrumentRecordsService {
       );
     }
 
-    const createdSessionsArray: SessionModel[] = [];
+    const createdSessionsArray: Session[] = [];
 
     try {
       const preProcessedRecords = await Promise.all(

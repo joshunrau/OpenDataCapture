@@ -1,8 +1,8 @@
 import { InjectModel, type Model } from '@douglasneuroinformatics/libnest';
+import { accessibleQuery } from '@douglasneuroinformatics/libnest';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import type { Prisma } from '@prisma/client';
 
-import { accessibleQuery } from '@douglasneuroinformatics/libnest';
 import type { EntityOperationOptions } from '@/core/types';
 
 import { CreateSubjectDto } from './dto/create-subject.dto';
@@ -18,11 +18,11 @@ export class SubjectsService {
           push: groupId
         }
       },
-      where: { id: subjectId, ...accessibleQuery(ability, 'update', 'Subject') }
+      where: { ...accessibleQuery(ability, 'update', 'Subject'), id: subjectId }
     });
   }
 
-  async count(where: Prisma.SubjectModelWhereInput = {}, { ability }: EntityOperationOptions = {}) {
+  async count(where: Prisma.SubjectWhereInput = {}, { ability }: EntityOperationOptions = {}) {
     return this.subjectModel.count({
       where: { AND: [accessibleQuery(ability, 'read', 'Subject'), where] }
     });

@@ -1,5 +1,6 @@
 import { CryptoService, InjectModel, LoggingService, type Model } from '@douglasneuroinformatics/libnest';
 import { VirtualizationService } from '@douglasneuroinformatics/libnest';
+import { accessibleQuery } from '@douglasneuroinformatics/libnest';
 import { Injectable } from '@nestjs/common';
 import {
   ConflictException,
@@ -23,7 +24,6 @@ import type {
   ScalarInstrumentBundleContainer
 } from '@opendatacapture/schemas/instrument';
 
-import { accessibleQuery } from '@douglasneuroinformatics/libnest';
 import type { EntityOperationOptions } from '@/core/types';
 
 import { CreateInstrumentDto } from './dto/create-instrument.dto';

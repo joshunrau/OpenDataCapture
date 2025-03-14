@@ -1,9 +1,9 @@
 import { CurrentUser } from '@douglasneuroinformatics/libnest';
+import type { AppAbility } from '@douglasneuroinformatics/libnest';
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { RouteAccess } from '@/core/decorators/route-access.decorator';
-import type { AppAbility } from '@douglasneuroinformatics/libnest';
 
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
