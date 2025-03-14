@@ -1,7 +1,7 @@
-import { ConfigService, InjectModel, type Model, PrismaService } from '@douglasneuroinformatics/libnest';
+import { ConfigService, InjectModel, PrismaService } from '@douglasneuroinformatics/libnest';
+import type { Model } from '@douglasneuroinformatics/libnest';
 import { ForbiddenException, Injectable, ServiceUnavailableException } from '@nestjs/common';
-import { type CreateAdminData } from '@opendatacapture/schemas/setup';
-import type { InitAppOptions, SetupState, UpdateSetupStateData } from '@opendatacapture/schemas/setup';
+import type { CreateAdminData, InitAppOptions, SetupState, UpdateSetupStateData } from '@opendatacapture/schemas/setup';
 
 import { DemoService } from '@/demo/demo.service';
 import { UsersService } from '@/users/users.service';

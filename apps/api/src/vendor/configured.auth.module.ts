@@ -1,6 +1,8 @@
-import { AuthModule, getModelToken, type Model } from '@douglasneuroinformatics/libnest';
+import { AuthModule, getModelToken } from '@douglasneuroinformatics/libnest';
+import type { Model } from '@douglasneuroinformatics/libnest';
 import { Module } from '@nestjs/common';
-import { $LoginCredentials, type JwtPayload } from '@opendatacapture/schemas/auth';
+import { $LoginCredentials } from '@opendatacapture/schemas/auth';
+import type { JwtPayload } from '@opendatacapture/schemas/auth';
 import { $Group } from '@opendatacapture/schemas/group';
 import { $BasePermissionLevel } from '@opendatacapture/schemas/user';
 import { z } from 'zod';

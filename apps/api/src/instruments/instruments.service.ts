@@ -1,6 +1,11 @@
-import { CryptoService, InjectModel, LoggingService, type Model } from '@douglasneuroinformatics/libnest';
-import { VirtualizationService } from '@douglasneuroinformatics/libnest';
-import { accessibleQuery } from '@douglasneuroinformatics/libnest';
+import {
+  accessibleQuery,
+  CryptoService,
+  InjectModel,
+  LoggingService,
+  VirtualizationService
+} from '@douglasneuroinformatics/libnest';
+import type { Model } from '@douglasneuroinformatics/libnest';
 import { Injectable } from '@nestjs/common';
 import {
   ConflictException,
@@ -16,7 +21,7 @@ import type {
   SeriesInstrument,
   SomeInstrument
 } from '@opendatacapture/runtime-core';
-import { type WithID } from '@opendatacapture/schemas/core';
+import type { WithID } from '@opendatacapture/schemas/core';
 import { $AnyInstrument } from '@opendatacapture/schemas/instrument';
 import type {
   InstrumentBundleContainer,
@@ -28,7 +33,7 @@ import type { EntityOperationOptions } from '@/core/types';
 
 import { CreateInstrumentDto } from './dto/create-instrument.dto';
 
-export type InstrumentVirtualizationContext = {
+type InstrumentVirtualizationContext = {
   __resolveImport: (specifier: string) => string;
   instruments: Map<string, WithID<AnyInstrument>>;
 };
@@ -224,3 +229,5 @@ export class InstrumentsService {
     return { success: true };
   }
 }
+
+export type { InstrumentVirtualizationContext };

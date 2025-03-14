@@ -1,7 +1,6 @@
-import { replacer, yearsPassed } from '@douglasneuroinformatics/libjs';
-import { reviver } from '@douglasneuroinformatics/libjs';
-import { InjectModel, type Model } from '@douglasneuroinformatics/libnest';
-import { accessibleQuery } from '@douglasneuroinformatics/libnest';
+import { replacer, reviver, yearsPassed } from '@douglasneuroinformatics/libjs';
+import { accessibleQuery, InjectModel } from '@douglasneuroinformatics/libnest';
+import type { Model } from '@douglasneuroinformatics/libnest';
 import { linearRegression } from '@douglasneuroinformatics/libstats';
 import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import type { ScalarInstrument } from '@opendatacapture/runtime-core';
@@ -13,7 +12,8 @@ import type {
   LinearRegressionResults,
   UploadInstrumentRecordsData
 } from '@opendatacapture/schemas/instrument-records';
-import { Prisma, type Session } from '@prisma/client';
+import { Prisma } from '@prisma/client';
+import type { Session } from '@prisma/client';
 import { isNumber, pickBy } from 'lodash-es';
 
 import type { EntityOperationOptions } from '@/core/types';

@@ -1,5 +1,5 @@
-import { InjectModel, type Model } from '@douglasneuroinformatics/libnest';
-import { accessibleQuery } from '@douglasneuroinformatics/libnest';
+import { accessibleQuery, InjectModel } from '@douglasneuroinformatics/libnest';
+import type { Model } from '@douglasneuroinformatics/libnest';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import type { Prisma } from '@prisma/client';
 

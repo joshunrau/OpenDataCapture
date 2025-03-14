@@ -1,5 +1,4 @@
-import { randomValue } from '@douglasneuroinformatics/libjs';
-import { toUpperCase } from '@douglasneuroinformatics/libjs';
+import { randomValue, toUpperCase } from '@douglasneuroinformatics/libjs';
 import { LoggingService, PrismaService } from '@douglasneuroinformatics/libnest';
 import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
@@ -11,7 +10,7 @@ import patientHealthQuestionnaire9 from '@opendatacapture/instrument-library/for
 import breakoutTask from '@opendatacapture/instrument-library/interactive/breakout-task.js';
 import happinessQuestionnaireWithConsent from '@opendatacapture/instrument-library/series/happiness-questionnaire-with-consent.js';
 import type { FormInstrument } from '@opendatacapture/runtime-core';
-import { type Json, type Language, type WithID } from '@opendatacapture/schemas/core';
+import type { Json, Language, WithID } from '@opendatacapture/schemas/core';
 import type { Group } from '@opendatacapture/schemas/group';
 import { encodeScopedSubjectId, generateSubjectHash } from '@opendatacapture/subject-utils';
 

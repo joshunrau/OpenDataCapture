@@ -2,7 +2,9 @@ import { VirtualizationModule } from '@douglasneuroinformatics/libnest';
 import { Module } from '@nestjs/common';
 
 import { InstrumentsController } from './instruments.controller';
-import { InstrumentsService, type InstrumentVirtualizationContext } from './instruments.service';
+import { InstrumentsService } from './instruments.service';
+
+import type { InstrumentVirtualizationContext } from './instruments.service';
 
 @Module({
   controllers: [InstrumentsController],

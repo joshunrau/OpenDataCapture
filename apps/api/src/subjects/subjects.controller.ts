@@ -1,6 +1,5 @@
-import { CurrentUser } from '@douglasneuroinformatics/libnest';
+import { CurrentUser, RouteAccess } from '@douglasneuroinformatics/libnest';
 import type { AppAbility } from '@douglasneuroinformatics/libnest';
-import { RouteAccess } from '@douglasneuroinformatics/libnest';
 import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
