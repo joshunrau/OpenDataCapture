@@ -8,7 +8,7 @@ import { InstrumentsService } from '../instruments.service';
 
 describe('InstrumentsService', () => {
   let instrumentsService: InstrumentsService;
-  let instrumentModel: MockedInstance<Model<'InstrumentModel'>>;
+  let instrumentModel: MockedInstance<Model<'Instrument'>>;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({

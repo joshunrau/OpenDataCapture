@@ -10,7 +10,7 @@ import { SubjectsService } from '../subjects.service';
 
 describe('SubjectsService', () => {
   let subjectsService: SubjectsService;
-  let subjectModel: MockedInstance<Model<'SubjectModel'>>;
+  let subjectModel: MockedInstance<Model<'Subject'>>;
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
