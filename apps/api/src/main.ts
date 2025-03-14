@@ -1,11 +1,7 @@
-import { AppContainer, getModelToken, type Model } from '@douglasneuroinformatics/libnest';
-import { AuthModule } from '@douglasneuroinformatics/libnest';
-import { APP_GUARD } from '@nestjs/core';
-import { $LoginCredentials } from '@opendatacapture/schemas/auth';
+import { AppContainer } from '@douglasneuroinformatics/libnest';
+import { ConfigurableAuthModule } from 'node_modules/@douglasneuroinformatics/libnest/dist/modules/auth/auth.config';
 
 import { AssignmentsModule } from './assignments/assignments.module';
-import { AuthenticationGuard } from './auth/guards/authentication.guard';
-import { AuthorizationGuard } from './auth/guards/authorization.guard';
 import { $Env } from './core/env.schema';
 import { GatewayModule } from './gateway/gateway.module';
 import { GroupsModule } from './groups/groups.module';
@@ -41,32 +37,7 @@ export default AppContainer.create({
   },
   envSchema: $Env,
   imports: [
-    AuthModule.forRootAsync({
-      inject: [getModelToken('UserModel')],
-      useFactory: (userModel: Model<'UserModel'>) => {
-        return {
-          loginCredentialsSchema: $LoginCredentials,
-          userQuery: async ({ username }) => {
-            const user = await userModel.findFirst({
-              include: { groups: true },
-              where: { username }
-            });
-            if (!user) {
-              return null;
-            }
-            return {
-              hashedPassword: user.hashedPassword,
-              tokenPayload: {
-                firstName: user.firstName,
-                groups: user.groups,
-                lastName: user.lastName,
-                username: user.username
-              }
-            };
-          }
-        };
-      }
-    }),
+    ConfigurableAuthModule,
     GroupsModule,
     InstrumentRecordsModule,
     InstrumentsModule,
@@ -87,15 +58,5 @@ export default AppContainer.create({
   prisma: {
     dbPrefix: 'data-capture'
   },
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: AuthenticationGuard
-    },
-    {
-      provide: APP_GUARD,
-      useClass: AuthorizationGuard
-    }
-  ],
   version: '1'
 });
