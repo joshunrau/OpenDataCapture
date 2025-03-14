@@ -14,31 +14,32 @@ import { z } from 'zod';
       useFactory: (userModel: Model<'User'>) => {
         return {
           defineAbility: (ability, payload) => {
+            const groupIds = payload.groups.map((group) => group.id);
             switch (payload.basePermissionLevel) {
               case 'ADMIN':
                 ability.can('manage', 'all');
                 break;
-              // case 'GROUP_MANAGER':
-              //   ability.can('manage', 'Assignment');
-              //   ability.can('manage', 'Group', { id: { in: user.groupIds } });
-              //   ability.can('read', 'Instrument');
-              //   ability.can('create', 'InstrumentRecord');
-              //   ability.can('read', 'InstrumentRecord', { groupId: { in: user.groupIds } });
-              //   ability.can('create', 'Session');
-              //   ability.can('read', 'Session', { groupId: { in: user.groupIds } });
-              //   ability.can('create', 'Subject');
-              //   ability.can('read', 'Subject', { groupIds: { hasSome: user.groupIds } });
-              //   ability.can('read', 'User', { groupIds: { hasSome: user.groupIds } });
-              //   break;
-              // case 'STANDARD':
-              //   ability.can('read', 'Group', { id: { in: user.groupIds } });
-              //   ability.can('read', 'Instrument');
-              //   ability.can('create', 'InstrumentRecord');
-              //   ability.can('read', 'Session', { groupId: { in: user.groupIds } });
-              //   ability.can('create', 'Session');
-              //   ability.can('create', 'Subject');
-              //   ability.can('read', 'Subject', { groupIds: { hasSome: user.groupIds } });
-              //   break;
+              case 'GROUP_MANAGER':
+                ability.can('manage', 'Assignment');
+                ability.can('manage', 'Group', { id: { in: groupIds } });
+                ability.can('read', 'Instrument');
+                ability.can('create', 'InstrumentRecord');
+                ability.can('read', 'InstrumentRecord', { groupId: { in: groupIds } });
+                ability.can('create', 'Session');
+                ability.can('read', 'Session', { groupId: { in: groupIds } });
+                ability.can('create', 'Subject');
+                ability.can('read', 'Subject', { groupIds: { hasSome: groupIds } });
+                ability.can('read', 'User', { groupIds: { hasSome: groupIds } });
+                break;
+              case 'STANDARD':
+                ability.can('read', 'Group', { id: { in: groupIds } });
+                ability.can('read', 'Instrument');
+                ability.can('create', 'InstrumentRecord');
+                ability.can('read', 'Session', { groupId: { in: groupIds } });
+                ability.can('create', 'Session');
+                ability.can('create', 'Subject');
+                ability.can('read', 'Subject', { groupIds: { hasSome: groupIds } });
+                break;
             }
           },
           schemas: {
