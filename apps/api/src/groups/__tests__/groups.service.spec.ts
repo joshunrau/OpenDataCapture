@@ -18,11 +18,11 @@ describe('GroupsService', () => {
     const moduleRef = await Test.createTestingModule({
       providers: [
         GroupsService,
-        MockFactory.createForModelToken(getModelToken('GroupModel')),
+        MockFactory.createForModelToken(getModelToken('Group')),
         MockFactory.createForService(InstrumentsService)
       ]
     }).compile();
-    groupModel = moduleRef.get(getModelToken('GroupModel'));
+    groupModel = moduleRef.get(getModelToken('Group'));
     groupsService = moduleRef.get(GroupsService);
     instrumentsService = moduleRef.get(InstrumentsService);
     instrumentsService.find.mockResolvedValue([]);
