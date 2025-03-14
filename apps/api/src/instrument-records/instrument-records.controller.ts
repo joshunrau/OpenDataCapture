@@ -2,12 +2,11 @@
 
 import { CurrentUser, ParseSchemaPipe } from '@douglasneuroinformatics/libnest';
 import type { AppAbility } from '@douglasneuroinformatics/libnest';
+import { RouteAccess } from '@douglasneuroinformatics/libnest';
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { InstrumentKind } from '@opendatacapture/runtime-core';
 import { z } from 'zod';
-
-import { RouteAccess } from '@douglasneuroinformatics/libnest';
 
 import { CreateInstrumentRecordDto } from './dto/create-instrument-record.dto';
 import { UploadInstrumentRecordsDto } from './dto/upload-instrument-record.dto';
