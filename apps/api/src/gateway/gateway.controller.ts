@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import type { GatewayHealthcheckResult } from '@opendatacapture/schemas/gateway';
 
-import { RouteAccess } from '@/core/decorators/route-access.decorator';
+import { RouteAccess } from '@douglasneuroinformatics/libnest';
 
 import { GatewayService } from './gateway.service';
 

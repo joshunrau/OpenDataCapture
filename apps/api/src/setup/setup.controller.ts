@@ -2,7 +2,7 @@ import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { SetupState } from '@opendatacapture/schemas/setup';
 
-import { RouteAccess } from '@/core/decorators/route-access.decorator';
+import { RouteAccess } from '@douglasneuroinformatics/libnest';
 
 import { InitAppDto } from './dto/init-app.dto';
 import { UpdateSetupStateDto } from './dto/update-setup-state.dto';

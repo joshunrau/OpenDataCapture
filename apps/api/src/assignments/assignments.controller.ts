@@ -4,7 +4,7 @@ import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common
 import { ApiOperation } from '@nestjs/swagger';
 import type { Assignment } from '@opendatacapture/schemas/assignment';
 
-import { RouteAccess } from '@/core/decorators/route-access.decorator';
+import { RouteAccess } from '@douglasneuroinformatics/libnest';
 
 import { AssignmentsService } from './assignments.service';
 import { CreateAssignmentDto } from './dto/create-assignment.dto';
