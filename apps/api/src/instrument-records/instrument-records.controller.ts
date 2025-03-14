@@ -7,7 +7,7 @@ import type { InstrumentKind } from '@opendatacapture/runtime-core';
 import { z } from 'zod';
 
 import { RouteAccess } from '@/core/decorators/route-access.decorator';
-import type { AppAbility } from '@/core/types';
+import type { AppAbility } from '@douglasneuroinformatics/libnest';
 
 import { CreateInstrumentRecordDto } from './dto/create-instrument-record.dto';
 import { UploadInstrumentRecordsDto } from './dto/upload-instrument-record.dto';

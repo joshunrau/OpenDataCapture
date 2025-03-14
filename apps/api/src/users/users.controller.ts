@@ -3,7 +3,7 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestj
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { RouteAccess } from '@/core/decorators/route-access.decorator';
-import type { AppAbility } from '@/core/types';
+import type { AppAbility } from '@douglasneuroinformatics/libnest';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';

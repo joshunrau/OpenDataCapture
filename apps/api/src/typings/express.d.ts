@@ -2,7 +2,7 @@
 
 import type { UserModel } from '@prisma/generated-client';
 
-import type { AppAbility } from '@/core/types';
+import type { AppAbility } from '@douglasneuroinformatics/libnest';
 
 declare global {
   namespace Express {

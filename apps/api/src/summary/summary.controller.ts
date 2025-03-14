@@ -3,7 +3,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import type { Summary } from '@opendatacapture/schemas/summary';
 
 import { RouteAccess } from '@/core/decorators/route-access.decorator';
-import type { AppAbility } from '@/core/types';
+import type { AppAbility } from '@douglasneuroinformatics/libnest';
 
 import { SummaryService } from './summary.service';
 

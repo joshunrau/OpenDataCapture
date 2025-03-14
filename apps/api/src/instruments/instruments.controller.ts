@@ -5,7 +5,7 @@ import type { InstrumentKind } from '@opendatacapture/runtime-core';
 import type { InstrumentBundleContainer, InstrumentInfo } from '@opendatacapture/schemas/instrument';
 
 import { RouteAccess } from '@/core/decorators/route-access.decorator';
-import type { AppAbility } from '@/core/types';
+import type { AppAbility } from '@douglasneuroinformatics/libnest';
 
 import { CreateInstrumentDto } from './dto/create-instrument.dto';
 import { InstrumentsService } from './instruments.service';
