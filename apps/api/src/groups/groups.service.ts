@@ -2,7 +2,7 @@ import { InjectModel, type Model } from '@douglasneuroinformatics/libnest';
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import type { Prisma } from '@prisma/client';
 
-import { accessibleQuery } from '@/ability/ability.utils';
+import { accessibleQuery } from '@douglasneuroinformatics/libnest';
 import type { EntityOperationOptions } from '@/core/types';
 import { InstrumentsService } from '@/instruments/instruments.service';
 

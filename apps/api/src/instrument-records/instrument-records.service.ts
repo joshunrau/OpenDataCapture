@@ -15,7 +15,7 @@ import type {
 import { type InstrumentRecordModel, Prisma, type SessionModel } from '@prisma/client';
 import { isNumber, pickBy } from 'lodash-es';
 
-import { accessibleQuery } from '@/ability/ability.utils';
+import { accessibleQuery } from '@douglasneuroinformatics/libnest';
 import type { EntityOperationOptions } from '@/core/types';
 import { GroupsService } from '@/groups/groups.service';
 import { InstrumentsService } from '@/instruments/instruments.service';

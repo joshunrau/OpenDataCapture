@@ -6,7 +6,7 @@ import type { CreateSessionData, Session } from '@opendatacapture/schemas/sessio
 import type { CreateSubjectData } from '@opendatacapture/schemas/subject';
 import type { SubjectModel } from '@prisma/client';
 
-import { accessibleQuery } from '@/ability/ability.utils';
+import { accessibleQuery } from '@douglasneuroinformatics/libnest';
 import type { EntityOperationOptions } from '@/core/types';
 import { GroupsService } from '@/groups/groups.service';
 import { SubjectsService } from '@/subjects/subjects.service';

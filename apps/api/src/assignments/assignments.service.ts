@@ -5,7 +5,7 @@ import { ConfigService, InjectModel, type Model } from '@douglasneuroinformatics
 import { Injectable, NotFoundException } from '@nestjs/common';
 import type { Assignment, UpdateAssignmentData } from '@opendatacapture/schemas/assignment';
 
-import { accessibleQuery } from '@/ability/ability.utils';
+import { accessibleQuery } from '@douglasneuroinformatics/libnest';
 import type { EntityOperationOptions } from '@/core/types';
 import { GatewayService } from '@/gateway/gateway.service';
 

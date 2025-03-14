@@ -23,7 +23,7 @@ import type {
   ScalarInstrumentBundleContainer
 } from '@opendatacapture/schemas/instrument';
 
-import { accessibleQuery } from '@/ability/ability.utils';
+import { accessibleQuery } from '@douglasneuroinformatics/libnest';
 import type { EntityOperationOptions } from '@/core/types';
 
 import { CreateInstrumentDto } from './dto/create-instrument.dto';
