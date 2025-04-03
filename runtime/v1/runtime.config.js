@@ -35,6 +35,7 @@ export default {
     'pure-rand__6.x',
     'react-dom__18.x',
     'react__18.x',
+    'react__19.x',
     'simple-statistics__7.x',
     'ts-pattern__5.x',
     'type-fest__4.x',

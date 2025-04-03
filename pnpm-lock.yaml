@@ -1221,6 +1221,9 @@ importers:
       react__18.x:
         specifier: workspace:*
         version: link:../../vendor/react@18.x
+      react__19.x:
+        specifier: workspace:*
+        version: link:../../vendor/react@19.x
       simple-statistics__7.x:
         specifier: workspace:*
         version: link:../../vendor/simple-statistics@7.x
