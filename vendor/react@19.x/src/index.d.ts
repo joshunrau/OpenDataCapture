@@ -3950,6 +3950,7 @@ declare namespace React {
 
   // Keep in sync with JSX namespace in ./jsx-runtime.d.ts and ./jsx-dev-runtime.d.ts
   namespace JSX {
+    type ElementType = string | React.JSXElementConstructor<any>;
     interface Element extends React.ReactElement<any, any> {}
     interface ElementClass extends React.Component<any> {
       render(): React.ReactNode;
