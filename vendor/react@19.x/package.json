@@ -1,0 +1,17 @@
+{
+  "name": "react__19.x",
+  "version": "19.1.0",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "csstype__3.x": "workspace:*",
+    "react": "19.1.0"
+  }
+}
