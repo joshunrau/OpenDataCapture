@@ -1,5 +1,4 @@
-import * as React from './';
-export { Fragment } from './';
+import type React from './index.d.ts';
 
 export namespace JSX {
   type ElementType = React.JSX.ElementType;
@@ -26,3 +25,5 @@ export function jsx(type: React.ElementType, props: unknown, key?: React.Key): R
  * You should not use this function directly. Use JSX and a transpiler instead.
  */
 export function jsxs(type: React.ElementType, props: unknown, key?: React.Key): React.ReactElement;
+
+export type { Fragment } from './index.d.ts';
