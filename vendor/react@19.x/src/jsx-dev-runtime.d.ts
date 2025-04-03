@@ -1,7 +1,7 @@
-import * as React from './';
-export { Fragment } from './';
+import type React from './index.d.ts';
 
 export namespace JSX {
+  type ElementType = React.JSX.ElementType;
   interface Element extends React.JSX.Element {}
   interface ElementClass extends React.JSX.ElementClass {}
   interface ElementAttributesProperty extends React.JSX.ElementAttributesProperty {}
@@ -42,3 +42,5 @@ export function jsxDEV(
   source?: JSXSource,
   self?: unknown
 ): React.ReactElement;
+
+export type { Fragment } from './index.d.ts';
