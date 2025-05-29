@@ -1501,11 +1501,11 @@ importers:
 
   vendor/zod@3.23.x:
     dependencies:
-      zod:
-        specifier: 3.23.8
-        version: 3.23.8
+      zod__3.x:
+        specifier: workspace:*
+        version: link:../zod@3.x
 
-  vendor/zod@3.x/src:
+  vendor/zod@3.x:
     dependencies:
       zod:
         specifier: ^3.25.36
