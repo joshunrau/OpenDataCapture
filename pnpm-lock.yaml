@@ -711,7 +711,7 @@ importers:
     dependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 2.9.0(neverthrow@8.2.0)(zod@3.25.32)
+        version: 2.9.0(neverthrow@8.2.0)(zod@3.25.36)
       '@opendatacapture/schemas':
         specifier: workspace:*
         version: link:../schemas
@@ -806,7 +806,7 @@ importers:
     dependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 2.9.0(neverthrow@8.2.0)(zod@3.25.32)
+        version: 2.9.0(neverthrow@8.2.0)(zod@3.25.36)
       '@opendatacapture/runtime-core':
         specifier: workspace:*
         version: link:../runtime-core
@@ -1005,7 +1005,7 @@ importers:
     devDependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 2.9.0(neverthrow@8.2.0)(zod@3.25.32)
+        version: 2.9.0(neverthrow@8.2.0)(zod@3.25.36)
 
   runtime/v1:
     devDependencies:
@@ -1195,7 +1195,7 @@ importers:
         version: 6.7.3
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 2.9.0(neverthrow@8.2.0)(zod@3.25.32)
+        version: 2.9.0(neverthrow@8.2.0)(zod@3.25.36)
       '@faker-js/faker':
         specifier: ^9.4.0
         version: 9.7.0
@@ -1508,8 +1508,8 @@ importers:
   vendor/zod@3.x/src:
     dependencies:
       zod:
-        specifier: 3.25.32
-        version: 3.25.32
+        specifier: ^3.25.36
+        version: 3.25.36
 
 packages:
   '@actions/core@1.11.1':
@@ -12658,9 +12658,9 @@ packages:
     resolution:
       { integrity: sha512-HhY1oqzWCQWuUqvBFnsyrtZRhyPeR7SUGv+C4+MsisMuVfSPx8HpwWqH8tRahSlt6M3PiFAcoeFhZAqIXTxoSg== }
 
-  zod@3.25.32:
+  zod@3.25.36:
     resolution:
-      { integrity: sha512-OSm2xTIRfW8CV5/QKgngwmQW/8aPfGdaQFlrGoErlgg/Epm7cjb6K6VEyExfe65a3VybUOnu381edLb0dfJl0g== }
+      { integrity: sha512-eRFS3i8T0IrpGdL8HQyqFAugGOn7jOjyGgGdtv5NY4Wkhi7lJDk732bNZ609YMIGFbLoaj6J69O1Mura23gfIw== }
 
   zustand@4.5.6:
     resolution:
@@ -13212,7 +13212,7 @@ snapshots:
       type-fest: 4.40.1
       zod: 3.24.3
 
-  '@douglasneuroinformatics/libjs@2.9.0(neverthrow@8.2.0)(zod@3.25.32)':
+  '@douglasneuroinformatics/libjs@2.9.0(neverthrow@8.2.0)(zod@3.25.36)':
     dependencies:
       clean-stack: 5.2.0
       extract-stack: 3.0.0
@@ -13220,7 +13220,7 @@ snapshots:
       serialize-error: 12.0.0
       stringify-object: 5.0.0
       type-fest: 4.40.1
-      zod: 3.25.32
+      zod: 3.25.36
 
   '@douglasneuroinformatics/libjs@2.9.0(neverthrow@8.2.0)(zod@vendor+zod@3.23.x)':
     dependencies:
@@ -23663,7 +23663,7 @@ snapshots:
 
   zod@3.24.3: {}
 
-  zod@3.25.32: {}
+  zod@3.25.36: {}
 
   zustand@4.5.6(immer@10.1.1)(react@vendor+react@19.x):
     dependencies:
