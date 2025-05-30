@@ -1,5 +1,4 @@
-import { deepFreeze } from '@douglasneuroinformatics/libjs';
-import { $BooleanString } from '@opendatacapture/schemas/core';
+import { $BooleanLike, deepFreeze } from '@douglasneuroinformatics/libjs';
 import { z } from 'zod';
 
 const $Config = z.object({
@@ -10,9 +9,9 @@ const $Config = z.object({
     })
     .optional(),
   dev: z.object({
-    disableTutorial: $BooleanString.optional(),
-    isBypassAuthEnabled: $BooleanString.optional(),
-    isForceClearQueryCacheEnabled: $BooleanString.optional(),
+    disableTutorial: $BooleanLike.optional(),
+    isBypassAuthEnabled: $BooleanLike.optional(),
+    isForceClearQueryCacheEnabled: $BooleanLike.optional(),
     networkLatency: z.coerce.number().int().nonnegative().optional(),
     password: z.string().min(1).optional(),
     username: z.string().min(1).optional()
@@ -25,7 +24,7 @@ const $Config = z.object({
   }),
   setup: z.object({
     apiBaseUrl: z.string().min(1),
-    isGatewayEnabled: $BooleanString
+    isGatewayEnabled: $BooleanLike
   })
 });
 
