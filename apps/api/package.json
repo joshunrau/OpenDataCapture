@@ -17,7 +17,7 @@
   "dependencies": {
     "@douglasneuroinformatics/libcrypto": "catalog:",
     "@douglasneuroinformatics/libjs": "catalog:",
-    "@douglasneuroinformatics/libnest": "^5.3.1",
+    "@douglasneuroinformatics/libnest": "file:/Users/joshua/Developer/DouglasNeuroinformatics/libnest",
     "@douglasneuroinformatics/libpasswd": "catalog:",
     "@douglasneuroinformatics/libstats": "catalog:",
     "@faker-js/faker": "^9.4.0",
