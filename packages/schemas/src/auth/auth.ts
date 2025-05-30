@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 import type { Permissions } from '../core/core.js';
 import type { Group } from '../group/group.js';
