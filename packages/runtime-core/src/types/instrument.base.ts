@@ -1,6 +1,6 @@
 import type { LicenseIdentifier } from '@opendatacapture/licenses';
 import type { ConditionalKeys, Merge, SetRequired } from 'type-fest';
-import type { z } from 'zod';
+import type { z } from 'zod/v4';
 
 import type { Language } from './core.js';
 

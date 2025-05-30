@@ -1,5 +1,5 @@
 import { expectTypeOf } from 'expect-type';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 import { defineInstrument } from '../define.js';
 

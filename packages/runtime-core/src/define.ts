@@ -1,7 +1,7 @@
 /// <reference types="../../../runtime/v1/global.d.ts" />
 
 import type { ApprovedLicense } from '@opendatacapture/licenses';
-import type { z } from 'zod';
+import type { z } from 'zod/v4';
 
 import type { InstrumentKind, InstrumentLanguage } from './types/instrument.base.js';
 import type { FormInstrument } from './types/instrument.form.js';
@@ -32,9 +32,9 @@ export type DiscriminatedInstrument<
 export type InstrumentDef<
   TKind extends InstrumentKind,
   TLanguage extends InstrumentLanguage,
-  TSchema extends z.ZodTypeAny
+  TSchema extends z.ZodType
 > = Omit<
-  DiscriminatedInstrument<TKind, TLanguage, z.TypeOf<TSchema>>,
+  DiscriminatedInstrument<TKind, TLanguage, z.output<TSchema>>,
   '__runtimeVersion' | 'kind' | 'language' | 'validationSchema'
 > & {
   kind: TKind;
@@ -52,9 +52,9 @@ export type InstrumentDef<
 export function defineInstrument<
   TKind extends InstrumentKind,
   TLanguage extends InstrumentLanguage,
-  TSchema extends z.ZodTypeAny
+  TSchema extends z.ZodType
 >(def: InstrumentDef<TKind, TLanguage, TSchema>) {
   return Object.assign(def, {
     __runtimeVersion: 1
-  }) as unknown as DiscriminatedInstrument<TKind, TLanguage, z.TypeOf<TSchema>>;
+  }) as unknown as DiscriminatedInstrument<TKind, TLanguage, z.output<TSchema>>;
 }
