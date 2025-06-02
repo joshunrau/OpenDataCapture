@@ -16,8 +16,8 @@ catalogs:
       specifier: ^0.0.4
       version: 0.0.4
     '@douglasneuroinformatics/libjs':
-      specifier: 3.0.1
-      version: 3.0.1
+      specifier: ^3.1.0
+      version: 3.1.0
     '@douglasneuroinformatics/libpasswd':
       specifier: latest
       version: 0.0.3
@@ -199,7 +199,7 @@ importers:
         version: 0.0.4
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 3.0.1(neverthrow@8.2.0)(zod@vendor+zod@3.23.x)
+        version: 3.1.0(neverthrow@8.2.0)(zod@vendor+zod@3.23.x)
       '@douglasneuroinformatics/libnest':
         specifier: file:/Users/joshua/Developer/DouglasNeuroinformatics/libnest
         version: file:../libnest(@nestjs/common@11.1.2(reflect-metadata@0.1.14)(rxjs@7.8.2))(@nestjs/core@11.1.2)(@nestjs/platform-express@11.1.2)(@nestjs/testing@11.1.2(@nestjs/common@11.1.2(reflect-metadata@0.1.14)(rxjs@7.8.2))(@nestjs/core@11.1.2)(@nestjs/platform-express@11.1.2))(@prisma/client@6.8.2(prisma@6.8.2(typescript@5.6.3))(typescript@5.6.3))(@swc/types@0.1.21)(express@5.1.0)(mongodb@6.16.0(socks@2.8.4))(neverthrow@8.2.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(reflect-metadata@0.1.14)(rollup@4.41.1)(rxjs@7.8.2)(socks@2.8.4)(typescript@5.6.3)(zod@vendor+zod@3.23.x)
@@ -466,7 +466,7 @@ importers:
         version: 0.0.4
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 3.0.1(neverthrow@8.2.0)(zod@vendor+zod@3.23.x)
+        version: 3.1.0(neverthrow@8.2.0)(zod@vendor+zod@3.23.x)
       '@douglasneuroinformatics/libui':
         specifier: file:/Users/joshua/Developer/DouglasNeuroinformatics/libui
         version: file:../libui(immer@10.1.1)(neverthrow@8.2.0)(react-dom@vendor+react-dom@19.x)(react@vendor+react@19.x)(tailwindcss@4.1.8)(use-sync-external-store@1.5.0(react@vendor+react@19.x))(zod@vendor+zod@3.23.x)
@@ -572,7 +572,7 @@ importers:
         version: 6.7.3
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 3.0.1(neverthrow@8.2.0)(zod@vendor+zod@3.23.x)
+        version: 3.1.0(neverthrow@8.2.0)(zod@vendor+zod@3.23.x)
       '@douglasneuroinformatics/libpasswd':
         specifier: 'catalog:'
         version: 0.0.3(typescript@5.6.3)
@@ -711,7 +711,7 @@ importers:
     dependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 3.0.1(neverthrow@8.2.0)(zod@3.25.36)
+        version: 3.1.0(neverthrow@8.2.0)(zod@3.25.36)
       '@opendatacapture/schemas':
         specifier: workspace:*
         version: link:../schemas
@@ -794,7 +794,7 @@ importers:
     dependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 3.0.1(neverthrow@8.2.0)(zod@vendor+zod@3.x)
+        version: 3.1.0(neverthrow@8.2.0)(zod@vendor+zod@3.x)
       '@opendatacapture/runtime-core':
         specifier: workspace:*
         version: link:../runtime-core
@@ -806,7 +806,7 @@ importers:
     dependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 3.0.1(neverthrow@8.2.0)(zod@3.25.36)
+        version: 3.1.0(neverthrow@8.2.0)(zod@3.25.36)
       '@opendatacapture/runtime-core':
         specifier: workspace:*
         version: link:../runtime-core
@@ -826,7 +826,7 @@ importers:
     dependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 3.0.1(neverthrow@8.2.0)(zod@vendor+zod@3.x)
+        version: 3.1.0(neverthrow@8.2.0)(zod@vendor+zod@3.x)
       '@douglasneuroinformatics/libui':
         specifier: file:/Users/joshua/Developer/DouglasNeuroinformatics/libui
         version: file:../libui(immer@10.1.1)(neverthrow@8.2.0)(react-dom@vendor+react-dom@19.x)(react@vendor+react@19.x)(tailwindcss@4.1.8)(use-sync-external-store@1.5.0(react@vendor+react@19.x))(zod@vendor+zod@3.x)
@@ -917,7 +917,7 @@ importers:
     dependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 3.0.1(neverthrow@8.2.0)(zod@vendor+zod@3.x)
+        version: 3.1.0(neverthrow@8.2.0)(zod@vendor+zod@3.x)
       esbuild:
         specifier: 'catalog:'
         version: 0.23.1
@@ -957,7 +957,7 @@ importers:
         version: 6.7.3
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 3.0.1(neverthrow@8.2.0)(zod@vendor+zod@3.x)
+        version: 3.1.0(neverthrow@8.2.0)(zod@vendor+zod@3.x)
       '@opendatacapture/licenses':
         specifier: workspace:*
         version: link:../licenses
@@ -1005,7 +1005,7 @@ importers:
     devDependencies:
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 3.0.1(neverthrow@8.2.0)(zod@3.25.36)
+        version: 3.1.0(neverthrow@8.2.0)(zod@3.25.36)
 
   runtime/v1:
     devDependencies:
@@ -1198,7 +1198,7 @@ importers:
         version: 6.7.3
       '@douglasneuroinformatics/libjs':
         specifier: 'catalog:'
-        version: 3.0.1(neverthrow@8.2.0)(zod@3.25.36)
+        version: 3.1.0(neverthrow@8.2.0)(zod@3.25.36)
       '@faker-js/faker':
         specifier: ^9.4.0
         version: 9.8.0
@@ -1860,16 +1860,16 @@ packages:
     resolution:
       { integrity: sha512-tiI4ThtlBUXGEVN3hZBcX/Ul4gdHBLdfMza/KwmGdE0tjG1u556Yn4HQhwnZyDn/c1/q7j4sL+XZc+yZy8TCOQ== }
 
-  '@douglasneuroinformatics/libjs@3.0.1':
+  '@douglasneuroinformatics/libjs@3.0.2':
     resolution:
-      { integrity: sha512-zdkYLe0JRRIfF446pBg8P8vffqiIs+uydnJB4OC8diDSsd35hQyVIf3hkarzLZR647ceRQD6OkA+IvciER/e1Q== }
+      { integrity: sha512-/eypX3TFn45qT4eo0xVqWoVdxwZv5q4pD5D9EmZFi1B5u9B1saaOcpIn69szPxfLbGWxn5Y/CRPqaE9DjTKHeA== }
     peerDependencies:
       neverthrow: ^8.2.0
       zod: ^3.25.x
 
-  '@douglasneuroinformatics/libjs@3.0.2':
+  '@douglasneuroinformatics/libjs@3.1.0':
     resolution:
-      { integrity: sha512-/eypX3TFn45qT4eo0xVqWoVdxwZv5q4pD5D9EmZFi1B5u9B1saaOcpIn69szPxfLbGWxn5Y/CRPqaE9DjTKHeA== }
+      { integrity: sha512-VeaEJLcfOBRcqSMOF7zE3pPTJ2JOWi1UCSPN/pDFmAY5b0sXY0DmxoumO1/atzAkog6BBn6OQy8JZAUaDJ+VyA== }
     peerDependencies:
       neverthrow: ^8.2.0
       zod: ^3.25.x
@@ -13387,36 +13387,6 @@ snapshots:
     dependencies:
       '@hpke/core': 1.7.2
 
-  '@douglasneuroinformatics/libjs@3.0.1(neverthrow@8.2.0)(zod@3.25.36)':
-    dependencies:
-      clean-stack: 5.2.0
-      extract-stack: 3.0.0
-      neverthrow: 8.2.0
-      serialize-error: 12.0.0
-      stringify-object: 5.0.0
-      type-fest: 4.41.0
-      zod: 3.25.36
-
-  '@douglasneuroinformatics/libjs@3.0.1(neverthrow@8.2.0)(zod@vendor+zod@3.23.x)':
-    dependencies:
-      clean-stack: 5.2.0
-      extract-stack: 3.0.0
-      neverthrow: 8.2.0
-      serialize-error: 12.0.0
-      stringify-object: 5.0.0
-      type-fest: 4.41.0
-      zod: link:vendor/zod@3.23.x
-
-  '@douglasneuroinformatics/libjs@3.0.1(neverthrow@8.2.0)(zod@vendor+zod@3.x)':
-    dependencies:
-      clean-stack: 5.2.0
-      extract-stack: 3.0.0
-      neverthrow: 8.2.0
-      serialize-error: 12.0.0
-      stringify-object: 5.0.0
-      type-fest: 4.41.0
-      zod: link:vendor/zod@3.x
-
   '@douglasneuroinformatics/libjs@3.0.2(neverthrow@8.2.0)(zod@3.25.36)':
     dependencies:
       clean-stack: 5.2.0
@@ -13447,11 +13417,41 @@ snapshots:
       type-fest: 4.41.0
       zod: link:vendor/zod@3.x
 
+  '@douglasneuroinformatics/libjs@3.1.0(neverthrow@8.2.0)(zod@3.25.36)':
+    dependencies:
+      clean-stack: 5.2.0
+      extract-stack: 3.0.0
+      neverthrow: 8.2.0
+      serialize-error: 12.0.0
+      stringify-object: 5.0.0
+      type-fest: 4.41.0
+      zod: 3.25.36
+
+  '@douglasneuroinformatics/libjs@3.1.0(neverthrow@8.2.0)(zod@vendor+zod@3.23.x)':
+    dependencies:
+      clean-stack: 5.2.0
+      extract-stack: 3.0.0
+      neverthrow: 8.2.0
+      serialize-error: 12.0.0
+      stringify-object: 5.0.0
+      type-fest: 4.41.0
+      zod: link:vendor/zod@3.23.x
+
+  '@douglasneuroinformatics/libjs@3.1.0(neverthrow@8.2.0)(zod@vendor+zod@3.x)':
+    dependencies:
+      clean-stack: 5.2.0
+      extract-stack: 3.0.0
+      neverthrow: 8.2.0
+      serialize-error: 12.0.0
+      stringify-object: 5.0.0
+      type-fest: 4.41.0
+      zod: link:vendor/zod@3.x
+
   '@douglasneuroinformatics/libnest@file:../libnest(@nestjs/common@11.1.2(reflect-metadata@0.1.14)(rxjs@7.8.2))(@nestjs/core@11.1.2)(@nestjs/platform-express@11.1.2)(@nestjs/testing@11.1.2(@nestjs/common@11.1.2(reflect-metadata@0.1.14)(rxjs@7.8.2))(@nestjs/core@11.1.2)(@nestjs/platform-express@11.1.2))(@prisma/client@6.8.2(prisma@6.8.2(typescript@5.6.3))(typescript@5.6.3))(@swc/types@0.1.21)(express@5.1.0)(mongodb@6.16.0(socks@2.8.4))(neverthrow@8.2.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(reflect-metadata@0.1.14)(rollup@4.41.1)(rxjs@7.8.2)(socks@2.8.4)(typescript@5.6.3)(zod@vendor+zod@3.23.x)':
     dependencies:
       '@casl/ability': 6.7.3
       '@casl/prisma': 1.5.1(@casl/ability@6.7.3)(@prisma/client@6.8.2(prisma@6.8.2(typescript@5.6.3))(typescript@5.6.3))
-      '@douglasneuroinformatics/libjs': 3.0.1(neverthrow@8.2.0)(zod@vendor+zod@3.23.x)
+      '@douglasneuroinformatics/libjs': 3.1.0(neverthrow@8.2.0)(zod@vendor+zod@3.23.x)
       '@nestjs/common': 11.1.2(reflect-metadata@0.1.14)(rxjs@7.8.2)
       '@nestjs/core': 11.1.2(@nestjs/common@11.1.2(reflect-metadata@0.1.14)(rxjs@7.8.2))(@nestjs/platform-express@11.1.2)(reflect-metadata@0.1.14)(rxjs@7.8.2)
       '@nestjs/jwt': 11.0.0(@nestjs/common@11.1.2(reflect-metadata@0.1.14)(rxjs@7.8.2))
