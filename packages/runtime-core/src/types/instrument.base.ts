@@ -172,8 +172,6 @@ type BaseInstrument<
 > = {
   /** The runtime version for this instrument, which is set automatically by the `defineInstrument` function */
   __runtimeVersion: 1;
-  /** The schema version for this instrument */
-  __schemaVersion?: TSchemaVersion;
   /** The content in the instrument to be rendered to the client */
   clientDetails?: ClientInstrumentDetails<TLanguage>;
   /** The content in the instrument to be rendered to the clinician/researcher */
@@ -186,6 +184,8 @@ type BaseInstrument<
   kind: InstrumentKind;
   /** The language(s) in which the instrument is written */
   language: TLanguage;
+  /** The schema version for this instrument */
+  schemaVersion?: TSchemaVersion;
   /** A list of tags that users can use to filter instruments */
   tags: InstrumentUIOption<TLanguage, string[]>;
 };
