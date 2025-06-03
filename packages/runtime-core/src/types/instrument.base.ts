@@ -160,6 +160,8 @@ type MultilingualInstrumentMeasures<TData = any> = InstrumentMeasures<TData, Lan
 type BaseInstrument<TLanguage extends InstrumentLanguage = InstrumentLanguage> = {
   /** The runtime version for this instrument, which is set automatically by the `defineInstrument` function */
   __runtimeVersion: 1;
+  /** The schema version for this instrument */
+  __schemaVersion?: 1 | 2;
   /** The content in the instrument to be rendered to the client */
   clientDetails?: ClientInstrumentDetails<TLanguage>;
   /** The content in the instrument to be rendered to the clinician/researcher */
