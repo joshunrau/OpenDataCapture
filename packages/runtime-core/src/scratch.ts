@@ -1,12 +1,14 @@
 /* eslint-disable */
 
-import type { InstrumentSchemaVersion } from './types/instrument.base.js';
+import type { InstrumentKind, InstrumentLanguage, InstrumentSchemaVersion } from './types/instrument.base.js';
 
-type Base = {
+type BaseInstrumentDef = {
+  kind: InstrumentKind;
+  language: InstrumentLanguage;
   schemaVersion: InstrumentSchemaVersion;
 };
 
-type InstrumentDef<T> = Base &
+type InstrumentDef<T> = BaseInstrumentDef &
   T &
   (NoInfer<T> extends {
     schemaVersion: infer TSchemaVersion extends InstrumentSchemaVersion;
@@ -19,6 +21,8 @@ export function defineInstrument<T>(def: InstrumentDef<T>) {
 }
 
 defineInstrument({
+  kind: 'FORM',
+  language: 'en',
   schemaVersion: 1,
   foo: '1'
 });
