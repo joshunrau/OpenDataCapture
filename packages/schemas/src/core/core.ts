@@ -51,7 +51,7 @@ export const $Json: z.ZodType<Json> = z.lazy(() =>
 
 export type DistributiveOmit<T, K extends keyof any> = T extends any ? Omit<T, K> : never;
 
-export const $ZodTypeAny = z.custom<z.ZodTypeAny>((arg) => isZodType(arg, { version: 4 }));
+export const $ZodTypeAny = z.custom<z.ZodType>((arg) => isZodType(arg, { version: 4 }));
 
 export const $LicenseIdentifier = z
   .string()

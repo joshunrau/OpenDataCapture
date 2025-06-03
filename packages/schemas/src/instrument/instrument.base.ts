@@ -1,4 +1,4 @@
-import { isUnique } from '@douglasneuroinformatics/libjs';
+import { $$Function, isUnique } from '@douglasneuroinformatics/libjs';
 import type {
   BaseInstrument,
   ClientInstrumentDetails,
@@ -17,7 +17,7 @@ import type {
   UnilingualInstrumentMeasures
 } from '@opendatacapture/runtime-core';
 import type { Simplify } from 'type-fest';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 import { $Language, $LicenseIdentifier, $ZodTypeAny } from '../core/core.js';
 
@@ -95,7 +95,7 @@ const $InstrumentMeasureValue: z.ZodType<InstrumentMeasureValue> = z.union([
   z.undefined()
 ]);
 
-const $ComputeMeasureFunction = z.function().args(z.any()).returns($InstrumentMeasureValue);
+const $ComputeMeasureFunction = $$Function({ input: [z.any()], output: $InstrumentMeasureValue });
 
 const $ComputedInstrumentMeasure = z.object({
   hidden: z.boolean().optional(),
@@ -129,10 +129,12 @@ const $UnilingualConstantInstrumentMeasure = z.object({
 }) satisfies z.ZodType<ConstantInstrumentMeasure<any, Language>>;
 
 const $InstrumentMeasures = z.record(
+  z.string(),
   z.union([$ComputedInstrumentMeasure, $ConstantInstrumentMeasure])
 ) satisfies z.ZodType<InstrumentMeasures>;
 
 const $UnilingualInstrumentMeasures = z.record(
+  z.string(),
   z.union([$UnilingualComputedInstrumentMeasure, $UnilingualConstantInstrumentMeasure])
 ) satisfies z.ZodType<UnilingualInstrumentMeasures>;
 
