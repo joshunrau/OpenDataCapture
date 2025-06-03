@@ -9,9 +9,9 @@ type Base = {
 type InstrumentDef<T> = Base &
   T &
   (NoInfer<T> extends {
-    schemaVersion: InstrumentSchemaVersion;
+    schemaVersion: infer TSchemaVersion extends InstrumentSchemaVersion;
   }
-    ? { foo: `${T['schemaVersion']}` }
+    ? { foo: `${TSchemaVersion}` }
     : unknown);
 
 export function defineInstrument<T>(def: InstrumentDef<T>) {
@@ -19,6 +19,6 @@ export function defineInstrument<T>(def: InstrumentDef<T>) {
 }
 
 defineInstrument({
-  schemaVersion: 2,
-  foo: '2'
+  schemaVersion: 1,
+  foo: '1'
 });
