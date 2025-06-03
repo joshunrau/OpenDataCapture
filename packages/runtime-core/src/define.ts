@@ -12,6 +12,14 @@ declare global {
   interface OpenDataCaptureContext {}
 }
 
+type InternalLicensingRequirements = OpenDataCaptureContext extends { isRepo: true }
+  ? {
+      details: {
+        license: ApprovedLicense;
+      };
+    }
+  : unknown;
+
 /** @public */
 // prettier-ignore
 export type DiscriminatedInstrument<
@@ -33,20 +41,15 @@ export type InstrumentDef<
   TKind extends InstrumentKind,
   TLanguage extends InstrumentLanguage,
   TSchema extends z.ZodType
-> = Omit<
-  DiscriminatedInstrument<TKind, TLanguage, z.output<TSchema>>,
-  '__runtimeVersion' | 'kind' | 'language' | 'validationSchema'
-> & {
-  kind: TKind;
-  language: TLanguage;
-  validationSchema: TSchema;
-} & (OpenDataCaptureContext extends { isRepo: true }
-    ? {
-        details: {
-          license: ApprovedLicense;
-        };
-      }
-    : unknown);
+> = InternalLicensingRequirements &
+  Omit<
+    DiscriminatedInstrument<TKind, TLanguage, z.output<TSchema>>,
+    '__runtimeVersion' | 'kind' | 'language' | 'validationSchema'
+  > & {
+    kind: TKind;
+    language: TLanguage;
+    validationSchema: TSchema;
+  };
 
 /** @public */
 export function defineInstrument<
