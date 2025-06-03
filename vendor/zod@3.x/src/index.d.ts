@@ -1,1 +1,1 @@
-export type * from './v3.d.ts';
+export * from './v3.d.ts';
