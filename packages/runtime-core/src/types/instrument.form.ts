@@ -7,6 +7,7 @@ import type { Language } from './core.js';
 import type {
   InstrumentLanguage,
   InstrumentMeasures,
+  InstrumentSchemaVersion,
   InstrumentUIOption,
   ScalarInstrument
 } from './instrument.base.js';
@@ -282,9 +283,10 @@ declare namespace FormInstrument {
 /** @public */
 declare type FormInstrument<
   TData extends FormInstrument.Data = FormInstrument.Data,
-  TLanguage extends InstrumentLanguage = InstrumentLanguage
+  TLanguage extends InstrumentLanguage = InstrumentLanguage,
+  TSchemaVersion extends InstrumentSchemaVersion = InstrumentSchemaVersion
 > = Simplify<
-  ScalarInstrument<TData, TLanguage> & {
+  ScalarInstrument<TData, TLanguage, TSchemaVersion> & {
     content: FormInstrument.Content<TData, TLanguage>;
     initialValues?: PartialDeep<TData>;
     kind: 'FORM';

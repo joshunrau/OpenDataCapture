@@ -3,7 +3,7 @@
 import type { Merge, Promisable } from 'type-fest';
 
 import type { Json, Language } from './core.js';
-import type { InstrumentLanguage, ScalarInstrument } from './instrument.base.js';
+import type { InstrumentLanguage, InstrumentSchemaVersion, ScalarInstrument } from './instrument.base.js';
 
 /** @public */
 declare namespace InteractiveInstrument {
@@ -13,9 +13,10 @@ declare namespace InteractiveInstrument {
 /** @public */
 declare type InteractiveInstrument<
   TData extends InteractiveInstrument.Data = InteractiveInstrument.Data,
-  TLanguage extends InstrumentLanguage = InstrumentLanguage
+  TLanguage extends InstrumentLanguage = InstrumentLanguage,
+  TSchemaVersion extends InstrumentSchemaVersion = InstrumentSchemaVersion
 > = Merge<
-  ScalarInstrument<TData, TLanguage>,
+  ScalarInstrument<TData, TLanguage, TSchemaVersion>,
   {
     content: {
       /** attributes to inject in the iframe head */

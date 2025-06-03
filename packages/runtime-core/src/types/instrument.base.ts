@@ -156,12 +156,17 @@ type UnilingualInstrumentMeasures<TData = any> = InstrumentMeasures<TData, Langu
 /** @internal */
 type MultilingualInstrumentMeasures<TData = any> = InstrumentMeasures<TData, Language[]>;
 
+type InstrumentSchemaVersion = 1 | 2;
+
 /** @public */
-type BaseInstrument<TLanguage extends InstrumentLanguage = InstrumentLanguage> = {
+type BaseInstrument<
+  TLanguage extends InstrumentLanguage = InstrumentLanguage,
+  TSchemaVersion extends InstrumentSchemaVersion = InstrumentSchemaVersion
+> = {
   /** The runtime version for this instrument, which is set automatically by the `defineInstrument` function */
   __runtimeVersion: 1;
   /** The schema version for this instrument */
-  __schemaVersion?: 1 | 2;
+  __schemaVersion?: TSchemaVersion;
   /** The content in the instrument to be rendered to the client */
   clientDetails?: ClientInstrumentDetails<TLanguage>;
   /** The content in the instrument to be rendered to the clinician/researcher */
@@ -194,8 +199,12 @@ type ScalarInstrumentInternal = {
  * @typeParam TData - the structure of the data derived from this instrument
  * @typeParam TLanguage - the language(s) of the instrument
  */
-type ScalarInstrument<TData = any, TLanguage extends InstrumentLanguage = InstrumentLanguage> = Merge<
-  BaseInstrument<TLanguage>,
+type ScalarInstrument<
+  TData = any,
+  TLanguage extends InstrumentLanguage = InstrumentLanguage,
+  TSchemaVersion extends InstrumentSchemaVersion = InstrumentSchemaVersion
+> = Merge<
+  BaseInstrument<TLanguage, TSchemaVersion>,
   {
     defaultMeasureVisibility?: InstrumentMeasureVisibility;
 
@@ -222,6 +231,7 @@ export type {
   InstrumentMeasures,
   InstrumentMeasureValue,
   InstrumentMeasureVisibility,
+  InstrumentSchemaVersion,
   InstrumentUIOption,
   MultilingualClientInstrumentDetails,
   MultilingualInstrumentDetails,
