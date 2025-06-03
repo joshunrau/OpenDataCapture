@@ -9,7 +9,7 @@ import { createInstrumentStub } from './utils.js';
 
 /** @type {import('./utils.js').InstrumentStub<import('@opendatacapture/runtime-core').FormInstrument<FormInstrumentStubData, Language>>} */
 export const unilingualFormInstrument = await createInstrumentStub(async () => {
-  const { z } = await import('zod');
+  const { z } = await import('zod/v4');
   return {
     __runtimeVersion: 1,
     content: {
@@ -69,7 +69,7 @@ export const unilingualFormInstrument = await createInstrumentStub(async () => {
 
 /** @type {import('./utils.js').InstrumentStub<import('@opendatacapture/runtime-core').FormInstrument<FormInstrumentStubData, Language[]>>} */
 export const bilingualFormInstrument = await createInstrumentStub(async () => {
-  const { z } = await import('zod');
+  const { z } = await import('zod/v4');
   return {
     __runtimeVersion: 1,
     content: {
