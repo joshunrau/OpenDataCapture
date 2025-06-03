@@ -140,6 +140,7 @@ const $UnilingualInstrumentMeasures = z.record(
 
 const $BaseInstrument = z.object({
   __runtimeVersion: z.literal(1),
+  __schemaVersion: z.literal([1, 2]).optional(),
   clientDetails: $ClientInstrumentDetails.optional(),
   content: z.any(),
   details: $InstrumentDetails,
