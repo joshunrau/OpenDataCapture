@@ -26,3 +26,10 @@ defineInstrument({
   schemaVersion: 1,
   foo: '1'
 });
+
+defineInstrument({
+  kind: 'FORM',
+  language: 'en',
+  schemaVersion: 2,
+  foo: '2'
+});
