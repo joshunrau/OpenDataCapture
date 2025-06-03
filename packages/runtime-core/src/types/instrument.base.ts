@@ -157,8 +157,10 @@ type UnilingualInstrumentMeasures<TData = any> = InstrumentMeasures<TData, Langu
 /** @internal */
 type MultilingualInstrumentMeasures<TData = any> = InstrumentMeasures<TData, Language[]>;
 
+/** @public */
 type InstrumentSchemaVersion = 1 | 2;
 
+/** @public */
 type InstrumentValidationSchema<TData, TSchemaVersion extends InstrumentSchemaVersion> = TSchemaVersion extends 1
   ? z3.ZodType<TData>
   : TSchemaVersion extends 2
