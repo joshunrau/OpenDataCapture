@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+
+import sys
+
+if sys.version_info < (3, 8):
+    print('Python 3.8 or higher is required')
+    sys.exit(1)
+
+
+import os
+
+from typing import TypedDict
+from argparse import ArgumentParser, MetavarTypeHelpFormatter
+
+
+CONFIG_PATH = os.path.expanduser('~/.odc-cli.json')
+
+
+class LoginCredentials(TypedDict):
+    username: str
+    password: str
+
+
+def auth(credentials: LoginCredentials) -> None:
+    print(credentials)
+    return
+
+
+def main() -> None:
+    parser = ArgumentParser(prog='open-data-capture')
+    subparsers = parser.add_subparsers(help='subcommand help', required=True)
+
+    auth_parser = subparsers.add_parser('auth', aliases=['a'], formatter_class=MetavarTypeHelpFormatter)
+    auth_parser.add_argument('--username', type=str, required=True)
+    auth_parser.add_argument('--password', type=str, required=True)
+    auth_parser.set_defaults(fn=auth)
+
+    args = parser.parse_args()
+
+    args.fn(vars(args))
+
+
+if __name__ == '__main__':
+    main()
