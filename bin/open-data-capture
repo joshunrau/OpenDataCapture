@@ -1,44 +1,39 @@
 #!/usr/bin/env python3
 
+
 from __future__ import annotations
 
 import json
 import os
 
-from typing import TypedDict, Union
 from argparse import ArgumentParser, MetavarTypeHelpFormatter
+from typing import Any, TypedDict, Union
 
+USER_CONFIG_FILEPATH = os.path.expanduser('~/.odc-cli.json')
 
-ConfigDict = TypedDict('ConfigDict', {'base_url': Union[str, None]}, total=False)
+UserConfig = TypedDict('UserConfig', {'base_url': Union[str, None]}, total=False)
 
 LoginCredentials = TypedDict('LoginCredentials', {'username': str, 'password': str})
 
 
-class Config:
-    _filepath = os.path.expanduser('~/.odc-cli.json')
-
-    base_url: str | None
-
-    def __init__(self) -> None:
-        config_dict = self._load()
-        self.base_url = config_dict.get('base_url')
-
-    def write(self) -> None:
-        with open(self._filepath, 'w') as file:
-            json.dump(self._to_dict(), file)
-
-    def _load(self) -> ConfigDict:
-        if not os.path.exists(self._filepath):
-            return {}
-        with open(self._filepath, 'r') as file:
-            return json.load(file)
-
-    def _to_dict(self) -> ConfigDict:
-        return {'base_url': self.base_url}
+def load_user_config() -> UserConfig:
+    if not os.path.exists(USER_CONFIG_FILEPATH):
+        return {}
+    with open(USER_CONFIG_FILEPATH, 'r') as file:
+        return json.load(file)
 
 
-def config_command() -> None:
-    pass
+def write_user_config(user_config: UserConfig) -> None:
+    with open(USER_CONFIG_FILEPATH, 'w') as file:
+        json.dump(user_config, file)
+
+
+def config_command(**kwargs: dict[str, Any]) -> None:
+    user_config = load_user_config()
+    for key in kwargs:
+        if kwargs[key] is not None:
+            user_config[key] = key  # type: ignore
+    write_user_config(user_config)
 
 
 def login_command(username: str, password: str) -> None:
@@ -60,7 +55,8 @@ def main() -> None:
 
     ## CONFIG
 
-    config_parser = subparsers.add_parser('config')
+    config_parser = subparsers.add_parser('config', formatter_class=MetavarTypeHelpFormatter)
+    config_parser.add_argument('--base-url', type=str)
     config_parser.set_defaults(fn=config_command)
 
     kwargs = vars(parser.parse_args())
