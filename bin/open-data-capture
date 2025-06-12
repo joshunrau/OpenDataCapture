@@ -1,43 +1,71 @@
 #!/usr/bin/env python3
 
-import sys
+from __future__ import annotations
 
-if sys.version_info < (3, 8):
-    print('Python 3.8 or higher is required')
-    sys.exit(1)
-
-
+import json
 import os
 
-from typing import TypedDict
+from typing import TypedDict, Union
 from argparse import ArgumentParser, MetavarTypeHelpFormatter
 
 
-CONFIG_PATH = os.path.expanduser('~/.odc-cli.json')
+ConfigDict = TypedDict('ConfigDict', {'base_url': Union[str, None]}, total=False)
+
+LoginCredentials = TypedDict('LoginCredentials', {'username': str, 'password': str})
 
 
-class LoginCredentials(TypedDict):
-    username: str
-    password: str
+class Config:
+    _filepath = os.path.expanduser('~/.odc-cli.json')
+
+    base_url: str | None
+
+    def __init__(self) -> None:
+        config_dict = self._load()
+        self.base_url = config_dict.get('base_url')
+
+    def write(self) -> None:
+        with open(self._filepath, 'w') as file:
+            json.dump(self._to_dict(), file)
+
+    def _load(self) -> ConfigDict:
+        if not os.path.exists(self._filepath):
+            return {}
+        with open(self._filepath, 'r') as file:
+            return json.load(file)
+
+    def _to_dict(self) -> ConfigDict:
+        return {'base_url': self.base_url}
 
 
-def auth(credentials: LoginCredentials) -> None:
-    print(credentials)
-    return
+def config_command() -> None:
+    pass
+
+
+def login_command(username: str, password: str) -> None:
+    print(username, password)
 
 
 def main() -> None:
     parser = ArgumentParser(prog='open-data-capture')
     subparsers = parser.add_subparsers(help='subcommand help', required=True)
 
-    auth_parser = subparsers.add_parser('auth', aliases=['a'], formatter_class=MetavarTypeHelpFormatter)
-    auth_parser.add_argument('--username', type=str, required=True)
-    auth_parser.add_argument('--password', type=str, required=True)
-    auth_parser.set_defaults(fn=auth)
+    ## AUTH
+    auth_parser = subparsers.add_parser('auth')
+    auth_subparsers = auth_parser.add_subparsers()
 
-    args = parser.parse_args()
+    login_parser = auth_subparsers.add_parser('login', formatter_class=MetavarTypeHelpFormatter)
+    login_parser.add_argument('--username', type=str, required=True)
+    login_parser.add_argument('--password', type=str, required=True)
+    login_parser.set_defaults(fn=login_command)
 
-    args.fn(vars(args))
+    ## CONFIG
+
+    config_parser = subparsers.add_parser('config')
+    config_parser.set_defaults(fn=config_command)
+
+    kwargs = vars(parser.parse_args())
+    fn = kwargs.pop('fn')
+    fn(**kwargs)
 
 
 if __name__ == '__main__':
