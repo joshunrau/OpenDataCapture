@@ -57,20 +57,24 @@ def require_url(fn: Callable):
     return wrapper
 
 
-def get_config_url_command() -> None:
-    config = Config()
-    print(config.base_url or 'null')
+class AuthCommands:
+    @require_url
+    @staticmethod
+    def login(username: str, password: str) -> None:
+        print(username, password)
 
 
-def set_config_url_command(url: str) -> None:
-    config = Config()
-    config.base_url = url
-    config.write()
+class ConfigCommands:
+    @staticmethod
+    def get_url() -> None:
+        config = Config()
+        print(config.base_url or 'null')
 
-
-@require_url
-def login_command(username: str, password: str) -> None:
-    print(username, password)
+    @staticmethod
+    def set_url(url: str) -> None:
+        config = Config()
+        config.base_url = url
+        config.write()
 
 
 def main() -> None:
@@ -84,7 +88,7 @@ def main() -> None:
     login_parser = auth_subparsers.add_parser('login')
     login_parser.add_argument('--username', type=str, required=True)
     login_parser.add_argument('--password', type=str, required=True)
-    login_parser.set_defaults(fn=login_command)
+    login_parser.set_defaults(fn=AuthCommands.login)
 
     ## CONFIG
 
@@ -92,11 +96,11 @@ def main() -> None:
     config_subparsers = config_parser.add_subparsers(required=True)
 
     get_config_url_parser = config_subparsers.add_parser('get-url')
-    get_config_url_parser.set_defaults(fn=get_config_url_command)
+    get_config_url_parser.set_defaults(fn=ConfigCommands.get_url)
 
     set_config_parser = config_subparsers.add_parser('set-url')
     set_config_parser.add_argument('url', type=ArgumentTypes.valid_url_or_null)
-    set_config_parser.set_defaults(fn=set_config_url_command)
+    set_config_parser.set_defaults(fn=ConfigCommands.set_url)
 
     kwargs = vars(parser.parse_args())
     fn = kwargs.pop('fn')
