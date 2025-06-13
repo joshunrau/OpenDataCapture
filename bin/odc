@@ -7,7 +7,7 @@ import json
 import os
 
 from argparse import ArgumentTypeError, ArgumentParser
-from typing import TypedDict, Union
+from typing import Any, Callable, TypedDict, Union
 from urllib.parse import urlparse
 
 USER_CONFIG_FILEPATH = os.path.expanduser('~/.odc-cli.json')
@@ -38,6 +38,15 @@ def write_user_config(user_config: UserConfig) -> None:
         json.dump(user_config, file)
 
 
+def require_url(fn: Callable):
+    def wrapper(*args: Any, **kwargs: Any):
+        print('Something is happening before the function is called.')
+        fn(*args, **kwargs)
+        print('Something is happening after the function is called.')
+
+    return wrapper
+
+
 def get_config_url_command() -> None:
     user_config = load_user_config()
     print(user_config.get('base_url') or 'null')
@@ -49,6 +58,7 @@ def set_config_url_command(url: str) -> None:
     write_user_config(user_config)
 
 
+@require_url
 def login_command(username: str, password: str) -> None:
     print(username, password)
 
