@@ -12,7 +12,7 @@ from urllib.parse import urlparse
 
 USER_CONFIG_FILEPATH = os.path.expanduser('~/.odc-cli.json')
 
-UserConfig = TypedDict('UserConfig', {'base_url': Union[str, None]}, total=False)
+ConfigDict = TypedDict('ConfigDict', {'base_url': Union[str, None]}, total=False)
 
 LoginCredentials = TypedDict('LoginCredentials', {'username': str, 'password': str})
 
@@ -28,16 +28,20 @@ class ArgumentTypes:
         return url
 
 
-def load_user_config() -> UserConfig:
-    if not os.path.exists(USER_CONFIG_FILEPATH):
-        return {}
-    with open(USER_CONFIG_FILEPATH, 'r') as file:
-        return json.load(file)
+class Config:
+    _filepath = os.path.expanduser('~/.odc-cli.json')
 
+    @classmethod
+    def load(cls) -> ConfigDict:
+        if not os.path.exists(cls._filepath):
+            return {}
+        with open(cls._filepath, 'r') as file:
+            return json.load(file)
 
-def write_user_config(user_config: UserConfig) -> None:
-    with open(USER_CONFIG_FILEPATH, 'w') as file:
-        json.dump(user_config, file)
+    @classmethod
+    def write(cls, user_config: ConfigDict) -> None:
+        with open(cls._filepath, 'w') as file:
+            json.dump(user_config, file)
 
 
 def require_url(fn: Callable):
@@ -50,14 +54,14 @@ def require_url(fn: Callable):
 
 
 def get_config_url_command() -> None:
-    user_config = load_user_config()
+    user_config = Config.load()
     print(user_config.get('base_url') or 'null')
 
 
 def set_config_url_command(url: str) -> None:
-    user_config = load_user_config()
+    user_config = Config.load()
     user_config['base_url'] = url
-    write_user_config(user_config)
+    Config.write(user_config)
 
 
 @require_url
