@@ -15,6 +15,18 @@ PROGRAM_NAME = os.path.basename(sys.argv[0])
 USER_CONFIG_FILEPATH = os.path.expanduser('~/.odc-cli.json')
 
 
+config: Config
+
+
+def require_url(fn: Callable):
+    def wrapper(*args: Any, **kwargs: Any):
+        if config.base_url is None:
+            raise RuntimeError(f'URL must be defined (hint: use {PROGRAM_NAME} config set-url)')
+        fn(*args, **kwargs)
+
+    return wrapper
+
+
 class ArgumentTypes:
     @staticmethod
     def valid_url_or_null(url: str) -> str | None:
@@ -50,20 +62,8 @@ class Config:
             json.dump(self._dict, file)
 
 
-class Decorators:
-    @staticmethod
-    def require_url(fn: Callable):
-        def wrapper(*args: Any, **kwargs: Any):
-            config = Config()
-            if config.base_url is None:
-                raise RuntimeError(f'URL must be defined (hint: use {PROGRAM_NAME} config set-url)')
-            fn(*args, **kwargs)
-
-        return wrapper
-
-
 class AuthCommands:
-    @Decorators.require_url
+    @require_url
     @staticmethod
     def login(username: str, password: str) -> None:
         print(username, password)
@@ -72,17 +72,18 @@ class AuthCommands:
 class ConfigCommands:
     @staticmethod
     def get_url() -> None:
-        config = Config()
         print(config.base_url or 'null')
 
     @staticmethod
     def set_url(url: str) -> None:
-        config = Config()
         config.base_url = url
         config.write()
 
 
 def main() -> None:
+    global config
+    config = Config()
+
     parser = ArgumentParser(prog=PROGRAM_NAME)
     subparsers = parser.add_subparsers(help='subcommand help', required=True)
 
