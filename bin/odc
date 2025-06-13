@@ -48,17 +48,19 @@ class Config:
             json.dump(self._dict, file)
 
 
-def require_url(fn: Callable):
-    def wrapper(*args: Any, **kwargs: Any):
-        print('Something is happening before the function is called.')
-        fn(*args, **kwargs)
-        print('Something is happening after the function is called.')
+class Decorators:
+    @staticmethod
+    def require_url(fn: Callable):
+        def wrapper(*args: Any, **kwargs: Any):
+            print('Something is happening before the function is called.')
+            fn(*args, **kwargs)
+            print('Something is happening after the function is called.')
 
-    return wrapper
+        return wrapper
 
 
 class AuthCommands:
-    @require_url
+    @Decorators.require_url
     @staticmethod
     def login(username: str, password: str) -> None:
         print(username, password)
