@@ -7,14 +7,10 @@ import json
 import os
 
 from argparse import ArgumentTypeError, ArgumentParser
-from typing import Any, Callable, TypedDict, Union
+from typing import Any, Callable
 from urllib.parse import urlparse
 
 USER_CONFIG_FILEPATH = os.path.expanduser('~/.odc-cli.json')
-
-ConfigDict = TypedDict('ConfigDict', {'base_url': Union[str, None]}, total=False)
-
-LoginCredentials = TypedDict('LoginCredentials', {'username': str, 'password': str})
 
 
 class ArgumentTypes:
@@ -29,19 +25,27 @@ class ArgumentTypes:
 
 
 class Config:
+    _dict: dict[str, Any]
     _filepath = os.path.expanduser('~/.odc-cli.json')
 
-    @classmethod
-    def load(cls) -> ConfigDict:
-        if not os.path.exists(cls._filepath):
-            return {}
-        with open(cls._filepath, 'r') as file:
-            return json.load(file)
+    def __init__(self) -> None:
+        if not os.path.exists(self._filepath):
+            self._dict = {}
+            return None
+        with open(self._filepath, 'r') as file:
+            self._dict = json.load(file)
 
-    @classmethod
-    def write(cls, user_config: ConfigDict) -> None:
-        with open(cls._filepath, 'w') as file:
-            json.dump(user_config, file)
+    @property
+    def base_url(self) -> str | None:
+        return self._dict.get('base_url')
+
+    @base_url.setter
+    def base_url(self, value: str | None):
+        self._dict['base_url'] = value
+
+    def write(self) -> None:
+        with open(self._filepath, 'w') as file:
+            json.dump(self._dict, file)
 
 
 def require_url(fn: Callable):
@@ -54,14 +58,14 @@ def require_url(fn: Callable):
 
 
 def get_config_url_command() -> None:
-    user_config = Config.load()
-    print(user_config.get('base_url') or 'null')
+    config = Config()
+    print(config.base_url or 'null')
 
 
 def set_config_url_command(url: str) -> None:
-    user_config = Config.load()
-    user_config['base_url'] = url
-    Config.write(user_config)
+    config = Config()
+    config.base_url = url
+    config.write()
 
 
 @require_url
