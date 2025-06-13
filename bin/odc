@@ -10,6 +10,9 @@ import sys
 from argparse import ArgumentTypeError, ArgumentParser
 from typing import Any, Callable
 from urllib.parse import urlparse
+from urllib.request import HTTPError, Request, urlopen
+from urllib.response import addinfourl
+from urllib.error import URLError
 
 PROGRAM_NAME = os.path.basename(sys.argv[0])
 USER_CONFIG_FILEPATH = os.path.expanduser('~/.odc-cli.json')
@@ -62,11 +65,66 @@ class Config:
             json.dump(self._dict, file)
 
 
+class HttpResponse:
+    def __init__(self, data: dict[str, Any] | list[Any] | None, status: int | None):
+        self.data = data
+        self.status = status
+
+    def __str__(self) -> str:
+        lines = [
+            f'HTTP Status: {self.status if self.status is not None else "N/A"}',
+            f'Success: {self.ok}',
+            'Data:',
+        ]
+        try:
+            pretty_data = json.dumps(self.data, indent=2, ensure_ascii=False)
+        except (TypeError, ValueError):
+            pretty_data = str(self.data)
+        lines.append(pretty_data)
+        return '\n'.join(lines)
+
+    def __repr__(self) -> str:
+        return f'HttpResponse(status={self.status}, ok={self.ok}, data={self.data})'
+
+    @property
+    def ok(self) -> bool:
+        return self.status is not None and 200 <= self.status < 300
+
+
+class HttpClient:
+    @classmethod
+    def post(cls, url: str, data: Any) -> Any:
+        headers: dict[str, str] = {'Content-Type': 'application/json'}
+        json_data = json.dumps(data).encode('utf-8')
+        req = Request(url, data=json_data, headers=headers, method='POST')
+        return cls._send(req)
+
+    @staticmethod
+    def _send(req: Request) -> HttpResponse:
+        try:
+            with urlopen(req, timeout=2) as response:
+                return HttpClient._build_response(response)
+        except HTTPError as err:
+            return HttpClient._build_response(err)
+        except URLError as err:
+            return HttpResponse(data={'URLError': str(err.reason)}, status=None)
+
+    @staticmethod
+    def _build_response(response: addinfourl) -> HttpResponse:
+        body = response.read()
+        try:
+            data = json.loads(body.decode(errors='replace'))
+        except json.JSONDecodeError:
+            data = {'error': 'Invalid JSON response'}
+        return HttpResponse(data=data, status=response.getcode())
+
+
 class AuthCommands:
     @require_url
     @staticmethod
     def login(username: str, password: str) -> None:
-        print(username, password)
+        response = HttpClient.post(f'{config.base_url}/v1/auth/login', {'username': username, 'password': password})
+        print(response)
 
 
 class ConfigCommands:
