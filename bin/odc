@@ -7,7 +7,7 @@ import json
 import os
 
 from argparse import ArgumentParser, MetavarTypeHelpFormatter
-from typing import Any, TypedDict, Union
+from typing import  TypedDict, Union
 
 USER_CONFIG_FILEPATH = os.path.expanduser('~/.odc-cli.json')
 
@@ -28,16 +28,14 @@ def write_user_config(user_config: UserConfig) -> None:
         json.dump(user_config, file)
 
 
-def get_config_command() -> None:
+def get_config_url_command() -> None:
     user_config = load_user_config()
-    print(user_config)
+    print(user_config.get('base_url'))
 
 
-def set_config_command(**kwargs: dict[str, Any]) -> None:
+def set_config_url_command(url: str) -> None:
     user_config = load_user_config()
-    for key in kwargs:
-        if kwargs[key] is not None:
-            user_config[key] = kwargs[key]  # type: ignore
+    user_config['base_url'] = url
     write_user_config(user_config)
 
 
@@ -63,12 +61,12 @@ def main() -> None:
     config_parser = subparsers.add_parser('config')
     config_subparsers = config_parser.add_subparsers(required=True)
 
-    get_config_parser = config_subparsers.add_parser('get')
-    get_config_parser.set_defaults(fn=get_config_command)
+    get_config_url_parser = config_subparsers.add_parser('get-url')
+    get_config_url_parser.set_defaults(fn=get_config_url_command)
 
-    set_config_parser = config_subparsers.add_parser('set', formatter_class=MetavarTypeHelpFormatter)
-    set_config_parser.add_argument('--base-url', type=str)
-    set_config_parser.set_defaults(fn=set_config_command)
+    set_config_parser = config_subparsers.add_parser('set-url', formatter_class=MetavarTypeHelpFormatter)
+    set_config_parser.add_argument('url', type=str)
+    set_config_parser.set_defaults(fn=set_config_url_command)
 
     kwargs = vars(parser.parse_args())
     fn = kwargs.pop('fn')
