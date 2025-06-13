@@ -17,13 +17,15 @@ UserConfig = TypedDict('UserConfig', {'base_url': Union[str, None]}, total=False
 LoginCredentials = TypedDict('LoginCredentials', {'username': str, 'password': str})
 
 
-def valid_url_or_null(url: str) -> str | None:
-    if url == 'null':
-        return None
-    parsed = urlparse(url)
-    if not all([parsed.scheme, parsed.netloc]):
-        raise ArgumentTypeError(f'invalid url: {url}')
-    return url
+class ArgumentTypes:
+    @staticmethod
+    def valid_url_or_null(url: str) -> str | None:
+        if url == 'null':
+            return None
+        parsed = urlparse(url)
+        if not all([parsed.scheme, parsed.netloc]):
+            raise ArgumentTypeError(f'invalid url: {url}')
+        return url
 
 
 def load_user_config() -> UserConfig:
@@ -85,7 +87,7 @@ def main() -> None:
     get_config_url_parser.set_defaults(fn=get_config_url_command)
 
     set_config_parser = config_subparsers.add_parser('set-url')
-    set_config_parser.add_argument('url', type=valid_url_or_null)
+    set_config_parser.add_argument('url', type=ArgumentTypes.valid_url_or_null)
     set_config_parser.set_defaults(fn=set_config_url_command)
 
     kwargs = vars(parser.parse_args())
