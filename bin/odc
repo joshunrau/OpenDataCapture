@@ -53,6 +53,14 @@ class Config:
             self._dict = json.load(file)
 
     @property
+    def access_token(self) -> str | None:
+        return self._dict.get('access_token')
+
+    @access_token.setter
+    def access_token(self, value: str | None):
+        self._dict['access_token'] = value
+
+    @property
     def base_url(self) -> str | None:
         return self._dict.get('base_url')
 
@@ -66,7 +74,7 @@ class Config:
 
 
 class HttpResponse:
-    def __init__(self, data: dict[str, Any] | list[Any] | None, status: int | None):
+    def __init__(self, data: Any, status: int | None):
         self.data = data
         self.status = status
 
@@ -93,7 +101,7 @@ class HttpResponse:
 
 class HttpClient:
     @classmethod
-    def post(cls, url: str, data: Any) -> Any:
+    def post(cls, url: str, data: Any) -> HttpResponse:
         headers: dict[str, str] = {'Content-Type': 'application/json'}
         json_data = json.dumps(data).encode('utf-8')
         req = Request(url, data=json_data, headers=headers, method='POST')
@@ -138,7 +146,11 @@ class AuthCommands:
     @staticmethod
     def login(username: str, password: str) -> None:
         response = HttpClient.post(f'{config.base_url}/v1/auth/login', {'username': username, 'password': password})
-        print(response)
+        if not response.ok:
+            print(response)
+            return None
+        config.access_token = response.data['accessToken']
+        print('Success!')
 
 
 class ConfigCommands:
