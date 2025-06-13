@@ -6,14 +6,22 @@ from __future__ import annotations
 import json
 import os
 
-from argparse import ArgumentParser, MetavarTypeHelpFormatter
-from typing import  TypedDict, Union
+from argparse import ArgumentTypeError, ArgumentParser, MetavarTypeHelpFormatter
+from typing import TypedDict, Union
+from urllib.parse import urlparse
 
 USER_CONFIG_FILEPATH = os.path.expanduser('~/.odc-cli.json')
 
 UserConfig = TypedDict('UserConfig', {'base_url': Union[str, None]}, total=False)
 
 LoginCredentials = TypedDict('LoginCredentials', {'username': str, 'password': str})
+
+
+def valid_url(url: str):
+    parsed = urlparse(url)
+    if not all([parsed.scheme, parsed.netloc]):
+        raise ArgumentTypeError(f'invalid url: {url}')
+    return url
 
 
 def load_user_config() -> UserConfig:
@@ -65,7 +73,7 @@ def main() -> None:
     get_config_url_parser.set_defaults(fn=get_config_url_command)
 
     set_config_parser = config_subparsers.add_parser('set-url', formatter_class=MetavarTypeHelpFormatter)
-    set_config_parser.add_argument('url', type=str)
+    set_config_parser.add_argument('url', type=valid_url)
     set_config_parser.set_defaults(fn=set_config_url_command)
 
     kwargs = vars(parser.parse_args())
