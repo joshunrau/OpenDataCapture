@@ -107,7 +107,21 @@ class HttpClient:
         except HTTPError as err:
             return HttpClient._build_response(err)
         except URLError as err:
-            return HttpResponse(data={'URLError': str(err.reason)}, status=None)
+            reason = err.reason
+            if isinstance(reason, OSError):
+                message = f'Network error: {reason.strerror or str(reason)}'
+            else:
+                message = f'Failed to reach the server: {reason}'
+
+            return HttpResponse(
+                data={
+                    'error': 'URLError',
+                    'message': message,
+                    'hint': 'Please check if the URL is correct and the server is reachable',
+                    'url': req.get_full_url(),
+                },
+                status=None,
+            )
 
     @staticmethod
     def _build_response(response: addinfourl) -> HttpResponse:
