@@ -5,11 +5,13 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 
 from argparse import ArgumentTypeError, ArgumentParser
 from typing import Any, Callable
 from urllib.parse import urlparse
 
+PROGRAM_NAME = os.path.basename(sys.argv[0])
 USER_CONFIG_FILEPATH = os.path.expanduser('~/.odc-cli.json')
 
 
@@ -52,9 +54,10 @@ class Decorators:
     @staticmethod
     def require_url(fn: Callable):
         def wrapper(*args: Any, **kwargs: Any):
-            print('Something is happening before the function is called.')
+            config = Config()
+            if config.base_url is None:
+                raise RuntimeError(f'URL must be defined (hint: use {PROGRAM_NAME} config set-url)')
             fn(*args, **kwargs)
-            print('Something is happening after the function is called.')
 
         return wrapper
 
@@ -80,7 +83,7 @@ class ConfigCommands:
 
 
 def main() -> None:
-    parser = ArgumentParser(prog='open-data-capture')
+    parser = ArgumentParser(prog=PROGRAM_NAME)
     subparsers = parser.add_subparsers(help='subcommand help', required=True)
 
     ## AUTH
