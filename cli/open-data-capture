@@ -21,8 +21,8 @@ USER_CONFIG_FILEPATH = os.path.expanduser('~/.odc-cli.json')
 config: Config
 
 
-def require_url(fn: Callable):
-    def wrapper(*args: Any, **kwargs: Any):
+def require_url(fn: Callable[..., Any]) -> Callable[..., Any]:
+    def wrapper(*args: Any, **kwargs: Any) -> None:
         if config.base_url is None:
             raise RuntimeError(f'URL must be defined (hint: use {PROGRAM_NAME} config set-url)')
         fn(*args, **kwargs)
@@ -57,7 +57,7 @@ class Config:
         return self._dict.get('access_token')
 
     @access_token.setter
-    def access_token(self, value: str | None):
+    def access_token(self, value: str | None) -> None:
         self._dict['access_token'] = value
 
     @property
@@ -65,7 +65,7 @@ class Config:
         return self._dict.get('base_url')
 
     @base_url.setter
-    def base_url(self, value: str | None):
+    def base_url(self, value: str | None) -> None:
         self._dict['base_url'] = value
 
     def write(self) -> None:
