@@ -91,9 +91,6 @@ class HttpResponse:
         lines.append(pretty_data)
         return '\n'.join(lines)
 
-    def __repr__(self) -> str:
-        return f'HttpResponse(status={self.status}, ok={self.ok}, data={self.data})'
-
     @property
     def ok(self) -> bool:
         return self.status is not None and 200 <= self.status < 300
