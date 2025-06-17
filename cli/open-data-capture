@@ -9,7 +9,7 @@ if sys.version_info[:2] < (3, 8):
     print('Error: Python 3.8 or higher is required', file=sys.stderr)
     sys.exit(1)
 
-
+import base64
 import json
 import os
 
@@ -38,8 +38,6 @@ Features:
     - Store and retrieve configuration (e.g., base URL)
 """
 
-USER_CONFIG_FILEPATH = os.path.expanduser('~/.odc-cli.json')
-
 config: Config  # initialized in main
 
 
@@ -61,6 +59,8 @@ def require_url(fn: Callable[..., Any]) -> Callable[..., Any]:
 
 
 class ArgumentTypes:
+    """Static methods to validate cli args"""
+
     @staticmethod
     def valid_url_or_none(url: str) -> str | None:
         if url == 'None':
@@ -71,8 +71,31 @@ class ArgumentTypes:
         return url
 
 
+class JWTDecoder:
+    """Decodes the payload of a JSON Web Token (JWT) without validating its signature"""
+
+    @classmethod
+    def decode_payload(cls, token):
+        try:
+            parts = token.split('.')
+            if len(parts) != 3:
+                raise ValueError('Invalid JWT format: expected header.payload.signature')
+            payload_b64 = parts[1]
+            decoded_bytes = cls._base64url_decode(payload_b64)
+            payload = json.loads(decoded_bytes.decode('utf-8'))
+            return payload
+        except Exception as e:
+            raise RuntimeError('Failed to decode JWT payload') from e
+    
+    @staticmethod
+    def _base64url_decode(input_str):
+        padding = '=' * (-len(input_str) % 4)
+        input_str += padding
+        return base64.urlsafe_b64decode(input_str)
+
+
 class Config:
-    """Manages user configuration stored in a JSON file"""
+    """Manages program configuration stored in a JSON file"""
 
     _dict: dict[str, Any]
     _filepath = os.path.expanduser('~/.odc-cli.json')
