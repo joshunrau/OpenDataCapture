@@ -58,6 +58,17 @@ def require_url(fn: Callable[..., Any]) -> Callable[..., Any]:
     return wrapper
 
 
+def require_token(fn: Callable[..., Any]) -> Callable[..., Any]:
+    """Decorator to ensure that the user is logged in before executing the function"""
+
+    def wrapper(*args: Any, **kwargs: Any) -> None:
+        if config.access_token is None:
+            raise RuntimeError(f'Must be logged in (hint: use {PROGRAM_NAME} auth login)')
+        fn(*args, **kwargs)
+
+    return wrapper
+
+
 # --- Utilities ---
 
 
@@ -231,6 +242,7 @@ class ConfigCommands:
         config.base_url = url
         config.write()
 
+    @require_url
     @staticmethod
     def get_permissions() -> None:
         assert config.access_token is not None
@@ -241,6 +253,7 @@ class ConfigCommands:
 
 
 class SetupCommands:
+    @require_url
     @staticmethod
     def get_status() -> None:
         response = HttpClient.get(f'{config.base_url}/v1/setup')
