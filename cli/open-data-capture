@@ -52,7 +52,8 @@ def require_url(fn: Callable[..., Any]) -> Callable[..., Any]:
 
     def wrapper(*args: Any, **kwargs: Any) -> None:
         if config.base_url is None:
-            raise RuntimeError(f'URL must be defined (hint: use {PROGRAM_NAME} config set-url)')
+            print(f'Error: URL must be defined (hint: use {PROGRAM_NAME} config set-url)', file=sys.stderr)
+            sys.exit(1)
         fn(*args, **kwargs)
 
     return wrapper
@@ -63,7 +64,8 @@ def require_token(fn: Callable[..., Any]) -> Callable[..., Any]:
 
     def wrapper(*args: Any, **kwargs: Any) -> None:
         if config.access_token is None:
-            raise RuntimeError(f'Must be logged in (hint: use {PROGRAM_NAME} auth login)')
+            print(f'Error: Must be logged in (hint: use {PROGRAM_NAME} auth login)', file=sys.stderr)
+            sys.exit(1)
         fn(*args, **kwargs)
 
     return wrapper
