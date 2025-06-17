@@ -14,7 +14,7 @@ import json
 import os
 
 from argparse import ArgumentParser, ArgumentTypeError
-from typing import Any, Callable
+from typing import Any, Callable, TypedDict
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
@@ -40,6 +40,9 @@ Features:
 
 config: Config  # initialized in main
 
+# --- Types ---
+
+JwtPayload = TypedDict('JwtPayload', {'basePermissionLevel': str})
 
 # --- Decorators ---
 
@@ -75,7 +78,7 @@ class JWTDecoder:
     """Decodes the payload of a JSON Web Token (JWT) without validating its signature"""
 
     @classmethod
-    def decode_payload(cls, token):
+    def decode_payload(cls, token: str) -> JwtPayload:
         try:
             parts = token.split('.')
             if len(parts) != 3:
@@ -86,9 +89,9 @@ class JWTDecoder:
             return payload
         except Exception as e:
             raise RuntimeError('Failed to decode JWT payload') from e
-    
+
     @staticmethod
-    def _base64url_decode(input_str):
+    def _base64url_decode(input_str: str):
         padding = '=' * (-len(input_str) % 4)
         input_str += padding
         return base64.urlsafe_b64decode(input_str)
