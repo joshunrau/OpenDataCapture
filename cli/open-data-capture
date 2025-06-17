@@ -133,11 +133,17 @@ class HttpResponse:
 class HttpClient:
     """Simplified HTTP client for making requests"""
 
+    _default_headers: dict[str, str] = {'Content-Type': 'application/json'}
+
+    @classmethod
+    def get(cls, url: str) -> HttpResponse:
+        req = Request(url, headers=cls._default_headers, method='GET')
+        return cls._send(req)
+
     @classmethod
     def post(cls, url: str, data: Any) -> HttpResponse:
-        headers: dict[str, str] = {'Content-Type': 'application/json'}
         json_data = json.dumps(data).encode('utf-8')
-        req = Request(url, data=json_data, headers=headers, method='POST')
+        req = Request(url, data=json_data, headers=cls._default_headers, method='POST')
         return cls._send(req)
 
     @staticmethod
@@ -200,6 +206,13 @@ class ConfigCommands:
         config.write()
 
 
+class SetupCommands:
+    @staticmethod
+    def get_status() -> None:
+        response = HttpClient.get(f'{config.base_url}/v1/setup')
+        print(response)
+
+
 # --- Main CLI Entrypoint ---
 
 
@@ -230,6 +243,13 @@ def main() -> None:
     set_config_parser = config_subparsers.add_parser('set-url')
     set_config_parser.add_argument('url', type=ArgumentTypes.valid_url_or_none)
     set_config_parser.set_defaults(fn=ConfigCommands.set_url)
+
+    ## SETUP
+    setup_parser = subparsers.add_parser('setup')
+    setup_subparsers = setup_parser.add_subparsers(required=True)
+
+    get_setup_state_parser = setup_subparsers.add_parser('get-state')
+    get_setup_state_parser.set_defaults(fn=SetupCommands.get_status)
 
     kwargs = vars(parser.parse_args())
     fn = kwargs.pop('fn')
