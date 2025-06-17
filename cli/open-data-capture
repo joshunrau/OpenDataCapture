@@ -78,7 +78,7 @@ class JWTDecoder:
     """Decodes the payload of a JSON Web Token (JWT) without validating its signature"""
 
     @classmethod
-    def decode_payload(cls, token: str) -> JwtPayload:
+    def decode_payload(cls, token: str) -> dict[str, Any]:
         try:
             parts = token.split('.')
             if len(parts) != 3:
@@ -231,6 +231,14 @@ class ConfigCommands:
         config.base_url = url
         config.write()
 
+    @staticmethod
+    def get_permissions() -> None:
+        assert config.access_token is not None
+        payload = JWTDecoder.decode_payload(config.access_token)
+        permissions = payload.get('permissions')
+        assert isinstance(permissions, list)
+        print(json.dumps(permissions, indent=2))
+
 
 class SetupCommands:
     @staticmethod
@@ -277,6 +285,9 @@ class CLI:
         set_config_parser = subparsers.add_parser('set-url')
         set_config_parser.add_argument('url', type=ArgumentTypes.valid_url_or_none)
         set_config_parser.set_defaults(fn=ConfigCommands.set_url)
+
+        get_permissions_parser = subparsers.add_parser('get-permissions')
+        get_permissions_parser.set_defaults(fn=ConfigCommands.get_permissions)
 
     def _create_setup_parser(self):
         setup_parser = self.subparsers.add_parser('setup')
