@@ -13,7 +13,7 @@ import base64
 import json
 import os
 
-from argparse import ArgumentParser, ArgumentTypeError
+from argparse import _SubParsersAction, ArgumentParser, ArgumentTypeError
 from typing import Any, Callable, TypedDict
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlparse
@@ -242,44 +242,56 @@ class SetupCommands:
 # --- Main CLI Entrypoint ---
 
 
+class CLI:
+    parser: ArgumentParser
+    subparsers: _SubParsersAction[ArgumentParser]
+
+    def __init__(self) -> None:
+        self.parser = ArgumentParser(prog=PROGRAM_NAME, description=PROGRAM_DESCRIPTION)
+        self.subparsers = self.parser.add_subparsers(help='subcommand help', required=True)
+        self._create_auth_parser()
+        self._create_config_parser()
+        self._create_setup_parser()
+
+    def run(self) -> None:
+        kwargs = vars(self.parser.parse_args())
+        fn = kwargs.pop('fn')
+        fn(**kwargs)
+
+    def _create_auth_parser(self):
+        parser = self.subparsers.add_parser('auth')
+        subparsers = parser.add_subparsers(required=True)
+
+        login_parser = subparsers.add_parser('login')
+        login_parser.add_argument('--username', type=str, required=True)
+        login_parser.add_argument('--password', type=str, required=True)
+        login_parser.set_defaults(fn=AuthCommands.login)
+
+    def _create_config_parser(self):
+        parser = self.subparsers.add_parser('config')
+        subparsers = parser.add_subparsers(required=True)
+
+        get_config_url_parser = subparsers.add_parser('get-url')
+        get_config_url_parser.set_defaults(fn=ConfigCommands.get_url)
+
+        set_config_parser = subparsers.add_parser('set-url')
+        set_config_parser.add_argument('url', type=ArgumentTypes.valid_url_or_none)
+        set_config_parser.set_defaults(fn=ConfigCommands.set_url)
+
+    def _create_setup_parser(self):
+        setup_parser = self.subparsers.add_parser('setup')
+        setup_subparsers = setup_parser.add_subparsers(required=True)
+
+        get_setup_state_parser = setup_subparsers.add_parser('get-state')
+        get_setup_state_parser.set_defaults(fn=SetupCommands.get_status)
+
+
 def main() -> None:
     global config
     config = Config()
 
-    parser = ArgumentParser(prog=PROGRAM_NAME, description=PROGRAM_DESCRIPTION)
-    subparsers = parser.add_subparsers(help='subcommand help', required=True)
-
-    ## AUTH
-    auth_parser = subparsers.add_parser('auth')
-    auth_subparsers = auth_parser.add_subparsers(required=True)
-
-    login_parser = auth_subparsers.add_parser('login')
-    login_parser.add_argument('--username', type=str, required=True)
-    login_parser.add_argument('--password', type=str, required=True)
-    login_parser.set_defaults(fn=AuthCommands.login)
-
-    ## CONFIG
-
-    config_parser = subparsers.add_parser('config')
-    config_subparsers = config_parser.add_subparsers(required=True)
-
-    get_config_url_parser = config_subparsers.add_parser('get-url')
-    get_config_url_parser.set_defaults(fn=ConfigCommands.get_url)
-
-    set_config_parser = config_subparsers.add_parser('set-url')
-    set_config_parser.add_argument('url', type=ArgumentTypes.valid_url_or_none)
-    set_config_parser.set_defaults(fn=ConfigCommands.set_url)
-
-    ## SETUP
-    setup_parser = subparsers.add_parser('setup')
-    setup_subparsers = setup_parser.add_subparsers(required=True)
-
-    get_setup_state_parser = setup_subparsers.add_parser('get-state')
-    get_setup_state_parser.set_defaults(fn=SetupCommands.get_status)
-
-    kwargs = vars(parser.parse_args())
-    fn = kwargs.pop('fn')
-    fn(**kwargs)
+    cli = CLI()
+    cli.run()
 
 
 if __name__ == '__main__':
