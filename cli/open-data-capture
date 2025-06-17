@@ -138,6 +138,8 @@ class Config:
     @base_url.setter
     def base_url(self, value: str | None) -> None:
         self._dict['base_url'] = value
+        if value is None:
+            self._dict['access_token'] = None
 
     def write(self) -> None:
         with open(self._filepath, 'w') as file:
@@ -232,6 +234,7 @@ class AuthCommands:
             return None
         config.access_token = response.data['accessToken']
         print('Success!')
+        config.write()
 
 
 class ConfigCommands:
@@ -245,6 +248,7 @@ class ConfigCommands:
         config.write()
 
     @require_url
+    @require_token
     @staticmethod
     def get_permissions() -> None:
         assert config.access_token is not None
