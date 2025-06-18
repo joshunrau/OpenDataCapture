@@ -8,6 +8,7 @@ import type { InstrumentKind } from '@opendatacapture/runtime-core';
 import { z } from 'zod';
 
 import { CreateInstrumentRecordDto } from './dto/create-instrument-record.dto';
+import { UpdateInstrumentRecordDto } from './dto/update-instrument-record.dto';
 import { UploadInstrumentRecordsDto } from './dto/upload-instrument-record.dto';
 import { InstrumentRecordsService } from './instrument-records.service';
 
@@ -80,7 +81,11 @@ export class InstrumentRecordsController {
   @ApiOperation({ summary: 'Update Instrument Record' })
   @Patch(':id')
   @RouteAccess({ action: 'delete', subject: 'InstrumentRecord' })
-  updateById(@Param('id', ValidObjectIdPipe) id: string, @CurrentUser('ability') ability: AppAbility) {
-    return this.instrumentRecordsService.updateById(id, { ability });
+  updateById(
+    @Param('id', ValidObjectIdPipe) id: string,
+    @Body() { data }: UpdateInstrumentRecordDto,
+    @CurrentUser('ability') ability: AppAbility
+  ) {
+    return this.instrumentRecordsService.updateById(id, data, { ability });
   }
 }
