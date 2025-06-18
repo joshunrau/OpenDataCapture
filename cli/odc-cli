@@ -291,6 +291,11 @@ class AuthCommands:
             config.write()
         print(response.to_json(include_data=False))
 
+    @staticmethod
+    def logout() -> None:
+        config.access_token = None
+        config.write()
+
 
 class ConfigCommands:
     @staticmethod
@@ -395,6 +400,9 @@ class CLI:
         login_parser.add_argument('--username', type=str, required=True)
         login_parser.add_argument('--password', type=str, required=True)
         login_parser.set_defaults(fn=AuthCommands.login)
+
+        logout_parser = subparsers.add_parser('logout', help='remove the stored JWT (recommended for security)')
+        logout_parser.set_defaults(fn=AuthCommands.logout)
 
     def _create_config_parser(self):
         subparsers = self._create_subcommand_subparsers('config')
