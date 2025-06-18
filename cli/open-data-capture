@@ -191,9 +191,13 @@ class HttpResponse:
         return self.to_json(include_data=True)
 
     def to_json(self, include_data: bool) -> str:
-        props: dict[str, Any] = {'success': self.ok, 'status': self.status or 'N/A'}
-        if include_data:
-            props['data'] = self.data
+        props: dict[str, Any] = {}
+        if self.ok:
+            if include_data:
+                props['data'] = self.data
+            props['statusCode'] = self.status or 'N/A'
+        elif not self.ok:
+            props.update(**self.data)
         return to_json(props)
 
     @property
@@ -409,7 +413,10 @@ class CLI:
         find_parser.add_argument('--subject-id')
         find_parser.set_defaults(fn=InstrumentRecordsCommands.find)
 
-        update_parser = subparsers.add_parser('update', help="Update the data for an instrument record. All objects, which includes arrays, are merged recursively. Hence, providing an array [3] will merge with [1, 2] to be [3, 2]")
+        update_parser = subparsers.add_parser(
+            'update',
+            help='Update the data for an instrument record. All objects, which includes arrays, are merged recursively. Hence, providing an array [3] will merge with [1, 2] to be [3, 2]',
+        )
         update_parser.add_argument('--id', required=True)
         update_parser.add_argument('--data', required=True, type=ArgumentTypes.json)
         update_parser.set_defaults(fn=InstrumentRecordsCommands.update)
