@@ -81,6 +81,6 @@ export class InstrumentRecordsController {
   @Patch(':id')
   @RouteAccess({ action: 'delete', subject: 'InstrumentRecord' })
   updateById(@Param('id', ValidObjectIdPipe) id: string, @CurrentUser('ability') ability: AppAbility) {
-    return this.instrumentRecordsService.deleteById(id, { ability });
+    return this.instrumentRecordsService.updateById(id, { ability });
   }
 }
