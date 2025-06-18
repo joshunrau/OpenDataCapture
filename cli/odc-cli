@@ -92,7 +92,7 @@ def build_url_with_params(base_url: str, params: dict[str, Any]):
     return urlunparse(url_parts)
 
 
-def to_json(obj: dict[str, Any]) -> str:
+def to_json(obj: dict[str, Any] | list[Any]) -> str:
     return json.dumps(obj, indent=2, ensure_ascii=False)
 
 
@@ -296,8 +296,15 @@ class AuthCommands:
         config.access_token = None
         config.write()
 
+    @classmethod
+    def status(cls, raw: bool | None) -> None:
+        if raw:
+            cls._print_raw_status()
+        else:
+            cls._print_minimal_status()
+
     @staticmethod
-    def status() -> None:
+    def _print_minimal_status() -> None:
         status_dict: dict[str, Any] = {}
         if config.access_token is None:
             status_dict['Token Exists'] = False
@@ -305,9 +312,16 @@ class AuthCommands:
             token_payload = JWTDecoder.decode_payload(config.access_token)
             status_dict['Token Exists'] = True
             status_dict['Token Expiry'] = datetime.fromtimestamp(token_payload['exp'])
-
         for key, value in status_dict.items():
             print(f'{key}: {value}')
+
+    @require_url
+    @require_token
+    @staticmethod
+    def _print_raw_status() -> None:
+        assert config.access_token is not None
+        token_payload = JWTDecoder.decode_payload(config.access_token)
+        print(to_json(token_payload))
 
 
 class ConfigCommands:
@@ -319,16 +333,6 @@ class ConfigCommands:
     def set_url(url: str | None) -> None:
         config.base_url = url
         config.write()
-
-    @require_url
-    @require_token
-    @staticmethod
-    def get_permissions() -> None:
-        assert config.access_token is not None
-        payload = JWTDecoder.decode_payload(config.access_token)
-        permissions = payload.get('permissions')
-        assert isinstance(permissions, list)
-        print(json.dumps(permissions, indent=2))
 
 
 class InstrumentRecordsCommands:
@@ -417,7 +421,8 @@ class CLI:
         logout_parser = subparsers.add_parser('logout', help='remove the stored JWT (recommended for security)')
         logout_parser.set_defaults(fn=AuthCommands.logout)
 
-        status_parser = subparsers.add_parser('status', help='get the current auth status')
+        status_parser = subparsers.add_parser('status', help='print information on the current authentication state')
+        status_parser.add_argument('--raw', action='store_true')
         status_parser.set_defaults(fn=AuthCommands.status)
 
     def _create_config_parser(self):
@@ -431,9 +436,6 @@ class CLI:
         set_config_parser = subparsers.add_parser('set-url', help='set the base URL for your ODC instance')
         set_config_parser.add_argument('url', type=ArgumentTypes.valid_url_or_none)
         set_config_parser.set_defaults(fn=ConfigCommands.set_url)
-
-        get_permissions_parser = subparsers.add_parser('get-permissions')
-        get_permissions_parser.set_defaults(fn=ConfigCommands.get_permissions)
 
     def _create_instrument_records_parser(self):
         subparsers = self._create_subcommand_subparsers('instrument-records')
