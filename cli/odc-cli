@@ -440,33 +440,33 @@ class CLI:
     def _create_instrument_records_parser(self):
         subparsers = self._create_subcommand_subparsers('instrument-records')
 
-        delete_parser = subparsers.add_parser('delete')
-        delete_parser.add_argument('--id', required=True)
+        delete_parser = subparsers.add_parser('delete', help='delete an instrument record by id')
+        delete_parser.add_argument('--id', required=True, help='id of the instrument record to delete')
         delete_parser.set_defaults(fn=InstrumentRecordsCommands.delete)
 
-        find_parser = subparsers.add_parser('find')
-        find_parser.add_argument('--min-date', type=ArgumentTypes.valid_datetime)
-        find_parser.add_argument('--instrument-id')
-        find_parser.add_argument('--subject-id')
+        find_parser = subparsers.add_parser('find', help='search instrument records by optional filters')
+        find_parser.add_argument('--min-date', type=ArgumentTypes.valid_datetime, help='filter records created after this date (format: yyyy-mm-dd or yyyy-mm-dd hh:mm:ss)')
+        find_parser.add_argument('--instrument-id', help='filter by instrument id')
+        find_parser.add_argument('--subject-id', help='filter by subject id')
         find_parser.set_defaults(fn=InstrumentRecordsCommands.find)
 
         update_parser = subparsers.add_parser(
             'update',
-            help='Update the data for an instrument record. All objects, which includes arrays, are merged recursively. Hence, providing an array [3] will merge with [1, 2] to be [3, 2]',
+            help='update an instrument record with a partial json object (merged recursively)',
         )
-        update_parser.add_argument('--id', required=True)
-        update_parser.add_argument('--data', required=True, type=ArgumentTypes.json)
+        update_parser.add_argument('--id', required=True, help='id of the instrument record to update')
+        update_parser.add_argument('--data', required=True, type=ArgumentTypes.json, help='partial json object with fields to update')
         update_parser.set_defaults(fn=InstrumentRecordsCommands.update)
 
     def _create_instruments_parser(self):
         subparsers = self._create_subcommand_subparsers('instruments')
-        get_parser = subparsers.add_parser('list')
-        get_parser.add_argument('--kind', choices=('FORM', 'INTERACTIVE'))
+        get_parser = subparsers.add_parser('list', help='list all instruments, optionally filtered by kind')
+        get_parser.add_argument('--kind', choices=('FORM', 'INTERACTIVE'), help='filter instruments by kind')
         get_parser.set_defaults(fn=InstrumentsCommands.list)
 
     def _create_setup_parser(self):
         subparsers = self._create_subcommand_subparsers('setup')
-        get_setup_state_parser = subparsers.add_parser('get-state')
+        get_setup_state_parser = subparsers.add_parser('get-state', help='get the current setup status of the ODC instance')
         get_setup_state_parser.set_defaults(fn=SetupCommands.get_status)
 
     def _create_subcommand_subparsers(self, name: str):
