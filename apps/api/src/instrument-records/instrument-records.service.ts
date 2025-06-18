@@ -3,7 +3,7 @@ import { accessibleQuery, InjectModel } from '@douglasneuroinformatics/libnest';
 import type { Model } from '@douglasneuroinformatics/libnest';
 import { linearRegression } from '@douglasneuroinformatics/libstats';
 import { BadRequestException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
-import type { ScalarInstrument } from '@opendatacapture/runtime-core';
+import type { Json, ScalarInstrument } from '@opendatacapture/runtime-core';
 import { DEFAULT_GROUP_NAME } from '@opendatacapture/schemas/core';
 import type {
   CreateInstrumentRecordData,
@@ -290,6 +290,9 @@ export class InstrumentRecordsService {
 
     return this.instrumentRecordModel.update({
       data: {
+        computedMeasures: instrument.measures
+          ? this.instrumentMeasuresService.computeMeasures(instrument.measures, parseResult.data as Json)
+          : null,
         data: parseResult.data
       },
       where: { AND: [accessibleQuery(ability, 'delete', 'InstrumentRecord')], id }
