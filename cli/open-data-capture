@@ -174,17 +174,15 @@ class HttpResponse:
 class HttpClient:
     """Simplified HTTP client for making requests"""
 
-    _default_headers: dict[str, str] = {'Content-Type': 'application/json'}
-
     @classmethod
     def get(cls, url: str) -> HttpResponse:
-        req = Request(url, headers=cls._default_headers, method='GET')
+        req = Request(url, headers=cls._get_default_headers(), method='GET')
         return cls._send(req)
 
     @classmethod
     def post(cls, url: str, data: Any) -> HttpResponse:
         json_data = json.dumps(data).encode('utf-8')
-        req = Request(url, data=json_data, headers=cls._default_headers, method='POST')
+        req = Request(url, data=json_data, headers=cls._get_default_headers(), method='POST')
         return cls._send(req)
 
     @staticmethod
@@ -219,6 +217,13 @@ class HttpClient:
         except json.JSONDecodeError:
             data = {'error': 'Invalid JSON response'}
         return HttpResponse(data=data, status=response.getcode())
+
+    @staticmethod
+    def _get_default_headers() -> dict[str, str]:
+        headers = {'Content-Type': 'application/json'}
+        if config.access_token:
+            headers['Authorization'] = f'Bearer {config.access_token}'
+        return headers
 
 
 # --- Command Handlers ---
