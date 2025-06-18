@@ -209,41 +209,42 @@ class HttpClient:
     """Simplified HTTP client for making requests"""
 
     @classmethod
-    def delete(cls, url: str) -> HttpResponse:
-        req = Request(url, headers=cls._get_default_headers(), method='DELETE')
-        return cls._send(req)
-
-    @classmethod
-    def patch(cls, url: str, data: Any) -> HttpResponse:
-        json_data = json.dumps(data).encode('utf-8')
-        req = Request(url, data=json_data, headers=cls._get_default_headers(), method='PATCH')
-        return cls._send(req)
-
-    @classmethod
     def get(cls, url: str) -> HttpResponse:
-        req = Request(url, headers=cls._get_default_headers(), method='GET')
-        return cls._send(req)
+        return cls._request('GET', url)
+
+    @classmethod
+    def delete(cls, url: str) -> HttpResponse:
+        return cls._request('DELETE', url)
 
     @classmethod
     def post(cls, url: str, data: Any) -> HttpResponse:
-        json_data = json.dumps(data).encode('utf-8')
-        req = Request(url, data=json_data, headers=cls._get_default_headers(), method='POST')
-        return cls._send(req)
+        return cls._request('POST', url, data)
 
-    @staticmethod
-    def _send(req: Request) -> HttpResponse:
+    @classmethod
+    def patch(cls, url: str, data: Any) -> HttpResponse:
+        return cls._request('PATCH', url, data)
+
+    @classmethod
+    def _request(cls, method: str, url: str, data: Any = None) -> HttpResponse:
+        headers = cls._get_default_headers()
+        body = json.dumps(data).encode('utf-8') if data is not None else None
+        request = Request(url, data=body, headers=headers, method=method)
+        return cls._send(request)
+
+    @classmethod
+    def _send(cls, req: Request) -> HttpResponse:
         try:
             with urlopen(req, timeout=2) as response:
-                return HttpClient._build_response(response)
+                return cls._build_response(response)
         except HTTPError as err:
-            return HttpClient._build_response(err)
+            return cls._build_response(err)
         except URLError as err:
             reason = err.reason
-            if isinstance(reason, OSError):
-                message = f'Network error: {reason.strerror or str(reason)}'
-            else:
-                message = f'Failed to reach the server: {reason}'
-
+            message = (
+                f'Network error: {reason.strerror or str(reason)}'
+                if isinstance(reason, OSError)
+                else f'Failed to reach the server: {reason}'
+            )
             return HttpResponse(
                 data={
                     'error': 'URLError',
@@ -257,12 +258,12 @@ class HttpClient:
     @staticmethod
     def _build_response(response: addinfourl) -> HttpResponse:
         body = response.read()
-        data = None
-        if len(body) > 0:
-            try:
-                data = json.loads(body.decode(errors='replace'))
-            except json.JSONDecodeError:
-                data = {'error': 'Invalid JSON response'}
+        if not body:
+            return HttpResponse(data=None, status=response.getcode())
+        try:
+            data = json.loads(body.decode(errors='replace'))
+        except json.JSONDecodeError:
+            data = {'error': 'Invalid JSON response'}
         return HttpResponse(data=data, status=response.getcode())
 
     @staticmethod
