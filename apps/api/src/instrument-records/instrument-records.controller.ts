@@ -2,7 +2,7 @@
 
 import { CurrentUser, ParseSchemaPipe, RouteAccess } from '@douglasneuroinformatics/libnest';
 import type { AppAbility } from '@douglasneuroinformatics/libnest';
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { InstrumentKind } from '@opendatacapture/runtime-core';
 import { z } from 'zod';
@@ -49,6 +49,13 @@ export class InstrumentRecordsController {
     @Query('subjectId') subjectId?: string
   ) {
     return this.instrumentRecordsService.find({ groupId, instrumentId, kind, minDate, subjectId }, { ability });
+  }
+
+  @ApiOperation({ summary: 'Delete Record' })
+  @Delete(':id')
+  @RouteAccess({ action: 'delete', subject: 'InstrumentRecord' })
+  deleteById(@Param('id') id: string) {
+    return this.instrumentRecordsService.deleteById(id);
   }
 
   @ApiOperation({ summary: 'Export Records' })

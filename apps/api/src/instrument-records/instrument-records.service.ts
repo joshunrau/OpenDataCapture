@@ -2,7 +2,7 @@ import { replacer, reviver, yearsPassed } from '@douglasneuroinformatics/libjs';
 import { accessibleQuery, InjectModel } from '@douglasneuroinformatics/libnest';
 import type { Model } from '@douglasneuroinformatics/libnest';
 import { linearRegression } from '@douglasneuroinformatics/libstats';
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import type { ScalarInstrument } from '@opendatacapture/runtime-core';
 import { DEFAULT_GROUP_NAME } from '@opendatacapture/schemas/core';
 import type {
@@ -105,6 +105,10 @@ export class InstrumentRecordsService {
   }
 
   async deleteById(id: string, { ability }: EntityOperationOptions = {}) {
+    const isExisting = await this.instrumentRecordModel.exists({ id });
+    if (!isExisting) {
+      throw new NotFoundException(`Could not find record with ID '${id}'`);
+    }
     return this.instrumentRecordModel.delete({
       where: { AND: [accessibleQuery(ability, 'delete', 'InstrumentRecord')], id }
     });
