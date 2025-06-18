@@ -1,8 +1,8 @@
 /* eslint-disable perfectionist/sort-classes */
 
-import { CurrentUser, ParseSchemaPipe, RouteAccess } from '@douglasneuroinformatics/libnest';
+import { CurrentUser, ParseSchemaPipe, RouteAccess, ValidObjectIdPipe } from '@douglasneuroinformatics/libnest';
 import type { AppAbility } from '@douglasneuroinformatics/libnest';
-import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { InstrumentKind } from '@opendatacapture/runtime-core';
 import { z } from 'zod';
@@ -53,9 +53,10 @@ export class InstrumentRecordsController {
 
   @ApiOperation({ summary: 'Delete Record' })
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   @RouteAccess({ action: 'delete', subject: 'InstrumentRecord' })
-  deleteById(@Param('id') id: string) {
-    return this.instrumentRecordsService.deleteById(id);
+  async deleteById(@Param('id', ValidObjectIdPipe) id: string) {
+    //await this.instrumentRecordsService.deleteById(id);
   }
 
   @ApiOperation({ summary: 'Export Records' })

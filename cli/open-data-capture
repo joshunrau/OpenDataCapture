@@ -184,7 +184,7 @@ class HttpResponse:
         return self.to_json(include_data=True)
 
     def to_json(self, include_data: bool) -> str:
-        props = {'success': self.ok, 'status': self.status or 'N/A'}
+        props: dict[str, Any] = {'success': self.ok, 'status': self.status or 'N/A'}
         if include_data:
             props['data'] = self.data
         return to_json(props)
@@ -196,6 +196,11 @@ class HttpResponse:
 
 class HttpClient:
     """Simplified HTTP client for making requests"""
+
+    @classmethod
+    def delete(cls, url: str) -> HttpResponse:
+        req = Request(url, headers=cls._get_default_headers(), method='DELETE')
+        return cls._send(req)
 
     @classmethod
     def get(cls, url: str) -> HttpResponse:
@@ -235,10 +240,12 @@ class HttpClient:
     @staticmethod
     def _build_response(response: addinfourl) -> HttpResponse:
         body = response.read()
-        try:
-            data = json.loads(body.decode(errors='replace'))
-        except json.JSONDecodeError:
-            data = {'error': 'Invalid JSON response'}
+        data = None
+        if len(body) > 0:
+            try:
+                data = json.loads(body.decode(errors='replace'))
+            except json.JSONDecodeError:
+                data = {'error': 'Invalid JSON response'}
         return HttpResponse(data=data, status=response.getcode())
 
     @staticmethod
@@ -285,6 +292,14 @@ class ConfigCommands:
 
 
 class InstrumentRecordsCommands:
+    @require_url
+    @require_token
+    @staticmethod
+    def delete(id: str) -> None:
+        url = f'{config.base_url}/v1/instrument-records/{id}'
+        response = HttpClient.delete(url)
+        print(response)
+
     @require_url
     @require_token
     @staticmethod
@@ -362,6 +377,10 @@ class CLI:
     def _create_instrument_records_parser(self):
         parser = self.subparsers.add_parser('instrument-records')
         subparsers = parser.add_subparsers(required=True)
+
+        delete_parser = subparsers.add_parser('delete')
+        delete_parser.add_argument('--id', required=True)
+        delete_parser.set_defaults(fn=InstrumentRecordsCommands.delete)
 
         find_parser = subparsers.add_parser('find')
         find_parser.add_argument('--min-date', type=ArgumentTypes.valid_datetime)
