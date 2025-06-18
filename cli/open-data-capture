@@ -96,6 +96,13 @@ class ArgumentTypes:
     """Static methods to validate cli args"""
 
     @staticmethod
+    def json(value: str) -> Any:
+        try:
+            return json.loads(value)
+        except json.JSONDecodeError:
+            raise ArgumentTypeError(f'Invalid JSON: "{value}"')
+
+    @staticmethod
     def valid_datetime(s: str) -> datetime:
         for fmt in ('%Y-%m-%d %H:%M:%S', '%Y-%m-%d'):
             try:
@@ -203,8 +210,9 @@ class HttpClient:
         return cls._send(req)
 
     @classmethod
-    def patch(cls, url: str) -> HttpResponse:
-        req = Request(url, headers=cls._get_default_headers(), method='PATCH')
+    def patch(cls, url: str, data: Any) -> HttpResponse:
+        json_data = json.dumps(data).encode('utf-8')
+        req = Request(url, data=json_data, headers=cls._get_default_headers(), method='PATCH')
         return cls._send(req)
 
     @classmethod
@@ -319,9 +327,9 @@ class InstrumentRecordsCommands:
     @require_url
     @require_token
     @staticmethod
-    def update(id: str) -> None:
+    def update(id: str, data: Any) -> None:
         url = f'{config.base_url}/v1/instrument-records/{id}'
-        response = HttpClient.patch(url)
+        response = HttpClient.patch(url, {'data': data})
         print(response)
 
 
@@ -401,8 +409,9 @@ class CLI:
         find_parser.add_argument('--subject-id')
         find_parser.set_defaults(fn=InstrumentRecordsCommands.find)
 
-        update_parser = subparsers.add_parser('update')
+        update_parser = subparsers.add_parser('update', help="Update the data for an instrument record. All objects, which includes arrays, are merged recursively. Hence, providing an array [3] will merge with [1, 2] to be [3, 2]")
         update_parser.add_argument('--id', required=True)
+        update_parser.add_argument('--data', required=True, type=ArgumentTypes.json)
         update_parser.set_defaults(fn=InstrumentRecordsCommands.update)
 
     def _create_instruments_parser(self):
