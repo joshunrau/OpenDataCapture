@@ -265,8 +265,11 @@ class InstrumentsCommands:
     @require_url
     @require_token
     @staticmethod
-    def list() -> None:
-        response = HttpClient.get(f'{config.base_url}/v1/instruments/list')
+    def list(kind: str | None) -> None:
+        url = f'{config.base_url}/v1/instruments/list'
+        if kind:
+            url += f'?kind={kind}'
+        response = HttpClient.get(url)
         print(json.dumps(response.data, indent=2))
 
 
@@ -326,6 +329,7 @@ class CLI:
         subparsers = parser.add_subparsers(required=True)
 
         get_parser = subparsers.add_parser('list')
+        get_parser.add_argument('--kind', choices=('FORM', 'INTERACTIVE'))
         get_parser.set_defaults(fn=InstrumentsCommands.list)
 
     def _create_setup_parser(self):
