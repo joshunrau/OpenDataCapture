@@ -189,12 +189,7 @@ export class InstrumentRecordsService {
 
     const records = await this.instrumentRecordModel.findMany({
       include: {
-        instrument: {
-          select: {
-            bundle: true,
-            id: true
-          }
-        }
+        instrument: false
       },
       where: {
         AND: [

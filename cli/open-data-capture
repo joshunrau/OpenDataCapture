@@ -261,6 +261,18 @@ class ConfigCommands:
         print(json.dumps(permissions, indent=2))
 
 
+class InstrumentRecordsCommands:
+    @require_url
+    @require_token
+    @staticmethod
+    def find() -> None:
+        url = f'{config.base_url}/v1/instrument-records'
+        # if kind:
+        #     url += f'?kind={kind}'
+        response = HttpClient.get(url)
+        print(json.dumps(response.data, indent=2))
+
+
 class InstrumentsCommands:
     @require_url
     @require_token
@@ -293,6 +305,7 @@ class CLI:
         self.subparsers = self.parser.add_subparsers(help='subcommand help', required=True)
         self._create_auth_parser()
         self._create_config_parser()
+        self._create_instrument_records_parser()
         self._create_instruments_parser()
         self._create_setup_parser()
 
@@ -323,6 +336,13 @@ class CLI:
 
         get_permissions_parser = subparsers.add_parser('get-permissions')
         get_permissions_parser.set_defaults(fn=ConfigCommands.get_permissions)
+
+    def _create_instrument_records_parser(self):
+        parser = self.subparsers.add_parser('instrument-records')
+        subparsers = parser.add_subparsers(required=True)
+
+        find_parser = subparsers.add_parser('find')
+        find_parser.set_defaults(fn=InstrumentRecordsCommands.find)
 
     def _create_instruments_parser(self):
         parser = self.subparsers.add_parser('instruments')
