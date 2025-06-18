@@ -296,6 +296,19 @@ class AuthCommands:
         config.access_token = None
         config.write()
 
+    @staticmethod
+    def status() -> None:
+        status_dict: dict[str, Any] = {}
+        if config.access_token is None:
+            status_dict['Token Exists'] = False
+        else:
+            token_payload = JWTDecoder.decode_payload(config.access_token)
+            status_dict['Token Exists'] = True
+            status_dict['Token Expiry'] = datetime.fromtimestamp(token_payload['exp'])
+
+        for key, value in status_dict.items():
+            print(f'{key}: {value}')
+
 
 class ConfigCommands:
     @staticmethod
@@ -404,10 +417,15 @@ class CLI:
         logout_parser = subparsers.add_parser('logout', help='remove the stored JWT (recommended for security)')
         logout_parser.set_defaults(fn=AuthCommands.logout)
 
+        status_parser = subparsers.add_parser('status', help='get the current auth status')
+        status_parser.set_defaults(fn=AuthCommands.status)
+
     def _create_config_parser(self):
         subparsers = self._create_subcommand_subparsers('config')
 
-        get_config_url_parser = subparsers.add_parser('get-url', help='get the configured base URL for your ODC instance')
+        get_config_url_parser = subparsers.add_parser(
+            'get-url', help='get the configured base URL for your ODC instance'
+        )
         get_config_url_parser.set_defaults(fn=ConfigCommands.get_url)
 
         set_config_parser = subparsers.add_parser('set-url', help='set the base URL for your ODC instance')
