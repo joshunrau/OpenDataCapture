@@ -265,8 +265,8 @@ class InstrumentsCommands:
     @require_url
     @require_token
     @staticmethod
-    def get() -> None:
-        response = HttpClient.get(f'{config.base_url}/v1/instruments/info')
+    def list() -> None:
+        response = HttpClient.get(f'{config.base_url}/v1/instruments/list')
         print(json.dumps(response.data, indent=2))
 
 
@@ -325,8 +325,8 @@ class CLI:
         parser = self.subparsers.add_parser('instruments')
         subparsers = parser.add_subparsers(required=True)
 
-        get_parser = subparsers.add_parser('get')
-        get_parser.set_defaults(fn=InstrumentsCommands.get)
+        get_parser = subparsers.add_parser('list')
+        get_parser.set_defaults(fn=InstrumentsCommands.list)
 
     def _create_setup_parser(self):
         setup_parser = self.subparsers.add_parser('setup')
