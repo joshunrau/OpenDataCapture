@@ -74,6 +74,10 @@ def require_token(fn: Callable[..., Any]) -> Callable[..., Any]:
 # --- Utilities ---
 
 
+def to_json(obj: dict[str, Any]) -> str:
+    return json.dumps(obj, indent=2, ensure_ascii=False)
+
+
 class ArgumentTypes:
     """Static methods to validate cli args"""
 
@@ -154,17 +158,13 @@ class HttpResponse:
         self.status = status
 
     def __str__(self) -> str:
-        lines = [
-            f'HTTP Status: {self.status if self.status is not None else "N/A"}',
-            f'Success: {self.ok}',
-            'Data:',
-        ]
-        try:
-            pretty_data = json.dumps(self.data, indent=2, ensure_ascii=False)
-        except (TypeError, ValueError):
-            pretty_data = str(self.data)
-        lines.append(pretty_data)
-        return '\n'.join(lines)
+        return self.to_json(include_data=True)
+
+    def to_json(self, include_data: bool) -> str:
+        props = {'success': self.ok, 'status': self.status or 'N/A'}
+        if include_data:
+            props['data'] = self.data
+        return to_json(props)
 
     @property
     def ok(self) -> bool:
@@ -229,12 +229,10 @@ class AuthCommands:
     @staticmethod
     def login(username: str, password: str) -> None:
         response = HttpClient.post(f'{config.base_url}/v1/auth/login', {'username': username, 'password': password})
-        if not response.ok:
-            print(response)
-            return None
-        config.access_token = response.data['accessToken']
-        print('Success!')
-        config.write()
+        if response.ok:
+            config.access_token = response.data['accessToken']
+            config.write()
+        print(response.to_json(include_data=False))
 
 
 class ConfigCommands:
@@ -258,6 +256,15 @@ class ConfigCommands:
         print(json.dumps(permissions, indent=2))
 
 
+class InstrumentsCommands:
+    @require_url
+    @require_token
+    @staticmethod
+    def get() -> None:
+        response = HttpClient.get(f'{config.base_url}/v1/instruments/info')
+        print(json.dumps(response.data, indent=2))
+
+
 class SetupCommands:
     @require_url
     @staticmethod
@@ -278,6 +285,7 @@ class CLI:
         self.subparsers = self.parser.add_subparsers(help='subcommand help', required=True)
         self._create_auth_parser()
         self._create_config_parser()
+        self._create_instruments_parser()
         self._create_setup_parser()
 
     def run(self) -> None:
@@ -307,6 +315,13 @@ class CLI:
 
         get_permissions_parser = subparsers.add_parser('get-permissions')
         get_permissions_parser.set_defaults(fn=ConfigCommands.get_permissions)
+
+    def _create_instruments_parser(self):
+        parser = self.subparsers.add_parser('instruments')
+        subparsers = parser.add_subparsers(required=True)
+
+        get_parser = subparsers.add_parser('get')
+        get_parser.set_defaults(fn=InstrumentsCommands.get)
 
     def _create_setup_parser(self):
         setup_parser = self.subparsers.add_parser('setup')
