@@ -273,7 +273,7 @@ export class InstrumentRecordsService {
     // all records must be attached to scalar instruments
     const instrument = (await this.getInstrumentById(instrumentRecord.instrumentId)) as ScalarInstrument;
 
-    const updatedData = mergeWith(data, instrumentRecord.data, (updatedValue: unknown, sourceValue: unknown) => {
+    const updatedData = mergeWith(instrumentRecord.data, data, (updatedValue: unknown, sourceValue: unknown) => {
       if (Array.isArray(sourceValue)) {
         return updatedValue;
       }
@@ -282,7 +282,10 @@ export class InstrumentRecordsService {
 
     const parseResult = await instrument.validationSchema.safeParseAsync(updatedData);
     if (!parseResult.success) {
-      throw new BadRequestException('Merged data does not match validation schema');
+      throw new BadRequestException({
+        issues: parseResult.error.issues,
+        message: 'Merged data does not match validation schema'
+      });
     }
 
     return this.instrumentRecordModel.update({
