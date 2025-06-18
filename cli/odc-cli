@@ -407,10 +407,10 @@ class CLI:
     def _create_config_parser(self):
         subparsers = self._create_subcommand_subparsers('config')
 
-        get_config_url_parser = subparsers.add_parser('get-url')
+        get_config_url_parser = subparsers.add_parser('get-url', help='get the configured base URL for your ODC instance')
         get_config_url_parser.set_defaults(fn=ConfigCommands.get_url)
 
-        set_config_parser = subparsers.add_parser('set-url')
+        set_config_parser = subparsers.add_parser('set-url', help='set the base URL for your ODC instance')
         set_config_parser.add_argument('url', type=ArgumentTypes.valid_url_or_none)
         set_config_parser.set_defaults(fn=ConfigCommands.set_url)
 
