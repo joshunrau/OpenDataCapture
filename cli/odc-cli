@@ -391,7 +391,7 @@ class CLI:
     def _create_auth_parser(self):
         subparsers = self._create_subcommand_subparsers('auth')
 
-        login_parser = subparsers.add_parser('login')
+        login_parser = subparsers.add_parser('login', help='authenticate with the ODC API and store the JWT locally')
         login_parser.add_argument('--username', type=str, required=True)
         login_parser.add_argument('--password', type=str, required=True)
         login_parser.set_defaults(fn=AuthCommands.login)
@@ -443,7 +443,7 @@ class CLI:
 
     def _create_subcommand_subparsers(self, name: str):
         parser = self.subparsers.add_parser(name, help='')
-        return parser.add_subparsers(required=True)
+        return parser.add_subparsers(required=True, title='Available Commands', metavar='<command>')
 
 
 def main() -> None:
