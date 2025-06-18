@@ -203,6 +203,11 @@ class HttpClient:
         return cls._send(req)
 
     @classmethod
+    def patch(cls, url: str) -> HttpResponse:
+        req = Request(url, headers=cls._get_default_headers(), method='PATCH')
+        return cls._send(req)
+
+    @classmethod
     def get(cls, url: str) -> HttpResponse:
         req = Request(url, headers=cls._get_default_headers(), method='GET')
         return cls._send(req)
@@ -311,6 +316,14 @@ class InstrumentRecordsCommands:
         response = HttpClient.get(url)
         print(response)
 
+    @require_url
+    @require_token
+    @staticmethod
+    def update(id: str) -> None:
+        url = f'{config.base_url}/v1/instrument-records/{id}'
+        response = HttpClient.patch(url)
+        print(response)
+
 
 class InstrumentsCommands:
     @require_url
@@ -387,6 +400,10 @@ class CLI:
         find_parser.add_argument('--instrument-id')
         find_parser.add_argument('--subject-id')
         find_parser.set_defaults(fn=InstrumentRecordsCommands.find)
+
+        update_parser = subparsers.add_parser('update')
+        update_parser.add_argument('--id', required=True)
+        update_parser.set_defaults(fn=InstrumentRecordsCommands.update)
 
     def _create_instruments_parser(self):
         parser = self.subparsers.add_parser('instruments')

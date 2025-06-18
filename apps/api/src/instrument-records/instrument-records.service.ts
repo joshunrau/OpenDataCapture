@@ -260,6 +260,19 @@ export class InstrumentRecordsService {
     return results;
   }
 
+  async updateById(id: string, { ability }: EntityOperationOptions = {}) {
+    const instrumentRecord = await this.instrumentRecordModel.findFirst({
+      where: { id }
+    });
+    if (!instrumentRecord) {
+      throw new NotFoundException(`Could not find record with ID '${id}'`);
+    }
+    return this.instrumentRecordModel.update({
+      data: {},
+      where: { AND: [accessibleQuery(ability, 'delete', 'InstrumentRecord')], id }
+    });
+  }
+
   async upload(
     { groupId, instrumentId, records }: UploadInstrumentRecordsData,
     options?: EntityOperationOptions

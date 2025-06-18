@@ -2,7 +2,7 @@
 
 import { CurrentUser, ParseSchemaPipe, RouteAccess, ValidObjectIdPipe } from '@douglasneuroinformatics/libnest';
 import type { AppAbility } from '@douglasneuroinformatics/libnest';
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { InstrumentKind } from '@opendatacapture/runtime-core';
 import { z } from 'zod';
@@ -55,8 +55,8 @@ export class InstrumentRecordsController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @RouteAccess({ action: 'delete', subject: 'InstrumentRecord' })
-  async deleteById(@Param('id', ValidObjectIdPipe) id: string) {
-    await this.instrumentRecordsService.deleteById(id);
+  async deleteById(@Param('id', ValidObjectIdPipe) id: string, @CurrentUser('ability') ability: AppAbility) {
+    await this.instrumentRecordsService.deleteById(id, { ability });
   }
 
   @ApiOperation({ summary: 'Export Records' })
@@ -75,5 +75,12 @@ export class InstrumentRecordsController {
     @Query('groupId') groupId?: string
   ): Promise<{ [key: string]: { intercept: number; slope: number; stdErr: number } }> {
     return this.instrumentRecordsService.linearModel({ groupId, instrumentId }, { ability });
+  }
+
+  @ApiOperation({ summary: 'Update Instrument Record' })
+  @Patch(':id')
+  @RouteAccess({ action: 'delete', subject: 'InstrumentRecord' })
+  updateById(@Param('id', ValidObjectIdPipe) id: string, @CurrentUser('ability') ability: AppAbility) {
+    return this.instrumentRecordsService.deleteById(id, { ability });
   }
 }
