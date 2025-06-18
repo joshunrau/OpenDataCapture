@@ -50,7 +50,7 @@ JwtPayload = TypedDict('JwtPayload', {'basePermissionLevel': str})
 
 def require_url(fn: Callable[..., Any]) -> Callable[..., Any]:
     """Decorator to ensure a base URL is configured before executing the function"""
-
+    
     def wrapper(*args: Any, **kwargs: Any) -> None:
         if config.base_url is None:
             print(f'Error: URL must be defined (hint: use {PROGRAM_NAME} config set-url)', file=sys.stderr)
