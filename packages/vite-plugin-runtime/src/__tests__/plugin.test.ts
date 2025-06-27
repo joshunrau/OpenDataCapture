@@ -1,6 +1,8 @@
+import * as path from 'path';
+
 import { beforeAll, describe, expect, it, vi } from 'vitest';
 
-import { plugin } from '../plugin';
+import { plugin, RUNTIME_DIR, RUNTIME_DIST_DIRNAME } from '../plugin';
 
 const fs = vi.hoisted(() => ({
   existsSync: vi.fn().mockReturnValue(true),
@@ -9,10 +11,16 @@ const fs = vi.hoisted(() => ({
   })),
   promises: {
     readdir: vi.fn().mockImplementation((filepath: string) => {
-      if (filepath.endsWith('v1')) {
-        return [];
+      if (filepath === RUNTIME_DIR) {
+        return ['v1'];
+      } else if (filepath === path.join(RUNTIME_DIR, 'v1', RUNTIME_DIST_DIRNAME)) {
+        return ['@opendatacapture'];
+      } else if (filepath.endsWith('@opendatacapture')) {
+        return ['runtime-core'];
+      } else if (filepath.endsWith('runtime-core')) {
+        return ['index.js', 'index.d.ts'];
       }
-      return ['v1'];
+      throw new Error(`Unexpected filepath for test mock: ${filepath}`);
     })
   }
 }));

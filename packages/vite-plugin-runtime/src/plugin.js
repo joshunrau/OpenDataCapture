@@ -153,3 +153,5 @@ export async function plugin(options) {
     name: 'vite-plugin-runtime'
   };
 }
+
+export { RUNTIME_DIR, RUNTIME_DIST_DIRNAME };
