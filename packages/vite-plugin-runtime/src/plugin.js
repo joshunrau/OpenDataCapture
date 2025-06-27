@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 
 /**
  * Contains the relative paths of assets for a given runtime version.
@@ -54,7 +54,7 @@ const RUNTIME_DIR = path.resolve(import.meta.dirname, '../../../runtime');
 const RUNTIME_DIST_DIRNAME = 'dist';
 
 /** @type {(path: string) => Promise<boolean>} */
-const isDirectory = async (path) => fs.existsSync(path) && fs.promises.lstat(path).then((stat) => stat.isDirectory());
+const isDirectory = async (path) => fs.existsSync(path) && fs.lstatSync(path).isDirectory();
 
 /**
  * Generate the `RuntimeManifest` from a given directory
@@ -62,7 +62,7 @@ const isDirectory = async (path) => fs.existsSync(path) && fs.promises.lstat(pat
  * @param {string} baseDir
  * @returns {Promise<RuntimeManifest>}
  */
-async function generateManifest(baseDir) {
+export async function generateManifest(baseDir) {
   /** @type {{ declarations: string[], sources: string[], styles: string[] }} */
   const results = { declarations: [], sources: [], styles: [] };
   /** @param {string} dir */
@@ -89,7 +89,7 @@ async function generateManifest(baseDir) {
  * @param {string} version
  * @returns {Promise<RuntimeVersionMetadata>}
  */
-async function generateMetadataForVersion(version) {
+export async function generateMetadataForVersion(version) {
   const baseDir = path.resolve(RUNTIME_DIR, version, RUNTIME_DIST_DIRNAME);
   if (!(await isDirectory(baseDir))) {
     throw new Error(`Not a directory: ${baseDir}`);
@@ -107,7 +107,7 @@ async function generateMetadataForVersion(version) {
 }
 
 /** @returns {Promise<Map<string, RuntimeVersionMetadata>>} */
-async function generateMetadata() {
+export async function generateMetadata() {
   const metadata = new Map();
   const versions = await fs.promises.readdir(RUNTIME_DIR, 'utf-8');
   for (const version of versions) {
