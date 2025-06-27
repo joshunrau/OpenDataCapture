@@ -84,4 +84,25 @@ describe('plugin', () => {
       expect(config.optimizeDeps.exclude.every((s: any) => typeof s === 'string' && s.startsWith('/runtime')));
     });
   });
+
+  describe('configureServer', () => {
+    let middleware: any;
+
+    it('should configure a middleware function for /runtime', () => {
+      const server = {
+        middlewares: {
+          use: vi.fn()
+        }
+      };
+      result.configureServer(server);
+      expect(server.middlewares.use).toHaveBeenCalledWith('/runtime', expect.any(Function));
+      middleware = server.middlewares.use.mock.lastCall![1];
+    });
+
+    it('should invoke next if the request url is null', () => {
+      const next = vi.fn();
+      expect(middleware({ url: null } as any, {} as any, next));
+      expect(next).toHaveBeenCalledOnce();
+    });
+  });
 });
