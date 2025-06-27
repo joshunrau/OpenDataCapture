@@ -13,23 +13,22 @@ import { runtimeMiddleware } from './runtime-middleware.js';
 
 /**
  * @typedef {Object} RuntimeVersionInfo
- * @property {string} baseDir - Base directory of the runtime.
- * @property {string[]} importPaths - List of import paths.
- * @property {RuntimeManifest} manifest - The manifest describing declarations, sources, and styles.
- * @property {string} version - Version string of the runtime.
+ * @property {string} baseDir
+ * @property {string[]} importPaths
+ * @property {RuntimeManifest} manifest
+ * @property {string} version
  */
 
 /**
  * @typedef {Object} RuntimeOptions
- * @property {boolean} [disabled] - Whether the runtime plugin is disabled.
- * @property {string} [packageRoot] - Root directory of the package.
+ * @property {boolean} [disabled]
  */
 
 /**
- * @param {RuntimeOptions} [options] - Optional configuration for the runtime plugin.
- * @returns {import('vite').PluginOption} A Vite plugin.
+ * @param {RuntimeOptions} [options]
+ * @returns {Promise<import('vite').PluginOption>}
  */
-export const plugin = (options) => {
+export const plugin = async (options) => {
   if (options?.disabled) {
     return false;
   }
@@ -37,7 +36,7 @@ export const plugin = (options) => {
     async buildStart() {
       const packages = await resolvePackages();
       for (const { baseDir, manifest, version } of packages) {
-        const destination = path.resolve(options?.packageRoot ?? '', `dist/runtime/${version}`);
+        const destination = path.resolve(`dist/runtime/${version}`);
         await fs.cp(baseDir, destination, { recursive: true });
         await fs.writeFile(path.resolve(destination, MANIFEST_FILENAME), JSON.stringify(manifest), 'utf-8');
       }
