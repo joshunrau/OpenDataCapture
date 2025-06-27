@@ -5,10 +5,10 @@ import { deepFreeze, range } from '@douglasneuroinformatics/libjs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Mock, MockInstance } from 'vitest';
 
-import { runtime } from '../index.js';
+import runtime from '../index.js';
 import * as resolve from '../resolve.js';
 
-import type { RuntimeVersionInfo } from '../index.d.ts';
+import type { RuntimeVersionInfo } from '../plugin.d.ts';
 
 const runtimeVersionInfoStub: RuntimeVersionInfo = deepFreeze(
   {
