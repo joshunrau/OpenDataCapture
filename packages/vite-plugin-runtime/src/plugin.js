@@ -1,21 +1,47 @@
 import fs from 'fs';
 import path from 'path';
 
-import { runtimeMiddleware } from './runtime-middleware.js';
-
 /**
+ * Contains the relative paths of assets for a given runtime version.
+ *
  * @typedef {Object} RuntimeManifest
- * @property {string[]} declarations - List of declaration file paths.
- * @property {string[]} sources - List of source file paths.
- * @property {string[]} styles - List of style file paths.
+ * @property {string[]} declarations - Relative paths to TypeScript declaration files (.d.ts).
+ * @property {string[]} sources - Relative paths to JavaScript source files (.js).
+ * @property {string[]} styles - Relative paths to CSS stylesheets (.css).
  */
 
 /**
+ * Metadata for a given runtime version.
+ *
  * @typedef {Object} RuntimeVersionMetadata
- * @property {string} baseDir
- * @property {string[]} importPaths
- * @property {RuntimeManifest} manifest
- * @property {string} version
+ * @property {string} baseDir - Absolute path to the root directory where runtime files are located.
+ * @property {string[]} importPaths - List of fully-qualified import paths available at runtime.
+ * @property {RuntimeManifest} manifest - Manifest containing relative paths to declarations, sources, and styles.
+ * @property {string} version - Identifier for the runtime version (e.g., "v1").
+ *
+ * @example
+ * {
+ *   baseDir: "/root/OpenDataCapture/runtime/v1/dist",
+ *   importPaths: [
+ *     "/runtime/v1/@opendatacapture/runtime-core/index.js",
+ *     ...
+ *   ],
+ *   manifest: {
+ *     declarations: [
+ *       "@opendatacapture/runtime-core/index.d.ts",
+ *       ...
+ *     ],
+ *     sources: [
+ *       "@opendatacapture/runtime-core/index.js",
+ *       ...
+ *     ],
+ *     styles: [
+ *       "normalize.css@8.x/normalize.css",
+ *       ...
+ *     ]
+ *   },
+ *   version: "v1"
+ * }
  */
 
 /**
@@ -65,7 +91,7 @@ async function generateManifest(baseDir) {
  * @param {string} version
  * @returns {Promise<RuntimeVersionMetadata>}
  */
-export async function generateVersionMetadata(version) {
+async function generateVersionMetadata(version) {
   const baseDir = path.resolve(RUNTIME_DIR, version, RUNTIME_DIST_DIRNAME);
   if (!(await isDirectory(baseDir))) {
     throw new Error(`Not a directory: ${baseDir}`);
@@ -83,12 +109,17 @@ export async function generateVersionMetadata(version) {
   };
 }
 
-/** @returns {Promise<RuntimeVersionMetadata[]>} */
+/** @returns {Promise<Map<string, RuntimeVersionMetadata>} */
 export async function generateMetadata() {
-  const versions = await fs.promises
-    .readdir(RUNTIME_DIR, 'utf-8')
-    .then((entries) => entries.filter((entry) => entry.match(/^v\d/)));
-  return await Promise.all(versions.map((version) => generateVersionMetadata(version)));
+  const metadata = new Map();
+  const versions = await fs.promises.readdir(RUNTIME_DIR, 'utf-8');
+  for (const version of versions) {
+    if (!version.match(/^v\d+$/)) {
+      continue;
+    }
+    metadata.set(version, await generateVersionMetadata(version));
+  }
+  return metadata;
 }
 
 /**
@@ -99,25 +130,34 @@ export async function plugin(options) {
   if (options?.disabled) {
     return false;
   }
-  const packages = await generateMetadata();
-  return {
-    async buildStart() {
-      for (const { baseDir, manifest, version } of packages) {
-        const destination = path.resolve(`dist/runtime/${version}`);
-        await fs.promises.cp(baseDir, destination, { recursive: true });
-        await fs.promises.writeFile(path.resolve(destination, MANIFEST_FILENAME), JSON.stringify(manifest), 'utf-8');
-      }
-    },
-    async config() {
-      return {
-        optimizeDeps: {
-          exclude: packages.flatMap((pkg) => pkg.importPaths)
-        }
-      };
-    },
-    configureServer(server) {
-      server.middlewares.use('/runtime', runtimeMiddleware);
-    },
-    name: 'vite-plugin-runtime'
-  };
+  const metadata = await generateMetadata();
+  console.log(JSON.stringify(metadata.get('v1'), null, 2));
+  // return {
+  //   async buildStart() {
+  //     for (const { baseDir, manifest, version } of packages) {
+  //       const destination = path.resolve(`dist/runtime/${version}`);
+  //       await fs.promises.cp(baseDir, destination, { recursive: true });
+  //       await fs.promises.writeFile(path.resolve(destination, MANIFEST_FILENAME), JSON.stringify(manifest), 'utf-8');
+  //     }
+  //   },
+  //   async config() {
+  //     return {
+  //       optimizeDeps: {
+  //         exclude: packages.flatMap((pkg) => pkg.importPaths)
+  //       }
+  //     };
+  //   },
+  //   configureServer(server) {
+  //     server.middlewares.use('/runtime', (req, _, next) => {
+  //       const [version, ...paths] = req.url?.split('/').filter(Boolean) ?? [];
+  //       const filepath = paths.join('/');
+  //       if (!(version && filepath)) {
+  //         return next();
+  //       }
+  //     });
+  //   },
+  //   name: 'vite-plugin-runtime'
+  // };
 }
+
+await plugin();
