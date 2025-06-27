@@ -95,7 +95,7 @@ export async function generateMetadata() {
  * @param {RuntimeOptions} [options]
  * @returns {Promise<import('vite').PluginOption>}
  */
-export const plugin = async (options) => {
+export async function plugin(options) {
   if (options?.disabled) {
     return false;
   }
@@ -120,4 +120,4 @@ export const plugin = async (options) => {
     },
     name: 'vite-plugin-runtime'
   };
-};
+}
