@@ -150,6 +150,7 @@ export async function plugin(options) {
         }
 
         const { baseDir, manifest } = /** @type {RuntimeVersionMetadata} */ (metadata.get(version));
+
         /** @type {{ content: string; contentType: string; }} */
         let resource;
         if (filepath === MANIFEST_FILENAME) {

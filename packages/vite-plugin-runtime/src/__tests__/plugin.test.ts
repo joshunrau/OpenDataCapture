@@ -25,6 +25,7 @@ const fs = vi.hoisted(() => ({
       }
       throw new Error(`Unexpected filepath for test mock: ${filepath}`);
     }),
+    readFile: vi.fn(),
     writeFile: vi.fn()
   }
 }));
@@ -110,20 +111,44 @@ describe('plugin', () => {
       middleware = server.middlewares.use.mock.lastCall![1];
     });
 
-    it('should invoke next if the request url is null', () => {
-      expect(middleware({ url: null } as any, {} as any, next));
+    it('should invoke next if the request url is null', async () => {
+      await middleware({ url: null } as any, {} as any, next);
       expect(next).toHaveBeenCalledOnce();
     });
 
-    it('should invoke next if the request is for an unknown version', () => {
-      expect(middleware({ url: `/v0/${MANIFEST_FILENAME}` } as any, {} as any, next));
+    it('should invoke next if the request is for an unknown version', async () => {
+      await middleware({ url: `/v0/${MANIFEST_FILENAME}` } as any, {} as any, next);
       expect(next).toHaveBeenCalledOnce();
     });
 
-    it('should correctly handle the manifest', () => {
-      expect(middleware({ url: `/v1/${MANIFEST_FILENAME}` } as any, res, next));
+    it('should correctly handle the manifest', async () => {
+      await middleware({ url: `/v1/${MANIFEST_FILENAME}` } as any, res, next);
       expect(res.writeHead).toHaveBeenLastCalledWith(200, { 'Content-Type': 'application/json' });
       expect(res.end).toHaveBeenCalledOnce();
+    });
+
+    it('should correctly handle declaration files', async () => {
+      await middleware({ url: '/v1/@opendatacapture/runtime-core/index.d.ts' } as any, res, next);
+      expect(res.writeHead).toHaveBeenLastCalledWith(200, { 'Content-Type': 'text/plain' });
+      expect(res.end).toHaveBeenCalledOnce();
+    });
+
+    it('should correctly handle source files', async () => {
+      await middleware({ url: '/v1/@opendatacapture/runtime-core/index.js' } as any, res, next);
+      expect(res.writeHead).toHaveBeenLastCalledWith(200, { 'Content-Type': 'text/javascript' });
+      expect(res.end).toHaveBeenCalledOnce();
+    });
+
+    it('should correctly handle css files', async () => {
+      await middleware({ url: '/v1/@opendatacapture/runtime-core/styles/index.css' } as any, res, next);
+      expect(res.writeHead).toHaveBeenLastCalledWith(200, { 'Content-Type': 'text/css' });
+      expect(res.end).toHaveBeenCalledOnce();
+    });
+
+    it('should invoke next for unknown files', async () => {
+      await middleware({ url: '/v1/@opendatacapture/runtime-core/foo/index.js' } as any, {} as any, next);
+      expect(next).toHaveBeenCalledOnce();
+      expect(res.end).not.toHaveBeenCalled();
     });
   });
 });
