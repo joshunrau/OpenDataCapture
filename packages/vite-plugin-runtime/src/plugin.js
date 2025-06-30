@@ -121,7 +121,7 @@ export async function generateMetadata() {
 
 /**
  * @param {RuntimeOptions} [options]
- * @returns {Promise<import('vite').PluginOption>}
+ * @returns {Promise<import('vite').Plugin | false>}
  */
 export async function plugin(options) {
   if (options?.disabled) {
