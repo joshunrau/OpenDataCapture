@@ -142,16 +142,45 @@ export async function plugin(options) {
       }
     }),
     configureServer: (server) => {
-      server.middlewares.use('/runtime', (req, _, next) => {
+      server.middlewares.use('/runtime', async (req, res, next) => {
         const [version, ...paths] = req.url?.split('/').filter(Boolean) ?? [];
         const filepath = paths.join('/');
-        if (!(version && filepath)) {
+        if (!(version && filepath) || !metadata.has(version)) {
           return next();
         }
+
+        const { baseDir, manifest } = /** @type {RuntimeVersionMetadata} */ (metadata.get(version));
+        /** @type {{ content: string; contentType: string; }} */
+        let resource;
+        if (filepath === MANIFEST_FILENAME) {
+          resource = {
+            content: JSON.stringify(manifest),
+            contentType: 'application/json'
+          };
+        } else if (manifest.declarations.includes(filepath)) {
+          resource = {
+            content: await fs.promises.readFile(path.resolve(baseDir, filepath), 'utf-8'),
+            contentType: 'text/plain'
+          };
+        } else if (manifest.styles.includes(filepath)) {
+          resource = {
+            content: await fs.promises.readFile(path.resolve(baseDir, filepath), 'utf-8'),
+            contentType: 'text/css'
+          };
+        } else if (manifest.sources.includes(filepath)) {
+          resource = {
+            content: await fs.promises.readFile(path.resolve(baseDir, filepath), 'utf-8'),
+            contentType: 'text/javascript'
+          };
+        } else {
+          return next();
+        }
+        res.writeHead(200, { 'Content-Type': resource.contentType });
+        res.end(resource.content);
       });
     },
     name: 'vite-plugin-runtime'
   };
 }
 
-export { RUNTIME_DIR, RUNTIME_DIST_DIRNAME };
+export { MANIFEST_FILENAME, RUNTIME_DIR, RUNTIME_DIST_DIRNAME };

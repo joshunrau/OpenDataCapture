@@ -1,8 +1,8 @@
 import * as path from 'path';
 
-import { beforeAll, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 
-import { generateMetadataForVersion, plugin, RUNTIME_DIR, RUNTIME_DIST_DIRNAME } from '../plugin';
+import { generateMetadataForVersion, MANIFEST_FILENAME, plugin, RUNTIME_DIR, RUNTIME_DIST_DIRNAME } from '../plugin';
 
 const fs = vi.hoisted(() => ({
   existsSync: vi.fn().mockReturnValue(true),
@@ -88,6 +88,17 @@ describe('plugin', () => {
   describe('configureServer', () => {
     let middleware: any;
 
+    const res = {
+      end: vi.fn(),
+      writeHead: vi.fn()
+    };
+
+    const next = vi.fn();
+
+    afterEach(() => {
+      vi.clearAllMocks();
+    });
+
     it('should configure a middleware function for /runtime', () => {
       const server = {
         middlewares: {
@@ -100,9 +111,19 @@ describe('plugin', () => {
     });
 
     it('should invoke next if the request url is null', () => {
-      const next = vi.fn();
       expect(middleware({ url: null } as any, {} as any, next));
       expect(next).toHaveBeenCalledOnce();
+    });
+
+    it('should invoke next if the request is for an unknown version', () => {
+      expect(middleware({ url: `/v0/${MANIFEST_FILENAME}` } as any, {} as any, next));
+      expect(next).toHaveBeenCalledOnce();
+    });
+
+    it('should correctly handle the manifest', () => {
+      expect(middleware({ url: `/v1/${MANIFEST_FILENAME}` } as any, res, next));
+      expect(res.writeHead).toHaveBeenLastCalledWith(200, { 'Content-Type': 'application/json' });
+      expect(res.end).toHaveBeenCalledOnce();
     });
   });
 });
