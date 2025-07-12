@@ -2,6 +2,7 @@
 
 import { createRouter } from '@tanstack/react-router';
 
+import { LoadingFallback } from './components/LoadingFallback';
 import { routeTree } from './route-tree';
 
 declare module '@tanstack/react-router' {
@@ -10,4 +11,7 @@ declare module '@tanstack/react-router' {
   }
 }
 
-export const router = createRouter({ routeTree });
+export const router = createRouter({
+  defaultPendingComponent: LoadingFallback,
+  routeTree
+});

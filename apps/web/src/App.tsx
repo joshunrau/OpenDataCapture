@@ -7,7 +7,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ErrorBoundary } from 'react-error-boundary';
 import { BrowserRouter } from 'react-router-dom';
 
-import { LoadingFallback } from '@/components/LoadingFallback';
 import { Routes } from '@/Routes';
 import { queryClient } from '@/services/react-query';
 
@@ -15,18 +14,16 @@ import { SetupProvider } from './features/setup';
 
 export const App = () => {
   return (
-    <React.Suspense fallback={<LoadingFallback />}>
-      <ErrorBoundary FallbackComponent={ErrorPage}>
-        <QueryClientProvider client={queryClient}>
-          <NotificationHub />
-          <SetupProvider>
-            <BrowserRouter>
-              <Routes />
-            </BrowserRouter>
-          </SetupProvider>
-          <ReactQueryDevtools />
-        </QueryClientProvider>
-      </ErrorBoundary>
-    </React.Suspense>
+    <ErrorBoundary FallbackComponent={ErrorPage}>
+      <QueryClientProvider client={queryClient}>
+        <NotificationHub />
+        <SetupProvider>
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
+        </SetupProvider>
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
