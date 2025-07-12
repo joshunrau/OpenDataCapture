@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
 
+import { ErrorPage } from '@opendatacapture/react-core';
 import { createRouter } from '@tanstack/react-router';
 
 import { LoadingFallback } from './components/LoadingFallback';
@@ -12,6 +13,7 @@ declare module '@tanstack/react-router' {
 }
 
 export const router = createRouter({
+  defaultErrorComponent: ErrorPage,
   defaultPendingComponent: LoadingFallback,
   routeTree
 });

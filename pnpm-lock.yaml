@@ -666,9 +666,6 @@ importers:
       react-dom:
         specifier: workspace:react-dom__19.x@*
         version: link:../../vendor/react-dom@19.x
-      react-error-boundary:
-        specifier: ^5.0.0
-        version: 5.0.0(react@vendor+react@19.x)
       react-router-dom:
         specifier: ^6.30.0
         version: 6.30.1(react-dom@vendor+react-dom@19.x)(react@vendor+react@19.x)
