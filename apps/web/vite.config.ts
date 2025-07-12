@@ -4,6 +4,7 @@ import importMetaEnv from '@import-meta-env/unplugin';
 import { getReleaseInfo } from '@opendatacapture/release-info';
 import runtime from '@opendatacapture/vite-plugin-runtime';
 import tailwindcss from '@tailwindcss/vite';
+import { tanstackRouter } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 import viteCompression from 'vite-plugin-compression';
@@ -25,6 +26,11 @@ export default defineConfig({
     include: ['react/*', 'react-dom/*']
   },
   plugins: [
+    tanstackRouter({
+      autoCodeSplitting: true,
+      generatedRouteTree: './src/route-tree.ts',
+      target: 'react'
+    }),
     react(),
     viteCompression(),
     importMetaEnv.vite({
