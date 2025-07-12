@@ -13,10 +13,6 @@ import { queryClient } from '@/services/react-query';
 
 import { SetupProvider } from './features/setup';
 
-import './services/axios';
-import './services/i18n';
-import './services/zod';
-
 export const App = () => {
   return (
     <React.Suspense fallback={<LoadingFallback />}>

@@ -1,6 +1,10 @@
 import { createRootRoute, Link, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
+import './services/axios';
+import './services/i18n';
+import './services/zod';
+
 export const Route = createRootRoute({
   component: () => (
     <>
