@@ -14,6 +14,7 @@ import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppSessionStartSessionRouteImport } from './routes/_app/session/start-session'
 
 const SetupRoute = SetupRouteImport.update({
   id: '/setup',
@@ -39,18 +40,25 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppSessionStartSessionRoute = AppSessionStartSessionRouteImport.update({
+  id: '/session/start-session',
+  path: '/session/start-session',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/setup': typeof SetupRoute
   '/dashboard': typeof AppDashboardRoute
   '/auth/login': typeof AuthLoginRoute
   '/': typeof AppIndexRoute
+  '/session/start-session': typeof AppSessionStartSessionRoute
 }
 export interface FileRoutesByTo {
   '/setup': typeof SetupRoute
   '/dashboard': typeof AppDashboardRoute
   '/auth/login': typeof AuthLoginRoute
   '/': typeof AppIndexRoute
+  '/session/start-session': typeof AppSessionStartSessionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -59,12 +67,18 @@ export interface FileRoutesById {
   '/_app/dashboard': typeof AppDashboardRoute
   '/auth/login': typeof AuthLoginRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/session/start-session': typeof AppSessionStartSessionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/setup' | '/dashboard' | '/auth/login' | '/'
+  fullPaths:
+    | '/setup'
+    | '/dashboard'
+    | '/auth/login'
+    | '/'
+    | '/session/start-session'
   fileRoutesByTo: FileRoutesByTo
-  to: '/setup' | '/dashboard' | '/auth/login' | '/'
+  to: '/setup' | '/dashboard' | '/auth/login' | '/' | '/session/start-session'
   id:
     | '__root__'
     | '/_app'
@@ -72,6 +86,7 @@ export interface FileRouteTypes {
     | '/_app/dashboard'
     | '/auth/login'
     | '/_app/'
+    | '/_app/session/start-session'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -117,17 +132,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/session/start-session': {
+      id: '/_app/session/start-session'
+      path: '/session/start-session'
+      fullPath: '/session/start-session'
+      preLoaderRoute: typeof AppSessionStartSessionRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
   }
 }
 
 interface AppRouteRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppSessionStartSessionRoute: typeof AppSessionStartSessionRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppIndexRoute: AppIndexRoute,
+  AppSessionStartSessionRoute: AppSessionStartSessionRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
