@@ -1,5 +1,5 @@
 import { $SetupState } from '@opendatacapture/schemas/setup';
-import { queryOptions, useQuery } from '@tanstack/react-query';
+import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 export const setupStateQueryOptions = () => {
@@ -13,5 +13,5 @@ export const setupStateQueryOptions = () => {
 };
 
 export function useSetupState() {
-  return useQuery(setupStateQueryOptions());
+  return useSuspenseQuery(setupStateQueryOptions());
 }
