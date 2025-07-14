@@ -1,9 +1,14 @@
+import { Card, Heading, LanguageToggle, ThemeToggle } from '@douglasneuroinformatics/libui/components';
 import { useNotificationsStore, useTranslation } from '@douglasneuroinformatics/libui/hooks';
+import { Logo } from '@opendatacapture/react-core';
 import type { AuthPayload, LoginCredentials } from '@opendatacapture/schemas/auth';
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router';
 import axios from 'axios';
 
+import { DemoBanner } from '@/components/DemoBanner';
+import { LoginForm } from '@/components/LoginForm';
 import { config } from '@/config';
+import { setupStateQueryOptions, useSetupStateQuery } from '@/hooks/useSetupStateQuery';
 import { useAppStore } from '@/store';
 
 const loginRequest = async (
@@ -21,6 +26,7 @@ const loginRequest = async (
 
 const RouteComponent = () => {
   const login = useAppStore((store) => store.login);
+  const setupStateQuery = useSetupStateQuery();
   const notifications = useNotificationsStore();
   const { t } = useTranslation('auth');
   const navigate = useNavigate();
@@ -39,7 +45,34 @@ const RouteComponent = () => {
     await navigate({ to: '/dashboard' });
   };
 
-  return <div>Login</div>;
+  return (
+    <div className="flex min-h-screen w-full flex-col">
+      {setupStateQuery.data.isDemo && <DemoBanner onLogin={(credentials) => void handleLogin(credentials)} />}
+      <div className="flex w-full grow flex-col items-center justify-center">
+        <Card className="sm:bg-card w-full max-w-sm border-none bg-inherit px-2.5 py-1.5 sm:border-solid">
+          <Card.Header className="flex items-center justify-center">
+            <Logo className="m-1.5 h-auto w-16" variant="auto" />
+            <Heading variant="h2">{t('login')}</Heading>
+          </Card.Header>
+          <Card.Content>
+            <LoginForm onSubmit={(credentials) => void handleLogin(credentials)} />
+          </Card.Content>
+          <Card.Footer className="text-muted-foreground flex justify-between">
+            <LanguageToggle
+              align="start"
+              options={{
+                en: 'English',
+                fr: 'Français'
+              }}
+              triggerClassName="border p-2"
+              variant="ghost"
+            />
+            <ThemeToggle className="border p-2" variant="ghost" />
+          </Card.Footer>
+        </Card>
+      </div>
+    </div>
+  );
 };
 
 export const Route = createFileRoute('/auth/login')({
@@ -59,5 +92,6 @@ export const Route = createFileRoute('/auth/login')({
       });
     }
   },
-  component: RouteComponent
+  component: RouteComponent,
+  loader: ({ context }) => context.queryClient.ensureQueryData(setupStateQueryOptions())
 });
