@@ -19,5 +19,6 @@ export const router = createRouter({
   },
   defaultErrorComponent: ErrorPage,
   defaultPendingComponent: LoadingFallback,
+  defaultPendingMinMs: 500,
   routeTree
 });

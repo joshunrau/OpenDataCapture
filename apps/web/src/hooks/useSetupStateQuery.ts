@@ -10,7 +10,8 @@ export const setupStateQueryOptions = () => {
       const response = await axios.get('/v1/setup');
       return $SetupState.parseAsync(response.data);
     },
-    queryKey: [SETUP_STATE_QUERY_KEY]
+    queryKey: [SETUP_STATE_QUERY_KEY],
+    staleTime: Infinity
   });
 };
 

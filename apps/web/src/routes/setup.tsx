@@ -4,7 +4,7 @@ import { estimatePasswordStrength } from '@douglasneuroinformatics/libpasswd';
 import { Card, Form, Heading, LanguageToggle, ThemeToggle } from '@douglasneuroinformatics/libui/components';
 import { useTranslation } from '@douglasneuroinformatics/libui/hooks';
 import { LoadingPage, Logo } from '@opendatacapture/react-core';
-import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
+import { createFileRoute, Navigate, redirect, useRouter } from '@tanstack/react-router';
 import z from 'zod/v4';
 
 import { useCreateSetupStateMutation } from '@/hooks/useCreateSetupStateMutation';
@@ -17,6 +17,8 @@ const RouteComponent = () => {
 
   if (createSetupStateMutation.isPending) {
     return <LoadingPage subtitle={t('setup.loadingSubtitle')} title={t('setup.loadingTitle')} />;
+  } else if (createSetupStateMutation.isSuccess) {
+    return <Navigate to="/" />;
   }
 
   return (
@@ -190,8 +192,8 @@ const RouteComponent = () => {
 
 export const Route = createFileRoute('/setup')({
   component: RouteComponent,
-  beforeLoad: async ({ context }) => {
-    const setupState = await context.queryClient.ensureQueryData(setupStateQueryOptions());
+  loader: async ({ context }) => {
+    const setupState = await context.queryClient.fetchQuery(setupStateQueryOptions());
     if (setupState.isSetup) {
       throw redirect({ to: '/' });
     }
