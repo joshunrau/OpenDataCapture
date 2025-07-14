@@ -5,6 +5,7 @@ import { createRouter } from '@tanstack/react-router';
 
 import { LoadingFallback } from './components/LoadingFallback';
 import { routeTree } from './route-tree';
+import { queryClient } from './services/react-query';
 
 declare module '@tanstack/react-router' {
   interface Register {
@@ -13,6 +14,9 @@ declare module '@tanstack/react-router' {
 }
 
 export const router = createRouter({
+  context: {
+    queryClient
+  },
   defaultErrorComponent: ErrorPage,
   defaultPendingComponent: LoadingFallback,
   routeTree
