@@ -13,6 +13,7 @@ import { Route as SetupRouteImport } from './routes/setup'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 
 const SetupRoute = SetupRouteImport.update({
   id: '/setup',
@@ -33,14 +34,21 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/setup': typeof SetupRoute
+  '/dashboard': typeof AppDashboardRoute
   '/auth/login': typeof AuthLoginRoute
   '/': typeof AppIndexRoute
 }
 export interface FileRoutesByTo {
   '/setup': typeof SetupRoute
+  '/dashboard': typeof AppDashboardRoute
   '/auth/login': typeof AuthLoginRoute
   '/': typeof AppIndexRoute
 }
@@ -48,15 +56,22 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteRouteWithChildren
   '/setup': typeof SetupRoute
+  '/_app/dashboard': typeof AppDashboardRoute
   '/auth/login': typeof AuthLoginRoute
   '/_app/': typeof AppIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/setup' | '/auth/login' | '/'
+  fullPaths: '/setup' | '/dashboard' | '/auth/login' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/setup' | '/auth/login' | '/'
-  id: '__root__' | '/_app' | '/setup' | '/auth/login' | '/_app/'
+  to: '/setup' | '/dashboard' | '/auth/login' | '/'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/setup'
+    | '/_app/dashboard'
+    | '/auth/login'
+    | '/_app/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -95,14 +110,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
   }
 }
 
 interface AppRouteRouteChildren {
+  AppDashboardRoute: typeof AppDashboardRoute
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppDashboardRoute: AppDashboardRoute,
   AppIndexRoute: AppIndexRoute,
 }
 
