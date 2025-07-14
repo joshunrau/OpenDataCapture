@@ -12,6 +12,6 @@ export const setupStateQueryOptions = () => {
   });
 };
 
-export function useSetupState() {
+export function useSetupStateQuery() {
   return useSuspenseQuery(setupStateQueryOptions());
 }
