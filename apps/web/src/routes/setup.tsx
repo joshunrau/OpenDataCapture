@@ -1,14 +1,17 @@
+/* eslint-disable perfectionist/sort-objects */
+
 import { estimatePasswordStrength } from '@douglasneuroinformatics/libpasswd';
 import { Card, Form, Heading, LanguageToggle, ThemeToggle } from '@douglasneuroinformatics/libui/components';
 import { useTranslation } from '@douglasneuroinformatics/libui/hooks';
 import { Logo } from '@opendatacapture/react-core';
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute, redirect, useRouter } from '@tanstack/react-router';
 import z from 'zod/v4';
 
 import { useCreateSetupStateMutation } from '@/hooks/useCreateSetupStateMutation';
 import { setupStateQueryOptions } from '@/hooks/useSetupStateQuery';
 
 const RouteComponent = () => {
+  const router = useRouter();
   const createSetupStateMutation = useCreateSetupStateMutation();
   const { t } = useTranslation();
 
@@ -25,11 +28,6 @@ const RouteComponent = () => {
               {
                 description: t('setup.admin.description'),
                 fields: {
-                  confirmPassword: {
-                    kind: 'string',
-                    label: t('common.confirmPassword'),
-                    variant: 'password'
-                  },
                   firstName: {
                     kind: 'string',
                     label: t('core.identificationData.firstName.label'),
@@ -40,6 +38,11 @@ const RouteComponent = () => {
                     label: t('core.identificationData.lastName.label'),
                     variant: 'input'
                   },
+                  username: {
+                    kind: 'string',
+                    label: t('setup.admin.username'),
+                    variant: 'input'
+                  },
                   password: {
                     calculateStrength: (password) => {
                       return estimatePasswordStrength(password).score;
@@ -48,10 +51,10 @@ const RouteComponent = () => {
                     label: t('setup.admin.password'),
                     variant: 'password'
                   },
-                  username: {
+                  confirmPassword: {
                     kind: 'string',
-                    label: t('setup.admin.username'),
-                    variant: 'input'
+                    label: t('common.confirmPassword'),
+                    variant: 'password'
                   }
                 },
                 title: t('setup.admin.title')
@@ -59,20 +62,6 @@ const RouteComponent = () => {
               {
                 description: t('setup.demo.description'),
                 fields: {
-                  dummySubjectCount: {
-                    deps: ['initDemo'],
-                    kind: 'dynamic',
-                    render: (data) => {
-                      if (!data?.initDemo) {
-                        return null;
-                      }
-                      return {
-                        kind: 'number',
-                        label: t('setup.demo.dummySubjectCount'),
-                        variant: 'input'
-                      };
-                    }
-                  },
                   enableExperimentalFeatures: {
                     kind: 'boolean',
                     label: t('setup.enableExperimentalFeatures'),
@@ -87,8 +76,21 @@ const RouteComponent = () => {
                     },
                     variant: 'radio'
                   },
+                  dummySubjectCount: {
+                    kind: 'dynamic',
+                    render: (data) => {
+                      if (!data?.initDemo) {
+                        return null;
+                      }
+                      return {
+                        kind: 'number',
+                        label: t('setup.demo.dummySubjectCount'),
+                        variant: 'input'
+                      };
+                    },
+                    deps: ['initDemo']
+                  },
                   recordsPerSubject: {
-                    deps: ['initDemo'],
                     kind: 'dynamic',
                     render: (data) => {
                       if (!data?.initDemo) {
@@ -99,7 +101,8 @@ const RouteComponent = () => {
                         label: t('setup.demo.recordsPerSubject'),
                         variant: 'input'
                       };
-                    }
+                    },
+                    deps: ['initDemo']
                   }
                 },
                 title: t('setup.demo.title')
@@ -112,18 +115,18 @@ const RouteComponent = () => {
             submitBtnLabel={t('core.submit')}
             validationSchema={z
               .object({
-                confirmPassword: z.string().min(1),
-                dummySubjectCount: z.number().int().nonnegative().optional(),
-                enableExperimentalFeatures: z.boolean(),
                 firstName: z.string().min(1),
-                initDemo: z.boolean(),
                 lastName: z.string().min(1),
+                username: z.string().min(1),
                 password: z
                   .string()
                   .min(1)
                   .refine((val) => estimatePasswordStrength(val).success, t('common.insufficientPasswordStrength')),
+                confirmPassword: z.string().min(1),
+                initDemo: z.boolean(),
+                enableExperimentalFeatures: z.boolean(),
                 recordsPerSubject: z.number().int().nonnegative().optional(),
-                username: z.string().min(1)
+                dummySubjectCount: z.number().int().nonnegative().optional()
               })
               .check((ctx) => {
                 if (ctx.value.confirmPassword !== ctx.value.password) {
@@ -135,7 +138,7 @@ const RouteComponent = () => {
                   });
                 }
               })}
-            onSubmit={({
+            onSubmit={async ({
               dummySubjectCount,
               enableExperimentalFeatures,
               firstName,
@@ -145,7 +148,7 @@ const RouteComponent = () => {
               recordsPerSubject,
               username
             }) => {
-              createSetupStateMutation.mutate({
+              await createSetupStateMutation.mutateAsync({
                 admin: {
                   firstName,
                   lastName,
@@ -157,6 +160,7 @@ const RouteComponent = () => {
                 initDemo,
                 recordsPerSubject
               });
+              await router.invalidate({});
             }}
           />
         </Card.Content>
