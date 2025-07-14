@@ -17,18 +17,5 @@ export const Route = createRootRoute({
       <ReactQueryDevtools buttonPosition="bottom-right" position="left" />
       <TanStackRouterDevtools />
     </Fragment>
-    // <>
-    //   <div className="flex gap-2 p-2">
-    //     <Link className="[&.active]:font-bold" to="/">
-    //       Home
-    //     </Link>{' '}
-    //     <Link className="[&.active]:font-bold" to="/about">
-    //       About
-    //     </Link>
-    //   </div>
-    //   <hr />
-    //   <Outlet />
-    //   <TanStackRouterDevtools />
-    // </>
   )
 });
