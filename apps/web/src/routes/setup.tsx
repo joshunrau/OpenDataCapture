@@ -1,17 +1,191 @@
-import { useTheme } from '@douglasneuroinformatics/libui/hooks';
-import { createFileRoute } from '@tanstack/react-router';
+import { estimatePasswordStrength } from '@douglasneuroinformatics/libpasswd';
+import { Card, Form, Heading, LanguageToggle, ThemeToggle } from '@douglasneuroinformatics/libui/components';
+import { useTranslation } from '@douglasneuroinformatics/libui/hooks';
+import { Logo } from '@opendatacapture/react-core';
+import { createFileRoute, redirect } from '@tanstack/react-router';
+import z from 'zod/v4';
 
-import { useSetupStateQuery } from '@/hooks/useSetupStateQuery';
+import { useCreateSetupStateMutation } from '@/hooks/useCreateSetupStateMutation';
+import { setupStateQueryOptions } from '@/hooks/useSetupStateQuery';
 
 const RouteComponent = () => {
-  const setupStateQuery = useSetupStateQuery();
+  const createSetupStateMutation = useCreateSetupStateMutation();
+  const { t } = useTranslation();
 
-  // since there is no theme toggle on the page, this is required to set the document attribute
-  useTheme();
-
-  return <div>Setup</div>;
+  return (
+    <div className="flex flex-col items-center justify-center">
+      <Card className="w-full grow px-4 sm:m-8 sm:max-w-xl sm:grow-0 md:max-w-2xl">
+        <Card.Header className="flex items-center justify-center">
+          <Logo className="m-2 h-auto w-16" variant="auto" />
+          <Heading variant="h2">{t('setup.pageTitle')}</Heading>
+        </Card.Header>
+        <Card.Content>
+          <Form
+            content={[
+              {
+                description: t('setup.admin.description'),
+                fields: {
+                  confirmPassword: {
+                    kind: 'string',
+                    label: t('common.confirmPassword'),
+                    variant: 'password'
+                  },
+                  firstName: {
+                    kind: 'string',
+                    label: t('core.identificationData.firstName.label'),
+                    variant: 'input'
+                  },
+                  lastName: {
+                    kind: 'string',
+                    label: t('core.identificationData.lastName.label'),
+                    variant: 'input'
+                  },
+                  password: {
+                    calculateStrength: (password) => {
+                      return estimatePasswordStrength(password).score;
+                    },
+                    kind: 'string',
+                    label: t('setup.admin.password'),
+                    variant: 'password'
+                  },
+                  username: {
+                    kind: 'string',
+                    label: t('setup.admin.username'),
+                    variant: 'input'
+                  }
+                },
+                title: t('setup.admin.title')
+              },
+              {
+                description: t('setup.demo.description'),
+                fields: {
+                  dummySubjectCount: {
+                    deps: ['initDemo'],
+                    kind: 'dynamic',
+                    render: (data) => {
+                      if (!data?.initDemo) {
+                        return null;
+                      }
+                      return {
+                        kind: 'number',
+                        label: t('setup.demo.dummySubjectCount'),
+                        variant: 'input'
+                      };
+                    }
+                  },
+                  enableExperimentalFeatures: {
+                    kind: 'boolean',
+                    label: t('setup.enableExperimentalFeatures'),
+                    variant: 'radio'
+                  },
+                  initDemo: {
+                    kind: 'boolean',
+                    label: t('setup.demo.init'),
+                    options: {
+                      false: t('core.no'),
+                      true: t('core.yes')
+                    },
+                    variant: 'radio'
+                  },
+                  recordsPerSubject: {
+                    deps: ['initDemo'],
+                    kind: 'dynamic',
+                    render: (data) => {
+                      if (!data?.initDemo) {
+                        return null;
+                      }
+                      return {
+                        kind: 'number',
+                        label: t('setup.demo.recordsPerSubject'),
+                        variant: 'input'
+                      };
+                    }
+                  }
+                },
+                title: t('setup.demo.title')
+              }
+            ]}
+            data-cy="setup-form"
+            initialValues={{
+              enableExperimentalFeatures: false
+            }}
+            submitBtnLabel={t('core.submit')}
+            validationSchema={z
+              .object({
+                confirmPassword: z.string().min(1),
+                dummySubjectCount: z.number().int().nonnegative().optional(),
+                enableExperimentalFeatures: z.boolean(),
+                firstName: z.string().min(1),
+                initDemo: z.boolean(),
+                lastName: z.string().min(1),
+                password: z
+                  .string()
+                  .min(1)
+                  .refine((val) => estimatePasswordStrength(val).success, t('common.insufficientPasswordStrength')),
+                recordsPerSubject: z.number().int().nonnegative().optional(),
+                username: z.string().min(1)
+              })
+              .check((ctx) => {
+                if (ctx.value.confirmPassword !== ctx.value.password) {
+                  ctx.issues.push({
+                    code: 'custom',
+                    input: ctx.value.confirmPassword,
+                    message: t('common.passwordsMustMatch'),
+                    path: ['confirmPassword']
+                  });
+                }
+              })}
+            onSubmit={({
+              dummySubjectCount,
+              enableExperimentalFeatures,
+              firstName,
+              initDemo,
+              lastName,
+              password,
+              recordsPerSubject,
+              username
+            }) => {
+              createSetupStateMutation.mutate({
+                admin: {
+                  firstName,
+                  lastName,
+                  password,
+                  username
+                },
+                dummySubjectCount,
+                enableExperimentalFeatures,
+                initDemo,
+                recordsPerSubject
+              });
+            }}
+          />
+        </Card.Content>
+        <Card.Footer className="text-muted-foreground flex justify-between gap-3">
+          <p className="text-sm">&copy; {new Date().getFullYear()} Douglas Neuroinformatics Platform</p>
+          <div className="flex gap-2">
+            <LanguageToggle
+              align="start"
+              options={{
+                en: 'English',
+                fr: 'Français'
+              }}
+              triggerClassName="border p-2"
+              variant="ghost"
+            />
+            <ThemeToggle className="border p-2" variant="ghost" />
+          </div>
+        </Card.Footer>
+      </Card>
+    </div>
+  );
 };
 
 export const Route = createFileRoute('/setup')({
-  component: RouteComponent
+  component: RouteComponent,
+  loader: async ({ context }) => {
+    const setupState = await context.queryClient.ensureQueryData(setupStateQueryOptions());
+    if (setupState.isSetup) {
+      throw redirect({ to: '/' });
+    }
+  }
 });

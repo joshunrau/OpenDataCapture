@@ -6,8 +6,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
-import { setupStateQueryOptions } from '@/hooks/useSetupStateQuery';
-
 import '../services/axios';
 import '../services/i18n';
 import '../services/zod';
@@ -24,6 +22,5 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       <ReactQueryDevtools buttonPosition="bottom-right" position="left" />
       <TanStackRouterDevtools />
     </Fragment>
-  ),
-  loader: ({ context }) => context.queryClient.ensureQueryData(setupStateQueryOptions())
+  )
 });
