@@ -18,6 +18,7 @@ import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppContactRouteImport } from './routes/_app/contact'
 import { Route as AppAboutRouteImport } from './routes/_app/about'
 import { Route as AppSessionStartSessionRouteImport } from './routes/_app/session/start-session'
+import { Route as AppAdminSettingsRouteImport } from './routes/_app/admin/settings'
 import { Route as AppAdminUsersIndexRouteImport } from './routes/_app/admin/users/index'
 import { Route as AppAdminGroupsIndexRouteImport } from './routes/_app/admin/groups/index'
 import { Route as AppAdminUsersCreateRouteImport } from './routes/_app/admin/users/create'
@@ -67,6 +68,11 @@ const AppSessionStartSessionRoute = AppSessionStartSessionRouteImport.update({
   path: '/session/start-session',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppAdminSettingsRoute = AppAdminSettingsRouteImport.update({
+  id: '/admin/settings',
+  path: '/admin/settings',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppAdminUsersIndexRoute = AppAdminUsersIndexRouteImport.update({
   id: '/admin/users/',
   path: '/admin/users/',
@@ -96,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/user': typeof AppUserRoute
   '/auth/login': typeof AuthLoginRoute
   '/': typeof AppIndexRoute
+  '/admin/settings': typeof AppAdminSettingsRoute
   '/session/start-session': typeof AppSessionStartSessionRoute
   '/admin/groups/create': typeof AppAdminGroupsCreateRoute
   '/admin/users/create': typeof AppAdminUsersCreateRoute
@@ -110,6 +117,7 @@ export interface FileRoutesByTo {
   '/user': typeof AppUserRoute
   '/auth/login': typeof AuthLoginRoute
   '/': typeof AppIndexRoute
+  '/admin/settings': typeof AppAdminSettingsRoute
   '/session/start-session': typeof AppSessionStartSessionRoute
   '/admin/groups/create': typeof AppAdminGroupsCreateRoute
   '/admin/users/create': typeof AppAdminUsersCreateRoute
@@ -126,6 +134,7 @@ export interface FileRoutesById {
   '/_app/user': typeof AppUserRoute
   '/auth/login': typeof AuthLoginRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/admin/settings': typeof AppAdminSettingsRoute
   '/_app/session/start-session': typeof AppSessionStartSessionRoute
   '/_app/admin/groups/create': typeof AppAdminGroupsCreateRoute
   '/_app/admin/users/create': typeof AppAdminUsersCreateRoute
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
     | '/user'
     | '/auth/login'
     | '/'
+    | '/admin/settings'
     | '/session/start-session'
     | '/admin/groups/create'
     | '/admin/users/create'
@@ -156,6 +166,7 @@ export interface FileRouteTypes {
     | '/user'
     | '/auth/login'
     | '/'
+    | '/admin/settings'
     | '/session/start-session'
     | '/admin/groups/create'
     | '/admin/users/create'
@@ -171,6 +182,7 @@ export interface FileRouteTypes {
     | '/_app/user'
     | '/auth/login'
     | '/_app/'
+    | '/_app/admin/settings'
     | '/_app/session/start-session'
     | '/_app/admin/groups/create'
     | '/_app/admin/users/create'
@@ -249,6 +261,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSessionStartSessionRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/admin/settings': {
+      id: '/_app/admin/settings'
+      path: '/admin/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AppAdminSettingsRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/admin/users/': {
       id: '/_app/admin/users/'
       path: '/admin/users'
@@ -286,6 +305,7 @@ interface AppRouteRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppUserRoute: typeof AppUserRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppAdminSettingsRoute: typeof AppAdminSettingsRoute
   AppSessionStartSessionRoute: typeof AppSessionStartSessionRoute
   AppAdminGroupsCreateRoute: typeof AppAdminGroupsCreateRoute
   AppAdminUsersCreateRoute: typeof AppAdminUsersCreateRoute
@@ -299,6 +319,7 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppUserRoute: AppUserRoute,
   AppIndexRoute: AppIndexRoute,
+  AppAdminSettingsRoute: AppAdminSettingsRoute,
   AppSessionStartSessionRoute: AppSessionStartSessionRoute,
   AppAdminGroupsCreateRoute: AppAdminGroupsCreateRoute,
   AppAdminUsersCreateRoute: AppAdminUsersCreateRoute,
