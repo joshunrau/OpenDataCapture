@@ -33,6 +33,11 @@ const RouteComponent = () => {
     });
   }
 
+  // should never happen, as data is ensured in loader, but avoid crashing the app if someone changes this
+  if (!summaryQuery.data) {
+    return null;
+  }
+
   return (
     <div className="flex grow flex-col">
       <PageHeader className="text-center">
