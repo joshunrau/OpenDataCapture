@@ -1,7 +1,7 @@
 import { Form, Heading } from '@douglasneuroinformatics/libui/components';
 import { useTranslation } from '@douglasneuroinformatics/libui/hooks';
 import { createFileRoute } from '@tanstack/react-router';
-import z from 'zod/v4';
+import { z } from 'zod/v4';
 
 import { PageHeader } from '@/components/PageHeader';
 import { config } from '@/config';
