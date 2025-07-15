@@ -14,6 +14,7 @@ import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppContactRouteImport } from './routes/_app/contact'
 import { Route as AppSessionStartSessionRouteImport } from './routes/_app/session/start-session'
 
 const SetupRoute = SetupRouteImport.update({
@@ -40,6 +41,11 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppContactRoute = AppContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppSessionStartSessionRoute = AppSessionStartSessionRouteImport.update({
   id: '/session/start-session',
   path: '/session/start-session',
@@ -48,6 +54,7 @@ const AppSessionStartSessionRoute = AppSessionStartSessionRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/setup': typeof SetupRoute
+  '/contact': typeof AppContactRoute
   '/dashboard': typeof AppDashboardRoute
   '/auth/login': typeof AuthLoginRoute
   '/': typeof AppIndexRoute
@@ -55,6 +62,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/setup': typeof SetupRoute
+  '/contact': typeof AppContactRoute
   '/dashboard': typeof AppDashboardRoute
   '/auth/login': typeof AuthLoginRoute
   '/': typeof AppIndexRoute
@@ -64,6 +72,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteRouteWithChildren
   '/setup': typeof SetupRoute
+  '/_app/contact': typeof AppContactRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/auth/login': typeof AuthLoginRoute
   '/_app/': typeof AppIndexRoute
@@ -73,16 +82,24 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/setup'
+    | '/contact'
     | '/dashboard'
     | '/auth/login'
     | '/'
     | '/session/start-session'
   fileRoutesByTo: FileRoutesByTo
-  to: '/setup' | '/dashboard' | '/auth/login' | '/' | '/session/start-session'
+  to:
+    | '/setup'
+    | '/contact'
+    | '/dashboard'
+    | '/auth/login'
+    | '/'
+    | '/session/start-session'
   id:
     | '__root__'
     | '/_app'
     | '/setup'
+    | '/_app/contact'
     | '/_app/dashboard'
     | '/auth/login'
     | '/_app/'
@@ -132,6 +149,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/contact': {
+      id: '/_app/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof AppContactRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/session/start-session': {
       id: '/_app/session/start-session'
       path: '/session/start-session'
@@ -143,12 +167,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteRouteChildren {
+  AppContactRoute: typeof AppContactRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppIndexRoute: typeof AppIndexRoute
   AppSessionStartSessionRoute: typeof AppSessionStartSessionRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppContactRoute: AppContactRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppIndexRoute: AppIndexRoute,
   AppSessionStartSessionRoute: AppSessionStartSessionRoute,
