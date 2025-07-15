@@ -13,8 +13,10 @@ import { Route as SetupRouteImport } from './routes/setup'
 import { Route as AppRouteRouteImport } from './routes/_app/route'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AppUserRouteImport } from './routes/_app/user'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppContactRouteImport } from './routes/_app/contact'
+import { Route as AppAboutRouteImport } from './routes/_app/about'
 import { Route as AppSessionStartSessionRouteImport } from './routes/_app/session/start-session'
 
 const SetupRoute = SetupRouteImport.update({
@@ -36,6 +38,11 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/auth/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppUserRoute = AppUserRouteImport.update({
+  id: '/user',
+  path: '/user',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -46,6 +53,11 @@ const AppContactRoute = AppContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppAboutRoute = AppAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppSessionStartSessionRoute = AppSessionStartSessionRouteImport.update({
   id: '/session/start-session',
   path: '/session/start-session',
@@ -54,16 +66,20 @@ const AppSessionStartSessionRoute = AppSessionStartSessionRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/setup': typeof SetupRoute
+  '/about': typeof AppAboutRoute
   '/contact': typeof AppContactRoute
   '/dashboard': typeof AppDashboardRoute
+  '/user': typeof AppUserRoute
   '/auth/login': typeof AuthLoginRoute
   '/': typeof AppIndexRoute
   '/session/start-session': typeof AppSessionStartSessionRoute
 }
 export interface FileRoutesByTo {
   '/setup': typeof SetupRoute
+  '/about': typeof AppAboutRoute
   '/contact': typeof AppContactRoute
   '/dashboard': typeof AppDashboardRoute
+  '/user': typeof AppUserRoute
   '/auth/login': typeof AuthLoginRoute
   '/': typeof AppIndexRoute
   '/session/start-session': typeof AppSessionStartSessionRoute
@@ -72,8 +88,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteRouteWithChildren
   '/setup': typeof SetupRoute
+  '/_app/about': typeof AppAboutRoute
   '/_app/contact': typeof AppContactRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/user': typeof AppUserRoute
   '/auth/login': typeof AuthLoginRoute
   '/_app/': typeof AppIndexRoute
   '/_app/session/start-session': typeof AppSessionStartSessionRoute
@@ -82,16 +100,20 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/setup'
+    | '/about'
     | '/contact'
     | '/dashboard'
+    | '/user'
     | '/auth/login'
     | '/'
     | '/session/start-session'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/setup'
+    | '/about'
     | '/contact'
     | '/dashboard'
+    | '/user'
     | '/auth/login'
     | '/'
     | '/session/start-session'
@@ -99,8 +121,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_app'
     | '/setup'
+    | '/_app/about'
     | '/_app/contact'
     | '/_app/dashboard'
+    | '/_app/user'
     | '/auth/login'
     | '/_app/'
     | '/_app/session/start-session'
@@ -142,6 +166,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/user': {
+      id: '/_app/user'
+      path: '/user'
+      fullPath: '/user'
+      preLoaderRoute: typeof AppUserRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
@@ -156,6 +187,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppContactRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/about': {
+      id: '/_app/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AppAboutRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/session/start-session': {
       id: '/_app/session/start-session'
       path: '/session/start-session'
@@ -167,15 +205,19 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppRouteRouteChildren {
+  AppAboutRoute: typeof AppAboutRoute
   AppContactRoute: typeof AppContactRoute
   AppDashboardRoute: typeof AppDashboardRoute
+  AppUserRoute: typeof AppUserRoute
   AppIndexRoute: typeof AppIndexRoute
   AppSessionStartSessionRoute: typeof AppSessionStartSessionRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppAboutRoute: AppAboutRoute,
   AppContactRoute: AppContactRoute,
   AppDashboardRoute: AppDashboardRoute,
+  AppUserRoute: AppUserRoute,
   AppIndexRoute: AppIndexRoute,
   AppSessionStartSessionRoute: AppSessionStartSessionRoute,
 }
