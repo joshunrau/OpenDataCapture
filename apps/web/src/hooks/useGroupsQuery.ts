@@ -1,5 +1,5 @@
 import { $Group } from '@opendatacapture/schemas/group';
-import { queryOptions, useQuery } from '@tanstack/react-query';
+import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 export const GROUPS_QUERY_KEY = 'groups';
@@ -15,5 +15,5 @@ export const groupsQueryOptions = () => {
 };
 
 export function useGroupsQuery() {
-  return useQuery(groupsQueryOptions());
+  return useSuspenseQuery(groupsQueryOptions());
 }
