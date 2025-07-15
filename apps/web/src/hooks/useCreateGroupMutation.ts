@@ -1,18 +1,18 @@
 import { useNotificationsStore } from '@douglasneuroinformatics/libui/hooks';
-import type { UpdateUserData } from '@opendatacapture/schemas/user';
+import type { CreateGroupData } from '@opendatacapture/schemas/group';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-export function useUpdateUserMutation() {
+import { GROUPS_QUERY_KEY } from './useGroupsQuery';
+
+export function useCreateGroupMutation() {
   const queryClient = useQueryClient();
   const addNotification = useNotificationsStore((store) => store.addNotification);
   return useMutation({
-    mutationFn: async ({ data, id }: { data: UpdateUserData; id: string }) => {
-      await axios.patch(`/v1/users/${id}`, data);
-    },
+    mutationFn: ({ data }: { data: CreateGroupData }) => axios.post('/v1/groups', data),
     onSuccess() {
       addNotification({ type: 'success' });
-      void queryClient.invalidateQueries({ queryKey: ['users'] });
+      void queryClient.invalidateQueries({ queryKey: [GROUPS_QUERY_KEY] });
     }
   });
 }
