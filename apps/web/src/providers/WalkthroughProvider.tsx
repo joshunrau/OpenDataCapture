@@ -4,11 +4,11 @@ import { Button, Card } from '@douglasneuroinformatics/libui/components';
 import { useEventListener, useTranslation } from '@douglasneuroinformatics/libui/hooks';
 import type { FormTypes } from '@opendatacapture/runtime-core';
 import type { Session } from '@opendatacapture/schemas/session';
+import { useNavigate } from '@tanstack/react-router';
+import type { NavigateOptions } from '@tanstack/react-router';
 import { mean } from 'lodash-es';
 import { XIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useNavigate } from 'react-router-dom';
-import type { NavigateOptions } from 'react-router-dom';
 import { match } from 'ts-pattern';
 import type { Promisable } from 'type-fest';
 
