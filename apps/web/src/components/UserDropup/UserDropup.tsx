@@ -85,7 +85,7 @@ export const UserDropup = () => {
             className="gap-2 hover:bg-slate-700 hover:text-slate-100 focus:bg-slate-700 focus:text-slate-100 focus:ring-0"
             onClick={() => {
               logout();
-              void navigate({ to: '/auth/login' });
+              void navigate({ reloadDocument: true, to: '/auth/login' });
             }}
           >
             <LogOutIcon />
