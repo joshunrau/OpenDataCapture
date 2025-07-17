@@ -17,8 +17,10 @@ import { Route as AppUserRouteImport } from './routes/_app/user'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppContactRouteImport } from './routes/_app/contact'
 import { Route as AppAboutRouteImport } from './routes/_app/about'
+import { Route as AppDatahubIndexRouteImport } from './routes/_app/datahub/index'
 import { Route as AppSessionStartSessionRouteImport } from './routes/_app/session/start-session'
 import { Route as AppAdminSettingsRouteImport } from './routes/_app/admin/settings'
+import { Route as AppDatahubSubjectIdIndexRouteImport } from './routes/_app/datahub/$subjectId/index'
 import { Route as AppAdminUsersIndexRouteImport } from './routes/_app/admin/users/index'
 import { Route as AppAdminGroupsIndexRouteImport } from './routes/_app/admin/groups/index'
 import { Route as AppAdminUsersCreateRouteImport } from './routes/_app/admin/users/create'
@@ -63,6 +65,11 @@ const AppAboutRoute = AppAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppDatahubIndexRoute = AppDatahubIndexRouteImport.update({
+  id: '/datahub/',
+  path: '/datahub/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppSessionStartSessionRoute = AppSessionStartSessionRouteImport.update({
   id: '/session/start-session',
   path: '/session/start-session',
@@ -73,6 +80,12 @@ const AppAdminSettingsRoute = AppAdminSettingsRouteImport.update({
   path: '/admin/settings',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppDatahubSubjectIdIndexRoute =
+  AppDatahubSubjectIdIndexRouteImport.update({
+    id: '/datahub/$subjectId/',
+    path: '/datahub/$subjectId/',
+    getParentRoute: () => AppRouteRoute,
+  } as any)
 const AppAdminUsersIndexRoute = AppAdminUsersIndexRouteImport.update({
   id: '/admin/users/',
   path: '/admin/users/',
@@ -104,10 +117,12 @@ export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/admin/settings': typeof AppAdminSettingsRoute
   '/session/start-session': typeof AppSessionStartSessionRoute
+  '/datahub': typeof AppDatahubIndexRoute
   '/admin/groups/create': typeof AppAdminGroupsCreateRoute
   '/admin/users/create': typeof AppAdminUsersCreateRoute
   '/admin/groups': typeof AppAdminGroupsIndexRoute
   '/admin/users': typeof AppAdminUsersIndexRoute
+  '/datahub/$subjectId': typeof AppDatahubSubjectIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/setup': typeof SetupRoute
@@ -119,10 +134,12 @@ export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
   '/admin/settings': typeof AppAdminSettingsRoute
   '/session/start-session': typeof AppSessionStartSessionRoute
+  '/datahub': typeof AppDatahubIndexRoute
   '/admin/groups/create': typeof AppAdminGroupsCreateRoute
   '/admin/users/create': typeof AppAdminUsersCreateRoute
   '/admin/groups': typeof AppAdminGroupsIndexRoute
   '/admin/users': typeof AppAdminUsersIndexRoute
+  '/datahub/$subjectId': typeof AppDatahubSubjectIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -136,10 +153,12 @@ export interface FileRoutesById {
   '/_app/': typeof AppIndexRoute
   '/_app/admin/settings': typeof AppAdminSettingsRoute
   '/_app/session/start-session': typeof AppSessionStartSessionRoute
+  '/_app/datahub/': typeof AppDatahubIndexRoute
   '/_app/admin/groups/create': typeof AppAdminGroupsCreateRoute
   '/_app/admin/users/create': typeof AppAdminUsersCreateRoute
   '/_app/admin/groups/': typeof AppAdminGroupsIndexRoute
   '/_app/admin/users/': typeof AppAdminUsersIndexRoute
+  '/_app/datahub/$subjectId/': typeof AppDatahubSubjectIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -153,10 +172,12 @@ export interface FileRouteTypes {
     | '/'
     | '/admin/settings'
     | '/session/start-session'
+    | '/datahub'
     | '/admin/groups/create'
     | '/admin/users/create'
     | '/admin/groups'
     | '/admin/users'
+    | '/datahub/$subjectId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/setup'
@@ -168,10 +189,12 @@ export interface FileRouteTypes {
     | '/'
     | '/admin/settings'
     | '/session/start-session'
+    | '/datahub'
     | '/admin/groups/create'
     | '/admin/users/create'
     | '/admin/groups'
     | '/admin/users'
+    | '/datahub/$subjectId'
   id:
     | '__root__'
     | '/_app'
@@ -184,10 +207,12 @@ export interface FileRouteTypes {
     | '/_app/'
     | '/_app/admin/settings'
     | '/_app/session/start-session'
+    | '/_app/datahub/'
     | '/_app/admin/groups/create'
     | '/_app/admin/users/create'
     | '/_app/admin/groups/'
     | '/_app/admin/users/'
+    | '/_app/datahub/$subjectId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -254,6 +279,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAboutRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/datahub/': {
+      id: '/_app/datahub/'
+      path: '/datahub'
+      fullPath: '/datahub'
+      preLoaderRoute: typeof AppDatahubIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/session/start-session': {
       id: '/_app/session/start-session'
       path: '/session/start-session'
@@ -266,6 +298,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/settings'
       fullPath: '/admin/settings'
       preLoaderRoute: typeof AppAdminSettingsRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/datahub/$subjectId/': {
+      id: '/_app/datahub/$subjectId/'
+      path: '/datahub/$subjectId'
+      fullPath: '/datahub/$subjectId'
+      preLoaderRoute: typeof AppDatahubSubjectIdIndexRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/admin/users/': {
@@ -307,10 +346,12 @@ interface AppRouteRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
   AppAdminSettingsRoute: typeof AppAdminSettingsRoute
   AppSessionStartSessionRoute: typeof AppSessionStartSessionRoute
+  AppDatahubIndexRoute: typeof AppDatahubIndexRoute
   AppAdminGroupsCreateRoute: typeof AppAdminGroupsCreateRoute
   AppAdminUsersCreateRoute: typeof AppAdminUsersCreateRoute
   AppAdminGroupsIndexRoute: typeof AppAdminGroupsIndexRoute
   AppAdminUsersIndexRoute: typeof AppAdminUsersIndexRoute
+  AppDatahubSubjectIdIndexRoute: typeof AppDatahubSubjectIdIndexRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
@@ -321,10 +362,12 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppIndexRoute: AppIndexRoute,
   AppAdminSettingsRoute: AppAdminSettingsRoute,
   AppSessionStartSessionRoute: AppSessionStartSessionRoute,
+  AppDatahubIndexRoute: AppDatahubIndexRoute,
   AppAdminGroupsCreateRoute: AppAdminGroupsCreateRoute,
   AppAdminUsersCreateRoute: AppAdminUsersCreateRoute,
   AppAdminGroupsIndexRoute: AppAdminGroupsIndexRoute,
   AppAdminUsersIndexRoute: AppAdminUsersIndexRoute,
+  AppDatahubSubjectIdIndexRoute: AppDatahubSubjectIdIndexRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
