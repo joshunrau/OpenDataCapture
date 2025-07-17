@@ -11,6 +11,9 @@ declare module '@tanstack/react-router' {
   interface Register {
     router: typeof router;
   }
+  interface HistoryState {
+    [key: string]: unknown;
+  }
 }
 
 export const router = createRouter({

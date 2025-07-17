@@ -6,31 +6,32 @@ import { InstrumentRenderer } from '@opendatacapture/react-core';
 import type { InstrumentSubmitHandler } from '@opendatacapture/react-core';
 import type { UnilingualInstrumentInfo } from '@opendatacapture/schemas/instrument';
 import type { CreateInstrumentRecordData } from '@opendatacapture/schemas/instrument-records';
+import { createFileRoute, useLocation, useNavigate } from '@tanstack/react-router';
 import axios from 'axios';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import type { Location } from 'react-router-dom';
 
 import { PageHeader } from '@/components/PageHeader';
 import { useInstrumentBundle } from '@/hooks/useInstrumentBundle';
 import { useAppStore } from '@/store';
 
-export const InstrumentRenderPage = () => {
+const RouteComponent = () => {
   const currentGroup = useAppStore((store) => store.currentGroup);
   const currentSession = useAppStore((store) => store.currentSession);
 
-  const params = useParams();
+  const params = Route.useParams();
   const navigate = useNavigate();
   const notifications = useNotificationsStore();
-  const location = useLocation() as Location<{ info?: UnilingualInstrumentInfo }>;
+  const location = useLocation();
   const { t } = useTranslation();
 
-  const instrumentBundleQuery = useInstrumentBundle(params.id!);
+  const info = location.state.info as UnilingualInstrumentInfo;
 
-  const title = location.state?.info?.clientDetails?.title ?? location.state.info?.details.title;
+  const instrumentBundleQuery = useInstrumentBundle(params.id);
+
+  const title = info?.clientDetails?.title ?? info?.details.title;
 
   useEffect(() => {
     if (!currentSession?.id) {
-      navigate('/instruments/accessible-instruments');
+      void navigate({ to: '/instruments/accessible-instruments' });
     }
   }, [currentSession?.id]);
 
@@ -68,3 +69,7 @@ export const InstrumentRenderPage = () => {
     </div>
   );
 };
+
+export const Route = createFileRoute('/_app/instruments/render/$id')({
+  component: RouteComponent
+});

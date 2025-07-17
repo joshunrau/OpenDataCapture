@@ -2,16 +2,15 @@ import React from 'react';
 
 import { Heading } from '@douglasneuroinformatics/libui/components';
 import { useTranslation } from '@douglasneuroinformatics/libui/hooks';
-import { useNavigate } from 'react-router-dom';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 
+import { InstrumentShowcase } from '@/components/InstrumentShowcase';
 import { PageHeader } from '@/components/PageHeader';
 import { WithFallback } from '@/components/WithFallback';
 import { useInstrumentInfoQuery } from '@/hooks/useInstrumentInfoQuery';
 import { useAppStore } from '@/store';
 
-import { InstrumentShowcase } from '../components/InstrumentShowcase';
-
-export const AccessibleInstrumentsPage = () => {
+const RouteComponent = () => {
   const currentGroup = useAppStore((store) => store.currentGroup);
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -33,10 +32,18 @@ export const AccessibleInstrumentsPage = () => {
               })
             : instrumentInfoQuery.data,
           onSelect: (instrument) => {
-            navigate(`/instruments/render/${instrument.id}`, { state: { info: instrument } });
+            void navigate({
+              params: { id: instrument.id },
+              state: { info: instrument },
+              to: `/instruments/render/$id`
+            });
           }
         }}
       />
     </React.Fragment>
   );
 };
+
+export const Route = createFileRoute('/_app/instruments/accessible-instruments')({
+  component: RouteComponent
+});
