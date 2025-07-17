@@ -2,20 +2,38 @@ import React from 'react';
 
 import { Heading } from '@douglasneuroinformatics/libui/components';
 import { useTranslation } from '@douglasneuroinformatics/libui/hooks';
+import { cn } from '@douglasneuroinformatics/libui/utils';
 import { removeSubjectIdScope } from '@opendatacapture/subject-utils';
-import { Outlet, useParams } from 'react-router-dom';
+import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router';
 
 import { LoadingFallback } from '@/components/LoadingFallback';
 import { PageHeader } from '@/components/PageHeader';
 import { config } from '@/config';
 import { useAppStore } from '@/store';
 
-import { TabLink } from './TabLink';
+const TabLink = ({ dataCy, label, pathname }: { dataCy?: string; label: string; pathname: string }) => {
+  const location = useLocation();
+  const isActive = location.pathname === pathname;
+  return (
+    <Link
+      className={cn(
+        'grow border-b px-1 py-3 text-center font-medium',
+        isActive ? 'border-sky-500 text-slate-900 dark:text-slate-100' : 'border-slate-300 dark:border-slate-700'
+      )}
+      data-cy={dataCy}
+      data-nav-url={pathname}
+      data-spotlight-type="tab-link"
+      to={pathname}
+    >
+      {label}
+    </Link>
+  );
+};
 
-export const SubjectLayout = () => {
-  const params = useParams();
+const RouteComponent = () => {
+  const params = Route.useParams();
   const { t } = useTranslation('datahub');
-  const subjectId = params.subjectId!;
+  const subjectId = params.subjectId;
   const basePathname = `/datahub/${subjectId}`;
   const subjectIdDisplaySetting = useAppStore((store) => store.currentGroup?.settings.subjectIdDisplayLength);
 
@@ -51,3 +69,7 @@ export const SubjectLayout = () => {
     </React.Fragment>
   );
 };
+
+export const Route = createFileRoute('/_app/datahub/$subjectId')({
+  component: RouteComponent
+});
