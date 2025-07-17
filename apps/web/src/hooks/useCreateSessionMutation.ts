@@ -4,7 +4,7 @@ import type { CreateSessionData } from '@opendatacapture/schemas/session';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
-export function useCreateSession() {
+export function useCreateSessionMutation() {
   const addNotification = useNotificationsStore((store) => store.addNotification);
   return useMutation({
     mutationFn: async (data: CreateSessionData) => {
