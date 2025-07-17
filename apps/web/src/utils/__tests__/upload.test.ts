@@ -1,11 +1,11 @@
-//pnpm exec vitest --dir src/features/upload/ -c /dev/null --run
+// pnpm exec vitest --dir src/features/upload/ -c /dev/null --run
 
 import type { AnyUnilingualFormInstrument } from '@opendatacapture/runtime-core';
 import { unparse } from 'papaparse';
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 
-import { getZodTypeName, interpretZodArray, processInstrumentCSV } from './utils';
+import { getZodTypeName, interpretZodArray, processInstrumentCSV } from '../upload';
 
 describe('getZodTypeName', () => {
   it('should parse a z.string()', () => {

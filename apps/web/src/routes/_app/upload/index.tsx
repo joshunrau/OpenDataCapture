@@ -1,16 +1,46 @@
 import React from 'react';
 
-import { Heading, SearchBar } from '@douglasneuroinformatics/libui/components';
+import { ClientTable, Heading, SearchBar } from '@douglasneuroinformatics/libui/components';
 import { useTranslation } from '@douglasneuroinformatics/libui/hooks';
-import { useNavigate } from 'react-router-dom';
+import type { UnilingualInstrumentInfo } from '@opendatacapture/schemas/instrument';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 
 import { PageHeader } from '@/components/PageHeader';
 import { useInstrumentInfoQuery } from '@/hooks/useInstrumentInfoQuery';
 import { useSearch } from '@/hooks/useSearch';
 
-import { UploadSelectTable } from '../components/UploadSelectTable';
+const UploadSelectTable: React.FC<{
+  data: UnilingualInstrumentInfo[];
+  onSelect: (instrument: UnilingualInstrumentInfo) => void;
+}> = ({ data, onSelect }) => {
+  const { t } = useTranslation();
+  return (
+    <ClientTable<UnilingualInstrumentInfo>
+      columns={[
+        {
+          field: (instrument) => instrument.details.title,
+          label: t({
+            en: 'Title',
+            fr: 'Titre'
+          })
+        },
+        {
+          field: (instrument) => instrument.kind,
+          label: t({
+            en: 'Kind',
+            fr: 'Genre'
+          })
+        }
+      ]}
+      data={data}
+      entriesPerPage={15}
+      minRows={15}
+      onEntryClick={onSelect}
+    />
+  );
+};
 
-export const UploadSelectPage = () => {
+const RouteComponent = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -44,9 +74,13 @@ export const UploadSelectPage = () => {
       <UploadSelectTable
         data={filteredData}
         onSelect={(instrument) => {
-          navigate(instrument.id);
+          void navigate({ params: { instrumentId: instrument.id }, to: '/upload/$instrumentId' });
         }}
       />
     </React.Fragment>
   );
 };
+
+export const Route = createFileRoute('/_app/upload/')({
+  component: RouteComponent
+});

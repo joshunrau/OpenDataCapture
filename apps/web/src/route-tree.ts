@@ -17,7 +17,9 @@ import { Route as AppUserRouteImport } from './routes/_app/user'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppContactRouteImport } from './routes/_app/contact'
 import { Route as AppAboutRouteImport } from './routes/_app/about'
+import { Route as AppUploadIndexRouteImport } from './routes/_app/upload/index'
 import { Route as AppDatahubIndexRouteImport } from './routes/_app/datahub/index'
+import { Route as AppUploadInstrumentIdRouteImport } from './routes/_app/upload/$instrumentId'
 import { Route as AppSessionStartSessionRouteImport } from './routes/_app/session/start-session'
 import { Route as AppGroupManageRouteImport } from './routes/_app/group/manage'
 import { Route as AppAdminSettingsRouteImport } from './routes/_app/admin/settings'
@@ -69,9 +71,19 @@ const AppAboutRoute = AppAboutRouteImport.update({
   path: '/about',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppUploadIndexRoute = AppUploadIndexRouteImport.update({
+  id: '/upload/',
+  path: '/upload/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppDatahubIndexRoute = AppDatahubIndexRouteImport.update({
   id: '/datahub/',
   path: '/datahub/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppUploadInstrumentIdRoute = AppUploadInstrumentIdRouteImport.update({
+  id: '/upload/$instrumentId',
+  path: '/upload/$instrumentId',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppSessionStartSessionRoute = AppSessionStartSessionRouteImport.update({
@@ -146,7 +158,9 @@ export interface FileRoutesByFullPath {
   '/admin/settings': typeof AppAdminSettingsRoute
   '/group/manage': typeof AppGroupManageRoute
   '/session/start-session': typeof AppSessionStartSessionRoute
+  '/upload/$instrumentId': typeof AppUploadInstrumentIdRoute
   '/datahub': typeof AppDatahubIndexRoute
+  '/upload': typeof AppUploadIndexRoute
   '/admin/groups/create': typeof AppAdminGroupsCreateRoute
   '/admin/users/create': typeof AppAdminUsersCreateRoute
   '/datahub/$subjectId/assignments': typeof AppDatahubSubjectIdAssignmentsRoute
@@ -167,7 +181,9 @@ export interface FileRoutesByTo {
   '/admin/settings': typeof AppAdminSettingsRoute
   '/group/manage': typeof AppGroupManageRoute
   '/session/start-session': typeof AppSessionStartSessionRoute
+  '/upload/$instrumentId': typeof AppUploadInstrumentIdRoute
   '/datahub': typeof AppDatahubIndexRoute
+  '/upload': typeof AppUploadIndexRoute
   '/admin/groups/create': typeof AppAdminGroupsCreateRoute
   '/admin/users/create': typeof AppAdminUsersCreateRoute
   '/datahub/$subjectId/assignments': typeof AppDatahubSubjectIdAssignmentsRoute
@@ -190,7 +206,9 @@ export interface FileRoutesById {
   '/_app/admin/settings': typeof AppAdminSettingsRoute
   '/_app/group/manage': typeof AppGroupManageRoute
   '/_app/session/start-session': typeof AppSessionStartSessionRoute
+  '/_app/upload/$instrumentId': typeof AppUploadInstrumentIdRoute
   '/_app/datahub/': typeof AppDatahubIndexRoute
+  '/_app/upload/': typeof AppUploadIndexRoute
   '/_app/admin/groups/create': typeof AppAdminGroupsCreateRoute
   '/_app/admin/users/create': typeof AppAdminUsersCreateRoute
   '/_app/datahub/$subjectId/assignments': typeof AppDatahubSubjectIdAssignmentsRoute
@@ -213,7 +231,9 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/group/manage'
     | '/session/start-session'
+    | '/upload/$instrumentId'
     | '/datahub'
+    | '/upload'
     | '/admin/groups/create'
     | '/admin/users/create'
     | '/datahub/$subjectId/assignments'
@@ -234,7 +254,9 @@ export interface FileRouteTypes {
     | '/admin/settings'
     | '/group/manage'
     | '/session/start-session'
+    | '/upload/$instrumentId'
     | '/datahub'
+    | '/upload'
     | '/admin/groups/create'
     | '/admin/users/create'
     | '/datahub/$subjectId/assignments'
@@ -256,7 +278,9 @@ export interface FileRouteTypes {
     | '/_app/admin/settings'
     | '/_app/group/manage'
     | '/_app/session/start-session'
+    | '/_app/upload/$instrumentId'
     | '/_app/datahub/'
+    | '/_app/upload/'
     | '/_app/admin/groups/create'
     | '/_app/admin/users/create'
     | '/_app/datahub/$subjectId/assignments'
@@ -330,11 +354,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAboutRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/upload/': {
+      id: '/_app/upload/'
+      path: '/upload'
+      fullPath: '/upload'
+      preLoaderRoute: typeof AppUploadIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/datahub/': {
       id: '/_app/datahub/'
       path: '/datahub'
       fullPath: '/datahub'
       preLoaderRoute: typeof AppDatahubIndexRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/upload/$instrumentId': {
+      id: '/_app/upload/$instrumentId'
+      path: '/upload/$instrumentId'
+      fullPath: '/upload/$instrumentId'
+      preLoaderRoute: typeof AppUploadInstrumentIdRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/session/start-session': {
@@ -445,7 +483,9 @@ interface AppRouteRouteChildren {
   AppAdminSettingsRoute: typeof AppAdminSettingsRoute
   AppGroupManageRoute: typeof AppGroupManageRoute
   AppSessionStartSessionRoute: typeof AppSessionStartSessionRoute
+  AppUploadInstrumentIdRoute: typeof AppUploadInstrumentIdRoute
   AppDatahubIndexRoute: typeof AppDatahubIndexRoute
+  AppUploadIndexRoute: typeof AppUploadIndexRoute
   AppAdminGroupsCreateRoute: typeof AppAdminGroupsCreateRoute
   AppAdminUsersCreateRoute: typeof AppAdminUsersCreateRoute
   AppAdminGroupsIndexRoute: typeof AppAdminGroupsIndexRoute
@@ -462,7 +502,9 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppAdminSettingsRoute: AppAdminSettingsRoute,
   AppGroupManageRoute: AppGroupManageRoute,
   AppSessionStartSessionRoute: AppSessionStartSessionRoute,
+  AppUploadInstrumentIdRoute: AppUploadInstrumentIdRoute,
   AppDatahubIndexRoute: AppDatahubIndexRoute,
+  AppUploadIndexRoute: AppUploadIndexRoute,
   AppAdminGroupsCreateRoute: AppAdminGroupsCreateRoute,
   AppAdminUsersCreateRoute: AppAdminUsersCreateRoute,
   AppAdminGroupsIndexRoute: AppAdminGroupsIndexRoute,

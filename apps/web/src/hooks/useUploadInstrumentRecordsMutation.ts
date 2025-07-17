@@ -5,7 +5,7 @@ import type { UploadInstrumentRecordsData } from '@opendatacapture/schemas/instr
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
-export function useUploadInstrumentRecords() {
+export function useUploadInstrumentRecordsMutation() {
   const addNotification = useNotificationsStore((store) => store.addNotification);
   return useMutation({
     mutationFn: async (data: UploadInstrumentRecordsData) => {

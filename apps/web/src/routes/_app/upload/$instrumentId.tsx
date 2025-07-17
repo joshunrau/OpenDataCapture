@@ -3,26 +3,25 @@ import React, { useState } from 'react';
 import { Button, FileDropzone, Heading, Spinner } from '@douglasneuroinformatics/libui/components';
 import { useDownload, useNotificationsStore, useTranslation } from '@douglasneuroinformatics/libui/hooks';
 import type { AnyUnilingualFormInstrument } from '@opendatacapture/runtime-core';
+import { createFileRoute } from '@tanstack/react-router';
 import { BadgeHelpIcon, DownloadIcon } from 'lucide-react';
-import { useParams } from 'react-router-dom';
 
 import { PageHeader } from '@/components/PageHeader';
 import { useInstrument } from '@/hooks/useInstrument';
+import { useUploadInstrumentRecordsMutation } from '@/hooks/useUploadInstrumentRecordsMutation';
 import { useAppStore } from '@/store';
+import { createUploadTemplateCSV, processInstrumentCSV, reformatInstrumentData } from '@/utils/upload';
 
-import { useUploadInstrumentRecords } from '../hooks/useUploadInstrumentRecords';
-import { createUploadTemplateCSV, processInstrumentCSV, reformatInstrumentData } from '../utils';
-
-export const UploadPage = () => {
+const RouteComponent = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const download = useDownload();
   const addNotification = useNotificationsStore((store) => store.addNotification);
   const currentGroup = useAppStore((store) => store.currentGroup);
-  const uploadInstrumentRecordsMutation = useUploadInstrumentRecords();
+  const uploadInstrumentRecordsMutation = useUploadInstrumentRecordsMutation();
 
-  const params = useParams();
-  const instrument = useInstrument(params.id!) as (AnyUnilingualFormInstrument & { id: string }) | null;
+  const params = Route.useParams();
+  const instrument = useInstrument(params.instrumentId) as (AnyUnilingualFormInstrument & { id: string }) | null;
   const { t } = useTranslation();
 
   const handleTemplateDownload = () => {
@@ -161,3 +160,7 @@ export const UploadPage = () => {
     </React.Fragment>
   );
 };
+
+export const Route = createFileRoute('/_app/upload/$instrumentId')({
+  component: RouteComponent
+});
