@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import { useAppStore } from '@/store';
 
-export function useUpdateGroup() {
+export function useUpdateGroupMutation() {
   const addNotification = useNotificationsStore((store) => store.addNotification);
   const currentGroup = useAppStore((store) => store.currentGroup);
   return useMutation({

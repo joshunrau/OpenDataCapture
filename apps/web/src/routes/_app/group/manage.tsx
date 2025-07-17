@@ -1,11 +1,21 @@
-import { Form } from '@douglasneuroinformatics/libui/components';
+import React, { useMemo } from 'react';
+
+import { Form, Heading } from '@douglasneuroinformatics/libui/components';
 import { useTranslation } from '@douglasneuroinformatics/libui/hooks';
 import { $RegexString } from '@opendatacapture/schemas/core';
 import type { UpdateGroupData } from '@opendatacapture/schemas/group';
 import { $SubjectIdentificationMethod } from '@opendatacapture/schemas/subject';
 import type { SubjectIdentificationMethod } from '@opendatacapture/schemas/subject';
+import { createFileRoute } from '@tanstack/react-router';
 import type { Promisable } from 'type-fest';
 import { z } from 'zod/v4';
+
+import { PageHeader } from '@/components/PageHeader';
+import { WithFallback } from '@/components/WithFallback';
+import { useInstrumentInfoQuery } from '@/hooks/useInstrumentInfoQuery';
+import { useSetupStateQuery } from '@/hooks/useSetupStateQuery';
+import { useUpdateGroupMutation } from '@/hooks/useUpdateGroupMutation';
+import { useAppStore } from '@/store';
 
 type AvailableInstrumentOptions = {
   form: { [key: string]: string };
@@ -29,7 +39,7 @@ type ManageGroupFormProps = {
   readOnly: boolean;
 };
 
-export const ManageGroupForm = ({ data, onSubmit, readOnly }: ManageGroupFormProps) => {
+const ManageGroupForm = ({ data, onSubmit, readOnly }: ManageGroupFormProps) => {
   const { availableInstrumentOptions, initialValues } = data;
   const { t } = useTranslation();
 
@@ -167,4 +177,82 @@ export const ManageGroupForm = ({ data, onSubmit, readOnly }: ManageGroupFormPro
   );
 };
 
-export type { AvailableInstrumentOptions };
+const RouteComponent = () => {
+  const { resolvedLanguage, t } = useTranslation('group');
+  const instrumentInfoQuery = useInstrumentInfoQuery();
+  const updateGroupMutation = useUpdateGroupMutation();
+  const currentGroup = useAppStore((store) => store.currentGroup);
+  const changeGroup = useAppStore((store) => store.changeGroup);
+  const setupState = useSetupStateQuery();
+
+  const availableInstruments = instrumentInfoQuery.data;
+
+  const accessibleInstrumentIds = currentGroup?.accessibleInstrumentIds;
+  const defaultIdentificationMethod = currentGroup?.settings.defaultIdentificationMethod;
+
+  const data = useMemo(() => {
+    if (!availableInstruments) {
+      return null;
+    }
+    const availableInstrumentOptions: AvailableInstrumentOptions = {
+      form: {},
+      interactive: {},
+      series: {},
+      unknown: {}
+    };
+    const settings = currentGroup?.settings;
+    const initialValues = {
+      accessibleFormInstrumentIds: new Set<string>(),
+      accessibleInteractiveInstrumentIds: new Set<string>(),
+      defaultIdentificationMethod,
+      idValidationRegex: settings?.idValidationRegex,
+      idValidationRegexErrorMessageEn: settings?.idValidationRegexErrorMessage?.en,
+      idValidationRegexErrorMessageFr: settings?.idValidationRegexErrorMessage?.fr
+    };
+    for (const instrument of availableInstruments) {
+      if (instrument.kind === 'FORM') {
+        availableInstrumentOptions.form[instrument.id] = instrument.details.title;
+        if (accessibleInstrumentIds?.includes(instrument.id)) {
+          initialValues.accessibleFormInstrumentIds.add(instrument.id);
+        }
+      } else if (instrument.kind === 'INTERACTIVE') {
+        availableInstrumentOptions.interactive[instrument.id] = instrument.details.title;
+        if (accessibleInstrumentIds?.includes(instrument.id)) {
+          initialValues.accessibleInteractiveInstrumentIds.add(instrument.id);
+        }
+      }
+    }
+    return { availableInstrumentOptions, initialValues };
+  }, [
+    accessibleInstrumentIds,
+    availableInstruments,
+    defaultIdentificationMethod,
+    resolvedLanguage,
+    currentGroup?.settings
+  ]);
+
+  return (
+    <React.Fragment>
+      <PageHeader>
+        <Heading className="text-center" variant="h2">
+          {t('manage.pageTitle')}
+        </Heading>
+      </PageHeader>
+      <WithFallback
+        Component={ManageGroupForm}
+        props={{
+          data,
+          onSubmit: async (data) => {
+            const updatedGroup = await updateGroupMutation.mutateAsync(data);
+            changeGroup(updatedGroup);
+          },
+          readOnly: Boolean(setupState.data?.isDemo && import.meta.env.PROD)
+        }}
+      />
+    </React.Fragment>
+  );
+};
+
+export const Route = createFileRoute('/_app/group/manage')({
+  component: RouteComponent
+});

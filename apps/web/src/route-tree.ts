@@ -19,6 +19,7 @@ import { Route as AppContactRouteImport } from './routes/_app/contact'
 import { Route as AppAboutRouteImport } from './routes/_app/about'
 import { Route as AppDatahubIndexRouteImport } from './routes/_app/datahub/index'
 import { Route as AppSessionStartSessionRouteImport } from './routes/_app/session/start-session'
+import { Route as AppGroupManageRouteImport } from './routes/_app/group/manage'
 import { Route as AppAdminSettingsRouteImport } from './routes/_app/admin/settings'
 import { Route as AppDatahubSubjectIdRouteRouteImport } from './routes/_app/datahub/$subjectId/route'
 import { Route as AppAdminUsersIndexRouteImport } from './routes/_app/admin/users/index'
@@ -76,6 +77,11 @@ const AppDatahubIndexRoute = AppDatahubIndexRouteImport.update({
 const AppSessionStartSessionRoute = AppSessionStartSessionRouteImport.update({
   id: '/session/start-session',
   path: '/session/start-session',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppGroupManageRoute = AppGroupManageRouteImport.update({
+  id: '/group/manage',
+  path: '/group/manage',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppAdminSettingsRoute = AppAdminSettingsRouteImport.update({
@@ -138,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/datahub/$subjectId': typeof AppDatahubSubjectIdRouteRouteWithChildren
   '/admin/settings': typeof AppAdminSettingsRoute
+  '/group/manage': typeof AppGroupManageRoute
   '/session/start-session': typeof AppSessionStartSessionRoute
   '/datahub': typeof AppDatahubIndexRoute
   '/admin/groups/create': typeof AppAdminGroupsCreateRoute
@@ -158,6 +165,7 @@ export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
   '/datahub/$subjectId': typeof AppDatahubSubjectIdRouteRouteWithChildren
   '/admin/settings': typeof AppAdminSettingsRoute
+  '/group/manage': typeof AppGroupManageRoute
   '/session/start-session': typeof AppSessionStartSessionRoute
   '/datahub': typeof AppDatahubIndexRoute
   '/admin/groups/create': typeof AppAdminGroupsCreateRoute
@@ -180,6 +188,7 @@ export interface FileRoutesById {
   '/_app/': typeof AppIndexRoute
   '/_app/datahub/$subjectId': typeof AppDatahubSubjectIdRouteRouteWithChildren
   '/_app/admin/settings': typeof AppAdminSettingsRoute
+  '/_app/group/manage': typeof AppGroupManageRoute
   '/_app/session/start-session': typeof AppSessionStartSessionRoute
   '/_app/datahub/': typeof AppDatahubIndexRoute
   '/_app/admin/groups/create': typeof AppAdminGroupsCreateRoute
@@ -202,6 +211,7 @@ export interface FileRouteTypes {
     | '/'
     | '/datahub/$subjectId'
     | '/admin/settings'
+    | '/group/manage'
     | '/session/start-session'
     | '/datahub'
     | '/admin/groups/create'
@@ -222,6 +232,7 @@ export interface FileRouteTypes {
     | '/'
     | '/datahub/$subjectId'
     | '/admin/settings'
+    | '/group/manage'
     | '/session/start-session'
     | '/datahub'
     | '/admin/groups/create'
@@ -243,6 +254,7 @@ export interface FileRouteTypes {
     | '/_app/'
     | '/_app/datahub/$subjectId'
     | '/_app/admin/settings'
+    | '/_app/group/manage'
     | '/_app/session/start-session'
     | '/_app/datahub/'
     | '/_app/admin/groups/create'
@@ -330,6 +342,13 @@ declare module '@tanstack/react-router' {
       path: '/session/start-session'
       fullPath: '/session/start-session'
       preLoaderRoute: typeof AppSessionStartSessionRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/group/manage': {
+      id: '/_app/group/manage'
+      path: '/group/manage'
+      fullPath: '/group/manage'
+      preLoaderRoute: typeof AppGroupManageRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/admin/settings': {
@@ -424,6 +443,7 @@ interface AppRouteRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
   AppDatahubSubjectIdRouteRoute: typeof AppDatahubSubjectIdRouteRouteWithChildren
   AppAdminSettingsRoute: typeof AppAdminSettingsRoute
+  AppGroupManageRoute: typeof AppGroupManageRoute
   AppSessionStartSessionRoute: typeof AppSessionStartSessionRoute
   AppDatahubIndexRoute: typeof AppDatahubIndexRoute
   AppAdminGroupsCreateRoute: typeof AppAdminGroupsCreateRoute
@@ -440,6 +460,7 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppIndexRoute: AppIndexRoute,
   AppDatahubSubjectIdRouteRoute: AppDatahubSubjectIdRouteRouteWithChildren,
   AppAdminSettingsRoute: AppAdminSettingsRoute,
+  AppGroupManageRoute: AppGroupManageRoute,
   AppSessionStartSessionRoute: AppSessionStartSessionRoute,
   AppDatahubIndexRoute: AppDatahubIndexRoute,
   AppAdminGroupsCreateRoute: AppAdminGroupsCreateRoute,
