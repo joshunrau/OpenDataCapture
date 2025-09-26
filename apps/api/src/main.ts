@@ -1,8 +1,8 @@
-import { AppFactory, PrismaModule } from '@douglasneuroinformatics/libnest';
+import { AppFactory, ConfigService, PrismaModule } from '@douglasneuroinformatics/libnest';
 
 import { AssignmentsModule } from './assignments/assignments.module';
 import { AuthModule } from './auth/auth.module';
-import { PrismaFactory } from './core/factories/prisma.factory';
+import { createPrismaClient } from './core/prisma.client';
 import { $Env } from './core/schemas/env.schema';
 import { GatewayModule } from './gateway/gateway.module';
 import { GroupsModule } from './groups/groups.module';
@@ -41,10 +41,24 @@ export default AppFactory.create({
     InstrumentRecordsModule,
     InstrumentsModule,
     PrismaModule.forRootAsync({
-      inject: [PrismaFactory],
-      useFactory: (prismaFactory: PrismaFactory) => {
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const mongoUri = configService.get('MONGO_URI');
+        const env = configService.get('NODE_ENV');
+        const url = new URL(`${mongoUri.href}/data-capture-${env}`);
+        const params = {
+          directConnection: configService.get('MONGO_DIRECT_CONNECTION'),
+          replicaSet: configService.get('MONGO_REPLICA_SET'),
+          retryWrites: configService.get('MONGO_RETRY_WRITES'),
+          w: configService.get('MONGO_WRITE_CONCERN')
+        };
+        for (const [key, value] of Object.entries(params)) {
+          if (value) {
+            url.searchParams.append(key, String(value));
+          }
+        }
         return {
-          client: prismaFactory.createClient()
+          client: createPrismaClient(url.href)
         };
       }
     }),

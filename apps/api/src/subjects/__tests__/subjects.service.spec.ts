@@ -7,7 +7,7 @@ import { Test } from '@nestjs/testing';
 import { pick } from 'lodash-es';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import type { RuntimePrismaClient } from '@/core/factories/prisma.factory';
+import type { RuntimePrismaClient } from '@/core/prisma.client';
 
 import { SubjectsService } from '../subjects.service';
 

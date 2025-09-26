@@ -4,7 +4,7 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import type { Prisma } from '@prisma/client';
 
 import { accessibleQuery } from '@/auth/ability.utils';
-import type { RuntimePrismaClient } from '@/core/factories/prisma.factory';
+import type { RuntimePrismaClient } from '@/core/prisma.client';
 import type { EntityOperationOptions } from '@/core/types';
 
 import { CreateSubjectDto } from './dto/create-subject.dto';

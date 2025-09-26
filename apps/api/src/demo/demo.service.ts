@@ -14,7 +14,7 @@ import type { Json, Language, WithID } from '@opendatacapture/schemas/core';
 import type { Group } from '@opendatacapture/schemas/group';
 import { encodeScopedSubjectId, generateSubjectHash } from '@opendatacapture/subject-utils';
 
-import type { RuntimePrismaClient } from '@/core/factories/prisma.factory';
+import type { RuntimePrismaClient } from '@/core/prisma.client';
 import { $MongoStats } from '@/core/schemas/mongo-stats.schema';
 import { GroupsService } from '@/groups/groups.service';
 import { InstrumentRecordsService } from '@/instrument-records/instrument-records.service';
