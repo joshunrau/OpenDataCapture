@@ -9,6 +9,7 @@ import { AbilityFactory } from './ability.factory';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   controllers: [AuthController],
@@ -24,6 +25,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
   providers: [
     AbilityFactory,
     AuthService,
+    JwtStrategy,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard
