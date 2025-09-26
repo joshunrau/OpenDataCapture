@@ -1,5 +1,5 @@
 import { InjectModel, InjectPrismaClient, LoggingService } from '@douglasneuroinformatics/libnest';
-import type { ExtendedPrismaClient, Model } from '@douglasneuroinformatics/libnest';
+import type { Model } from '@douglasneuroinformatics/libnest';
 import { Injectable } from '@nestjs/common';
 import { InternalServerErrorException, NotFoundException } from '@nestjs/common/exceptions';
 import type { Group } from '@opendatacapture/schemas/group';
@@ -8,6 +8,7 @@ import type { CreateSubjectData } from '@opendatacapture/schemas/subject';
 import type { Prisma, Session, Subject, User } from '@prisma/client';
 
 import { accessibleQuery } from '@/auth/ability.utils';
+import type { RuntimePrismaClient } from '@/core/factories/prisma.factory';
 import type { EntityOperationOptions } from '@/core/types';
 import { GroupsService } from '@/groups/groups.service';
 import { SubjectsService } from '@/subjects/subjects.service';
@@ -15,7 +16,7 @@ import { SubjectsService } from '@/subjects/subjects.service';
 @Injectable()
 export class SessionsService {
   constructor(
-    @InjectPrismaClient() private readonly prismaClient: ExtendedPrismaClient,
+    @InjectPrismaClient() private readonly prismaClient: RuntimePrismaClient,
     @InjectModel('Session') private readonly sessionModel: Model<'Session'>,
     private readonly groupsService: GroupsService,
     private readonly loggingService: LoggingService,
