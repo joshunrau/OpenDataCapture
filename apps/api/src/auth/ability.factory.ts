@@ -12,10 +12,9 @@ import type { AppAbility, Permission } from './auth.types';
 export class AbilityFactory {
   constructor(private readonly loggingService: LoggingService) {}
 
-  createForPayload(payload: Omit<TokenPayload, 'permissions'>, metadata: unknown): AppAbility {
+  createForPayload(payload: Omit<TokenPayload, 'permissions'>): AppAbility {
     this.loggingService.verbose({
       message: 'Creating Ability From Payload',
-      metadata,
       payload
     });
     const ability = new AbilityBuilder<AppAbility>(createPrismaAbility);
