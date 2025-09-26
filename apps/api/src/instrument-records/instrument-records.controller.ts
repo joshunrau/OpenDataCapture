@@ -1,7 +1,6 @@
 /* eslint-disable perfectionist/sort-classes */
 
-import { CurrentUser, ParseSchemaPipe, RouteAccess, ValidObjectIdPipe } from '@douglasneuroinformatics/libnest';
-import type { AppAbility } from '@/auth/auth.types';
+import { CurrentUser, ParseSchemaPipe, ValidObjectIdPipe } from '@douglasneuroinformatics/libnest';
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { InstrumentKind } from '@opendatacapture/runtime-core';
@@ -11,6 +10,9 @@ import {
   $UploadInstrumentRecordsData
 } from '@opendatacapture/schemas/instrument-records';
 import { z } from 'zod/v4';
+
+import type { AppAbility } from '@/auth/auth.types';
+import { RouteAccess } from '@/core/decorators/route-access.decorator';
 
 import { InstrumentRecordsService } from './instrument-records.service';
 
