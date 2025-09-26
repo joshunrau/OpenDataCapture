@@ -15,7 +15,7 @@ describe('accessibleQuery', () => {
   });
   it('should call accessibleBy with the correct parameters and return the result of accessibleBy for the model', () => {
     accessibleBy.mockReturnValueOnce({
-      Cat: 'QUERY'
+      User: 'QUERY'
     });
     const ability = vi.fn();
     expect(accessibleQuery(ability as any, 'manage', 'User')).toStrictEqual('QUERY');
