@@ -1,9 +1,9 @@
-import { AppFactory, ConfigService, PrismaModule } from '@douglasneuroinformatics/libnest';
-import { PrismaClient } from '@prisma/client';
+import { AppFactory, PrismaModule } from '@douglasneuroinformatics/libnest';
 
 import { AssignmentsModule } from './assignments/assignments.module';
 import { AuthModule } from './auth/auth.module';
 import { $Env } from './core/env.schema';
+import { PrismaFactory } from './core/prisma.factory';
 import { GatewayModule } from './gateway/gateway.module';
 import { GroupsModule } from './groups/groups.module';
 import { InstrumentRecordsModule } from './instrument-records/instrument-records.module';
@@ -41,35 +41,10 @@ export default AppFactory.create({
     InstrumentRecordsModule,
     InstrumentsModule,
     PrismaModule.forRootAsync({
-      inject: ['MONGO_CONNECTION'],
-      provideInjectionTokensFrom: [
-        {
-          inject: [ConfigService],
-          provide: 'MONGO_CONNECTION',
-          useFactory: (configService: ConfigService): string => {
-            const mongoUri = configService.get('MONGO_URI');
-            const env = configService.get('NODE_ENV');
-            const url = new URL(`${mongoUri.href}/data-capture-${env}`);
-            const params = {
-              directConnection: configService.get('MONGO_DIRECT_CONNECTION'),
-              replicaSet: configService.get('MONGO_REPLICA_SET'),
-              retryWrites: configService.get('MONGO_RETRY_WRITES'),
-              w: configService.get('MONGO_WRITE_CONCERN')
-            };
-            for (const [key, value] of Object.entries(params)) {
-              if (value) {
-                url.searchParams.append(key, String(value));
-              }
-            }
-            return url.href;
-          }
-        }
-      ],
-      useFactory: (mongoConnection: string) => {
+      inject: [PrismaFactory],
+      useFactory: (prismaFactory: PrismaFactory) => {
         return {
-          client: new PrismaClient({
-            datasourceUrl: mongoConnection
-          })
+          client: prismaFactory.createClient()
         };
       }
     }),

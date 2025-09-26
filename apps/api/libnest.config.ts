@@ -1,16 +1,20 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
+/* eslint-disable @typescript-eslint/no-namespace */
 
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import * as url from 'node:url';
 
 import { defineUserConfig } from '@douglasneuroinformatics/libnest/user-config';
-import type { InferUserConfig } from '@douglasneuroinformatics/libnest/user-config';
 import { getReleaseInfo } from '@opendatacapture/release-info';
 
+import type { $Env } from '@/core/env.schema.js';
+
 declare module '@douglasneuroinformatics/libnest/user-config' {
-  export interface UserConfig extends InferUserConfig<typeof config> {}
+  export namespace UserTypes {
+    export interface Env extends $Env {}
+  }
 }
 
 const config = defineUserConfig({
