@@ -15,6 +15,7 @@ export const $LoginCredentials = z.object({
 });
 
 export type TokenPayload = {
+  additionalPermissions?: Permissions;
   basePermissionLevel: BasePermissionLevel | null;
   firstName: null | string;
   groups: Group[];
