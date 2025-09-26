@@ -1,6 +1,6 @@
 import { $BooleanLike } from '@douglasneuroinformatics/libjs';
 import { CurrentUser, ParseSchemaPipe, RouteAccess } from '@douglasneuroinformatics/libnest';
-import type { AppAbility } from '@douglasneuroinformatics/libnest';
+import type { AppAbility } from '@/auth/auth.types';
 import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import z from 'zod/v4';

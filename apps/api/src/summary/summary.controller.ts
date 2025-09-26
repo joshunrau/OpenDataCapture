@@ -1,5 +1,5 @@
 import { CurrentUser, RouteAccess } from '@douglasneuroinformatics/libnest';
-import type { AppAbility } from '@douglasneuroinformatics/libnest';
+import type { AppAbility } from '@/auth/auth.types';
 import { Controller, Get, Query } from '@nestjs/common';
 import type { Summary } from '@opendatacapture/schemas/summary';
 
