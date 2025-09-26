@@ -2,10 +2,10 @@ import { detectSubjectType } from '@casl/ability';
 import { createPrismaAbility } from '@casl/prisma';
 import type { PrismaQuery } from '@casl/prisma';
 import { createAccessibleByFactory } from '@casl/prisma/runtime';
-import type { AppAction } from '@douglasneuroinformatics/libnest';
+import type { PrismaModelWhereInputMap } from '@douglasneuroinformatics/libnest';
 import type { AppSubject, Prisma } from '@prisma/client';
 
-import type { AppAbilities, AppAbility, Permission } from './auth.types';
+import type { AppAbilities, AppAbility, AppAction, Permission } from './auth.types';
 
 const accessibleBy = createAccessibleByFactory<PrismaModelWhereInputMap, PrismaQuery>();
 

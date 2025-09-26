@@ -2,6 +2,7 @@ import { AppFactory } from '@douglasneuroinformatics/libnest';
 import { PrismaClient } from '@prisma/client';
 
 import { AssignmentsModule } from './assignments/assignments.module';
+import { AuthModule } from './auth/auth.module';
 import { $Env } from './core/env.schema';
 import { GatewayModule } from './gateway/gateway.module';
 import { GroupsModule } from './groups/groups.module';
@@ -12,7 +13,6 @@ import { SetupModule } from './setup/setup.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { SummaryModule } from './summary/summary.module';
 import { UsersModule } from './users/users.module';
-import { ConfiguredAuthModule } from './vendor/configured.auth.module';
 
 export default AppFactory.create({
   docs: {
@@ -36,7 +36,7 @@ export default AppFactory.create({
   },
   envSchema: $Env,
   imports: [
-    ConfiguredAuthModule,
+    AuthModule,
     GroupsModule,
     InstrumentRecordsModule,
     InstrumentsModule,

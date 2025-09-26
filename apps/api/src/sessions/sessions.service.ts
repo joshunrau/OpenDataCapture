@@ -1,4 +1,4 @@
-import { accessibleQuery, InjectModel, InjectPrismaClient, LoggingService } from '@douglasneuroinformatics/libnest';
+import { InjectModel, InjectPrismaClient, LoggingService } from '@douglasneuroinformatics/libnest';
 import type { ExtendedPrismaClient, Model } from '@douglasneuroinformatics/libnest';
 import { Injectable } from '@nestjs/common';
 import { InternalServerErrorException, NotFoundException } from '@nestjs/common/exceptions';
@@ -7,6 +7,7 @@ import type { CreateSessionData } from '@opendatacapture/schemas/session';
 import type { CreateSubjectData } from '@opendatacapture/schemas/subject';
 import type { Prisma, Session, Subject, User } from '@prisma/client';
 
+import { accessibleQuery } from '@/auth/ability.utils';
 import type { EntityOperationOptions } from '@/core/types';
 import { GroupsService } from '@/groups/groups.service';
 import { SubjectsService } from '@/subjects/subjects.service';
