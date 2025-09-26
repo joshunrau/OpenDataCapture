@@ -1,4 +1,5 @@
 import { ConfigService, LibnestPrismaExtension } from '@douglasneuroinformatics/libnest';
+import type { PrismaModelKey, PrismaModelName } from '@douglasneuroinformatics/libnest';
 import { PrismaClient } from '@prisma/client';
 
 export class PrismaFactory {
@@ -27,4 +28,12 @@ export class PrismaFactory {
   }
 }
 
-export type RuntimePrismaClient = PrismaFactory['createClient'];
+export type RuntimePrismaClient = ReturnType<PrismaFactory['createClient']>;
+
+export type PrismaModelWhereInputMap = {
+  [K in PrismaModelName]: RuntimePrismaClient[PrismaModelKey<K>] extends {
+    findFirst: (args: { where: infer TWhereInput }) => any;
+  }
+    ? TWhereInput
+    : never;
+};

@@ -9,11 +9,13 @@ import * as url from 'node:url';
 import { defineUserConfig } from '@douglasneuroinformatics/libnest/user-config';
 import { getReleaseInfo } from '@opendatacapture/release-info';
 
-import type { $Env } from '@/core/env.schema.js';
+import type { RuntimePrismaClient } from '@/core/factories/prisma.factory.js';
+import type { $Env } from '@/core/schemas/env.schema.js';
 
 declare module '@douglasneuroinformatics/libnest/user-config' {
   export namespace UserTypes {
     export interface Env extends $Env {}
+    export interface PrismaClient extends RuntimePrismaClient {}
   }
 }
 

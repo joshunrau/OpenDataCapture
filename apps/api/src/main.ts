@@ -2,8 +2,8 @@ import { AppFactory, PrismaModule } from '@douglasneuroinformatics/libnest';
 
 import { AssignmentsModule } from './assignments/assignments.module';
 import { AuthModule } from './auth/auth.module';
-import { $Env } from './core/env.schema';
-import { PrismaFactory } from './core/prisma.factory';
+import { PrismaFactory } from './core/factories/prisma.factory';
+import { $Env } from './core/schemas/env.schema';
 import { GatewayModule } from './gateway/gateway.module';
 import { GroupsModule } from './groups/groups.module';
 import { InstrumentRecordsModule } from './instrument-records/instrument-records.module';
