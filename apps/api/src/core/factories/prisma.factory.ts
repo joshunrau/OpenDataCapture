@@ -31,7 +31,7 @@ export class PrismaFactory {
 export type RuntimePrismaClient = ReturnType<PrismaFactory['createClient']>;
 
 export type PrismaModelWhereInputMap = {
-  [K in PrismaModelName]: RuntimePrismaClient[PrismaModelKey<K>] extends {
+  [K in PrismaModelName]: PrismaClient[PrismaModelKey<K>] extends {
     findFirst: (args: { where: infer TWhereInput }) => any;
   }
     ? TWhereInput
