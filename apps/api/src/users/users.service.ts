@@ -123,36 +123,14 @@ export class UsersService {
     return user;
   }
 
-  async findByIdForAuth(id: string) {
-    const user = await this.userModel.findFirst({
-      include: { groups: true },
-      where: {
-        id
-      }
-    });
-    if (!user) {
-      return null;
-    }
-    return {
-      hashedPassword: user.hashedPassword,
-      metadata: {
-        additionalPermissions: user.additionalPermissions
-      },
-      tokenPayload: {
-        basePermissionLevel: user.basePermissionLevel,
-        firstName: user.firstName,
-        groups: user.groups,
-        lastName: user.lastName,
-        username: user.username
-      }
-    };
-  }
-
-  async findByUsername(username: string, { ability }: EntityOperationOptions = {}) {
+  async findByUsername(
+    username: string,
+    { ability, includeHashedPassword }: EntityOperationOptions & { includeHashedPassword?: boolean } = {}
+  ) {
     const user = await this.userModel.findFirst({
       include: { groups: true },
       omit: {
-        hashedPassword: true
+        hashedPassword: !includeHashedPassword
       },
       where: { AND: [accessibleQuery(ability, 'read', 'User'), { username }] }
     });
