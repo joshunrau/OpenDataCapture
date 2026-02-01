@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 
 import { toBasicISOString } from '@douglasneuroinformatics/libjs';
-import { ActionDropdown, Button, DataTable, Dialog, Heading } from '@douglasneuroinformatics/libui/components';
+import {
+  ActionDropdown,
+  Button,
+  DataTable,
+  Dialog,
+  DropdownMenu,
+  Heading
+} from '@douglasneuroinformatics/libui/components';
 import type { TanstackTable } from '@douglasneuroinformatics/libui/components';
 import { useDownload, useNotificationsStore, useTranslation } from '@douglasneuroinformatics/libui/hooks';
 import type { InstrumentRecordsExport } from '@opendatacapture/schemas/instrument-records';
@@ -9,7 +16,7 @@ import type { Subject } from '@opendatacapture/schemas/subject';
 import { removeSubjectIdScope } from '@opendatacapture/subject-utils';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import axios from 'axios';
-import { UserSearchIcon } from 'lucide-react';
+import { ChevronDownIcon, UserSearchIcon } from 'lucide-react';
 import { unpack } from 'msgpackr/unpack';
 import { unparse } from 'papaparse';
 
@@ -22,6 +29,98 @@ import { downloadExcel } from '@/utils/excel';
 type MasterDataTableProps = {
   data: Subject[];
   onSelect: (subject: Subject) => void;
+};
+
+type FilterCategory = Extract<keyof Subject, 'sex'>;
+
+type FilterItem = { checked: boolean; label: string };
+
+type Filters = {
+  [K in FilterCategory]: {
+    [P in NonNullable<Subject[K]>]: FilterItem;
+  };
+};
+
+const Filters = () => {
+  const { t } = useTranslation();
+
+  const defaultFilters = useMemo<Filters>(() => {
+    return {
+      sex: {
+        FEMALE: {
+          checked: true,
+          label: t('core.identificationData.sex.female')
+        },
+        MALE: {
+          checked: true,
+          label: t('core.identificationData.sex.male')
+        }
+      }
+    };
+  }, [t]);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [filters, setFilters] = useState(defaultFilters);
+
+  useEffect(() => {
+    setFilters(defaultFilters);
+  }, [defaultFilters]);
+
+  const filterGroups: { [K in keyof Filters]: { items: { [key: string]: FilterItem }; label: string } } = {
+    sex: {
+      items: filters.sex,
+      label: t({ en: 'Sex', fr: 'Sexe' })
+    }
+  };
+
+  return (
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenu.Trigger asChild>
+        <Button className="flex" variant="outline">
+          {t({ en: 'Filters', fr: 'Filtres' })}
+          <ChevronDownIcon />
+        </Button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content align="start" className="w-56">
+        {Object.entries(filterGroups).map(([_key, { items, label }]) => {
+          const key = _key as keyof Filters;
+          return (
+            <Fragment key={key}>
+              <DropdownMenu.Label>{label}</DropdownMenu.Label>
+              <DropdownMenu.Group>
+                {Object.entries(items).map(([_id, { checked, label: itemLabel }]) => {
+                  const id = _id as keyof Filters[keyof Filters];
+                  return (
+                    <DropdownMenu.CheckboxItem
+                      checked={checked}
+                      key={id}
+                      onCheckedChange={(newChecked) => {
+                        setFilters((prev) => ({
+                          ...prev,
+                          [key]: {
+                            ...prev[key],
+                            [id]: {
+                              ...prev[key][id],
+                              checked: !!newChecked
+                            }
+                          }
+                        }));
+                      }}
+                      onSelect={(e) => e.preventDefault()}
+                    >
+                      {itemLabel}
+                    </DropdownMenu.CheckboxItem>
+                  );
+                })}
+              </DropdownMenu.Group>
+            </Fragment>
+          );
+        })}
+        <DropdownMenu.Label>{t({ en: 'Sex', fr: 'Sexe' })}</DropdownMenu.Label>
+        <DropdownMenu.Group></DropdownMenu.Group>
+      </DropdownMenu.Content>
+    </DropdownMenu>
+  );
 };
 
 const Toggles: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) => {
@@ -148,6 +247,7 @@ const Toggles: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
           <IdentificationForm onSubmit={(data) => void lookupSubject(data)} />
         </Dialog.Content>
       </Dialog>
+      <Filters />
       <ActionDropdown
         widthFull
         className="min-w-48"
