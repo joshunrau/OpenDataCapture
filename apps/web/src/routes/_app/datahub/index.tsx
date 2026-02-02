@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
 
 import { toBasicISOString } from '@douglasneuroinformatics/libjs';
-import { ActionDropdown, Button, DataTable, Dialog, Heading } from '@douglasneuroinformatics/libui/components';
+import {
+  ActionDropdown,
+  Button,
+  DataTable,
+  Dialog,
+  DropdownMenu,
+  Heading
+} from '@douglasneuroinformatics/libui/components';
 import type { TanstackTable } from '@douglasneuroinformatics/libui/components';
 import { useDownload, useNotificationsStore, useTranslation } from '@douglasneuroinformatics/libui/hooks';
 import type { InstrumentRecordsExport } from '@opendatacapture/schemas/instrument-records';
-import type { Subject } from '@opendatacapture/schemas/subject';
+import type { Sex, Subject } from '@opendatacapture/schemas/subject';
 import { removeSubjectIdScope } from '@opendatacapture/subject-utils';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import axios from 'axios';
-import { UserSearchIcon } from 'lucide-react';
+import { ChevronDownIcon, UserSearchIcon } from 'lucide-react';
 import { unpack } from 'msgpackr/unpack';
 import { unparse } from 'papaparse';
 
@@ -18,6 +25,62 @@ import { PageHeader } from '@/components/PageHeader';
 import { subjectsQueryOptions, useSubjectsQuery } from '@/hooks/useSubjectsQuery';
 import { useAppStore } from '@/store';
 import { downloadExcel } from '@/utils/excel';
+
+const Filters: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) => {
+  const { t } = useTranslation();
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const columns = table.getAllColumns();
+
+  const sexColumn = columns.find((column) => column.id === 'sex')!;
+
+  const sexFilter = sexColumn.getFilterValue() as Sex[];
+
+  return (
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+      <DropdownMenu.Trigger asChild>
+        <Button className="flex items-center justify-between gap-2" variant="outline">
+          {t({ en: 'Filters', fr: 'Filtres' })}
+          <ChevronDownIcon className="opacity-50" />
+        </Button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content align="end" className="w-56">
+        <DropdownMenu.Label>{t({ en: 'Sex', fr: 'Sexe' })}</DropdownMenu.Label>
+        <DropdownMenu.Group>
+          <DropdownMenu.CheckboxItem
+            checked={sexFilter.includes('MALE')}
+            onCheckedChange={(checked) => {
+              sexColumn.setFilterValue((prevValue: Sex[]): Sex[] => {
+                if (checked) {
+                  return [...prevValue, 'MALE'];
+                }
+                return prevValue.filter((item) => item !== 'MALE');
+              });
+            }}
+            onSelect={(e) => e.preventDefault()}
+          >
+            {t('core.identificationData.sex.male')}
+          </DropdownMenu.CheckboxItem>
+          <DropdownMenu.CheckboxItem
+            checked={sexFilter.includes('FEMALE')}
+            onCheckedChange={(checked) => {
+              sexColumn.setFilterValue((prevValue: Sex[]): Sex[] => {
+                if (checked) {
+                  return [...prevValue, 'FEMALE'];
+                }
+                return prevValue.filter((item) => item !== 'FEMALE');
+              });
+            }}
+            onSelect={(e) => e.preventDefault()}
+          >
+            {t('core.identificationData.sex.female')}
+          </DropdownMenu.CheckboxItem>
+        </DropdownMenu.Group>
+      </DropdownMenu.Content>
+    </DropdownMenu>
+  );
+};
 
 const Toggles: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) => {
   const navigate = Route.useNavigate();
@@ -143,9 +206,11 @@ const Toggles: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
           <IdentificationForm onSubmit={(data) => void lookupSubject(data)} />
         </Dialog.Content>
       </Dialog>
+      <Filters table={table} />
       <ActionDropdown
         widthFull
-        className="min-w-32 font-medium"
+        align="end"
+        className="font-medium"
         data-spotlight-type="export-data-dropdown"
         data-testid="datahub-export-dropdown"
         options={['CSV', 'JSON', 'Excel']}
@@ -177,9 +242,11 @@ const MasterDataTable: React.FC<{
             header: t('core.identificationData.dateOfBirth.label'),
             id: 'date-of-birth'
           },
+
           {
-            accessorFn: (subject) => {
-              switch (subject.sex) {
+            accessorFn: (subject) => subject.sex,
+            cell: (ctx) => {
+              switch (ctx.getValue() as Sex) {
                 case 'FEMALE':
                   return t('core.identificationData.sex.female');
                 case 'MALE':
@@ -188,12 +255,23 @@ const MasterDataTable: React.FC<{
                   return 'NULL';
               }
             },
+            filterFn: (row, id, filter: Sex[]) => {
+              return filter.includes(row.getValue(id));
+            },
             header: t('core.identificationData.sex.label'),
             id: 'sex'
           }
         ]}
         data={data}
         data-testid="master-data-table"
+        initialState={{
+          columnFilters: [
+            {
+              id: 'sex',
+              value: ['MALE', 'FEMALE'] satisfies Sex[]
+            }
+          ]
+        }}
         rowActions={[
           {
             label: t({ en: 'View', fr: 'Voir' }),
