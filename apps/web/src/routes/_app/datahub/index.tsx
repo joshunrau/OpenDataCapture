@@ -145,7 +145,7 @@ const Toggles: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
       </Dialog>
       <ActionDropdown
         widthFull
-        className="font-medium"
+        className="min-w-32 font-medium"
         data-spotlight-type="export-data-dropdown"
         data-testid="datahub-export-dropdown"
         options={['CSV', 'JSON', 'Excel']}
