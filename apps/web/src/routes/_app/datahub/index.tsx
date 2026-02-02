@@ -26,6 +26,11 @@ import { subjectsQueryOptions, useSubjectsQuery } from '@/hooks/useSubjectsQuery
 import { useAppStore } from '@/store';
 import { downloadExcel } from '@/utils/excel';
 
+type DateFilter = {
+  max: Date | null;
+  min: Date | null;
+};
+
 type SexFilter = (null | Sex)[];
 
 const Filters: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) => {
@@ -35,8 +40,10 @@ const Filters: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
 
   const columns = table.getAllColumns();
 
-  const sexColumn = columns.find((column) => column.id === 'sex')!;
+  const dobColumn = columns.find((column) => column.id === 'date-of-birth')!;
+  const dobFilter = dobColumn.getFilterValue() as DateFilter;
 
+  const sexColumn = columns.find((column) => column.id === 'sex')!;
   const sexFilter = sexColumn.getFilterValue() as SexFilter;
 
   return (
@@ -97,11 +104,35 @@ const Filters: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
         <DropdownMenu.Group>
           <div className="rounded-xs relative flex items-center justify-between gap-1 px-2 pb-1 pt-1.5 text-sm transition-colors">
             <span className="pb-1">Min:</span>
-            <input className="text-muted-foreground pointer-events-auto rounded-sm border-b pb-0.5" type="date" />
+            <input
+              className="text-muted-foreground pointer-events-auto rounded-sm border-b pb-0.5"
+              type="date"
+              value={dobFilter.min ? toBasicISOString(dobFilter.min) : ''}
+              onChange={(event) => {
+                dobColumn.setFilterValue((prevValue: DateFilter): DateFilter => {
+                  return {
+                    ...prevValue,
+                    min: event.target.valueAsDate
+                  };
+                });
+              }}
+            />
           </div>
           <div className="rounded-xs relative flex items-center justify-between gap-1 px-2 py-1.5 text-sm transition-colors">
             <span className="pb-1">Max:</span>
-            <input className="text-muted-foreground pointer-events-auto rounded-sm border-b pb-0.5" type="date" />
+            <input
+              className="text-muted-foreground pointer-events-auto rounded-sm border-b pb-0.5"
+              type="date"
+              value={dobFilter.max ? toBasicISOString(dobFilter.max) : ''}
+              onChange={(event) => {
+                dobColumn.setFilterValue((prevValue: DateFilter): DateFilter => {
+                  return {
+                    ...prevValue,
+                    max: event.target.valueAsDate
+                  };
+                });
+              }}
+            />
           </div>
         </DropdownMenu.Group>
       </DropdownMenu.Content>
@@ -296,6 +327,13 @@ const MasterDataTable: React.FC<{
             {
               id: 'sex',
               value: ['MALE', 'FEMALE', null] satisfies SexFilter
+            },
+            {
+              id: 'date-of-birth',
+              value: {
+                max: null,
+                min: null
+              } satisfies DateFilter
             }
           ]
         }}
