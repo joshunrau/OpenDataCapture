@@ -26,6 +26,8 @@ import { subjectsQueryOptions, useSubjectsQuery } from '@/hooks/useSubjectsQuery
 import { useAppStore } from '@/store';
 import { downloadExcel } from '@/utils/excel';
 
+type SexFilter = (null | Sex)[];
+
 const Filters: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) => {
   const { t } = useTranslation();
 
@@ -35,7 +37,7 @@ const Filters: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
 
   const sexColumn = columns.find((column) => column.id === 'sex')!;
 
-  const sexFilter = sexColumn.getFilterValue() as Sex[];
+  const sexFilter = sexColumn.getFilterValue() as SexFilter;
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
@@ -51,7 +53,7 @@ const Filters: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
           <DropdownMenu.CheckboxItem
             checked={sexFilter.includes('MALE')}
             onCheckedChange={(checked) => {
-              sexColumn.setFilterValue((prevValue: Sex[]): Sex[] => {
+              sexColumn.setFilterValue((prevValue: SexFilter): SexFilter => {
                 if (checked) {
                   return [...prevValue, 'MALE'];
                 }
@@ -65,7 +67,7 @@ const Filters: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
           <DropdownMenu.CheckboxItem
             checked={sexFilter.includes('FEMALE')}
             onCheckedChange={(checked) => {
-              sexColumn.setFilterValue((prevValue: Sex[]): Sex[] => {
+              sexColumn.setFilterValue((prevValue: SexFilter): SexFilter => {
                 if (checked) {
                   return [...prevValue, 'FEMALE'];
                 }
@@ -75,6 +77,20 @@ const Filters: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
             onSelect={(e) => e.preventDefault()}
           >
             {t('core.identificationData.sex.female')}
+          </DropdownMenu.CheckboxItem>
+          <DropdownMenu.CheckboxItem
+            checked={sexFilter.includes(null)}
+            onCheckedChange={(checked) => {
+              sexColumn.setFilterValue((prevValue: SexFilter): SexFilter => {
+                if (checked) {
+                  return [...prevValue, null];
+                }
+                return prevValue.filter((item) => item !== null);
+              });
+            }}
+            onSelect={(e) => e.preventDefault()}
+          >
+            NULL
           </DropdownMenu.CheckboxItem>
         </DropdownMenu.Group>
       </DropdownMenu.Content>
@@ -244,7 +260,7 @@ const MasterDataTable: React.FC<{
           },
 
           {
-            accessorFn: (subject) => subject.sex,
+            accessorFn: (subject) => subject.sex ?? null,
             cell: (ctx) => {
               switch (ctx.getValue() as Sex) {
                 case 'FEMALE':
@@ -255,7 +271,7 @@ const MasterDataTable: React.FC<{
                   return 'NULL';
               }
             },
-            filterFn: (row, id, filter: Sex[]) => {
+            filterFn: (row, id, filter: SexFilter) => {
               return filter.includes(row.getValue(id));
             },
             header: t('core.identificationData.sex.label'),
@@ -268,7 +284,7 @@ const MasterDataTable: React.FC<{
           columnFilters: [
             {
               id: 'sex',
-              value: ['MALE', 'FEMALE'] satisfies Sex[]
+              value: ['MALE', 'FEMALE', null] satisfies SexFilter
             }
           ]
         }}
