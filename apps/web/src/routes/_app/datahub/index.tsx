@@ -27,6 +27,7 @@ import { useAppStore } from '@/store';
 import { downloadExcel } from '@/utils/excel';
 
 type DateFilter = {
+  allowNull: boolean;
   max: Date | null;
   min: Date | null;
 };
@@ -118,7 +119,7 @@ const Filters: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
               }}
             />
           </div>
-          <div className="rounded-xs relative flex items-center justify-between gap-1 px-2 py-1.5 text-sm transition-colors">
+          <div className="rounded-xs relative flex items-center justify-between gap-1 px-2 pb-1 pt-1.5 text-sm transition-colors">
             <span className="pb-1">Max:</span>
             <input
               className="text-muted-foreground pointer-events-auto rounded-sm border-b pb-0.5"
@@ -134,6 +135,20 @@ const Filters: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
               }}
             />
           </div>
+          <DropdownMenu.CheckboxItem
+            checked={dobFilter.allowNull}
+            onCheckedChange={(checked) => {
+              dobColumn.setFilterValue((prevValue: DateFilter): DateFilter => {
+                return {
+                  ...prevValue,
+                  allowNull: checked
+                };
+              });
+            }}
+            onSelect={(e) => e.preventDefault()}
+          >
+            NULL
+          </DropdownMenu.CheckboxItem>
         </DropdownMenu.Group>
       </DropdownMenu.Content>
     </DropdownMenu>
@@ -304,7 +319,7 @@ const MasterDataTable: React.FC<{
             filterFn: (row, id, filter: DateFilter) => {
               const value = row.getValue(id);
               if (!value) {
-                return true;
+                return filter.allowNull;
               } else if (filter.max && value > filter.max) {
                 return false;
               } else if (filter.min && value < filter.min) {
@@ -345,6 +360,7 @@ const MasterDataTable: React.FC<{
             {
               id: 'date-of-birth',
               value: {
+                allowNull: true,
                 max: null,
                 min: null
               } satisfies DateFilter
