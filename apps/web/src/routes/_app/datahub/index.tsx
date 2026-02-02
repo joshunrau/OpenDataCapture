@@ -19,11 +19,6 @@ import { subjectsQueryOptions, useSubjectsQuery } from '@/hooks/useSubjectsQuery
 import { useAppStore } from '@/store';
 import { downloadExcel } from '@/utils/excel';
 
-type MasterDataTableProps = {
-  data: Subject[];
-  onSelect: (subject: Subject) => void;
-};
-
 const Toggles: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) => {
   const navigate = Route.useNavigate();
 
@@ -161,7 +156,10 @@ const Toggles: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
   );
 };
 
-const MasterDataTable = ({ data, onSelect }: MasterDataTableProps) => {
+const MasterDataTable: React.FC<{
+  data: Subject[];
+  onSelect: (subject: Subject) => void;
+}> = ({ data, onSelect }) => {
   const { t } = useTranslation();
   const subjectIdDisplaySetting = useAppStore((store) => store.currentGroup?.settings.subjectIdDisplayLength);
 
