@@ -48,7 +48,7 @@ const Filters: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
         </Button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content align="end" className="w-56">
-        <DropdownMenu.Label>{t({ en: 'Sex', fr: 'Sexe' })}</DropdownMenu.Label>
+        <DropdownMenu.Label>{t('core.identificationData.sex.label')}</DropdownMenu.Label>
         <DropdownMenu.Group>
           <DropdownMenu.CheckboxItem
             checked={sexFilter.includes('MALE')}
@@ -93,6 +93,7 @@ const Filters: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
             NULL
           </DropdownMenu.CheckboxItem>
         </DropdownMenu.Group>
+        <DropdownMenu.Label>{t('core.identificationData.dateOfBirth.label')}</DropdownMenu.Label>
       </DropdownMenu.Content>
     </DropdownMenu>
   );
