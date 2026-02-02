@@ -94,6 +94,16 @@ const Filters: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
           </DropdownMenu.CheckboxItem>
         </DropdownMenu.Group>
         <DropdownMenu.Label>{t('core.identificationData.dateOfBirth.label')}</DropdownMenu.Label>
+        <DropdownMenu.Group>
+          <div className="rounded-xs relative flex items-center justify-between gap-1 px-2 pb-1 pt-1.5 text-sm transition-colors">
+            <span className="pb-1">Min:</span>
+            <input className="text-muted-foreground pointer-events-auto rounded-sm border-b pb-0.5" type="date" />
+          </div>
+          <div className="rounded-xs relative flex items-center justify-between gap-1 px-2 py-1.5 text-sm transition-colors">
+            <span className="pb-1">Max:</span>
+            <input className="text-muted-foreground pointer-events-auto rounded-sm border-b pb-0.5" type="date" />
+          </div>
+        </DropdownMenu.Group>
       </DropdownMenu.Content>
     </DropdownMenu>
   );
