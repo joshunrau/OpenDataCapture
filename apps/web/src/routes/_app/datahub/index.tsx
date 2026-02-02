@@ -119,21 +119,21 @@ const Toggles: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
   };
 
   return (
-    <>
+    <div className="flex gap-3">
       <Dialog open={isLookupOpen} onOpenChange={setIsLookupOpen}>
         <Dialog.Trigger asChild>
           <Button
-            className="gap-1"
+            className="gap-2"
             data-spotlight-type="subject-lookup-search-button"
             data-testid="subject-lookup-search-button"
             id="subject-lookup-search-button"
             variant="outline"
           >
-            <UserSearchIcon />{' '}
             {t({
               en: 'Subject Lookup',
               fr: 'Trouver un client'
             })}
+            <UserSearchIcon style={{ strokeWidth: '2px' }} />
           </Button>
         </Dialog.Trigger>
         <Dialog.Content data-spotlight-type="subject-lookup-modal" data-testid="datahub-subject-lookup-dialog">
@@ -145,14 +145,14 @@ const Toggles: React.FC<{ table: TanstackTable.Table<Subject> }> = ({ table }) =
       </Dialog>
       <ActionDropdown
         widthFull
-        className="min-w-48"
+        className="font-medium"
         data-spotlight-type="export-data-dropdown"
         data-testid="datahub-export-dropdown"
         options={['CSV', 'JSON', 'Excel']}
         title={t('datahub.index.table.export')}
         onSelection={handleExportSelection}
       />
-    </>
+    </div>
   );
 };
 
