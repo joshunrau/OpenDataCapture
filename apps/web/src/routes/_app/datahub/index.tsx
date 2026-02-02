@@ -296,11 +296,25 @@ const MasterDataTable: React.FC<{
             id: 'subjectId'
           },
           {
-            accessorFn: (subject) => (subject.dateOfBirth ? toBasicISOString(new Date(subject.dateOfBirth)) : 'NULL'),
+            accessorFn: (subject) => subject.dateOfBirth,
+            cell: (ctx) => {
+              const value = ctx.getValue() as Date | null | undefined;
+              return value ? toBasicISOString(value) : 'NULL';
+            },
+            filterFn: (row, id, filter: DateFilter) => {
+              const value = row.getValue(id);
+              if (!value) {
+                return true;
+              } else if (filter.max && value > filter.max) {
+                return false;
+              } else if (filter.min && value < filter.min) {
+                return false;
+              }
+              return true;
+            },
             header: t('core.identificationData.dateOfBirth.label'),
             id: 'date-of-birth'
           },
-
           {
             accessorFn: (subject) => subject.sex ?? null,
             cell: (ctx) => {
