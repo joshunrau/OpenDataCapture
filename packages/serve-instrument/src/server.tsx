@@ -46,6 +46,7 @@ export async function createServer(port: number) {
               <meta charSet="UTF-8" />
               <meta content="width=device-width, initial-scale=1.0" name="viewport" />
               <title>Open Data Capture</title>
+              <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
             </head>
             <body>
               <div id="root">
