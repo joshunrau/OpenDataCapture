@@ -7,8 +7,7 @@
     "serve-instrument": "./dist/cli.js"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "scripts": {
     "build": "node scripts/build.js",
@@ -19,6 +18,7 @@
     "@douglasneuroinformatics/libui": "catalog:",
     "@tailwindcss/vite": "catalog:",
     "commander": "catalog:",
+    "esbuild": "catalog:",
     "vite": "catalog:"
   },
   "devDependencies": {
@@ -27,7 +27,6 @@
     "@opendatacapture/runtime-internal": "workspace:*",
     "@opendatacapture/runtime-v1": "workspace:*",
     "@opendatacapture/vite-plugin-runtime": "workspace:*",
-    "esbuild": "catalog:",
     "react": "workspace:react__19.x@*",
     "react-dom": "workspace:react-dom__19.x@*"
   }
