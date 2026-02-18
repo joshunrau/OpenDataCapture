@@ -1,14 +1,17 @@
-export const Root = () => {
+import type React from 'react';
+import { useState } from 'react';
+
+export type RootProps = {
+  [key: string]: never;
+};
+
+export const Root: React.FC<RootProps> = () => {
+  const [count, setCount] = useState(0);
+
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="UTF-8" />
-        <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-        <title>Document</title>
-      </head>
-      <body>
-        <h1>Hello World</h1>
-      </body>
-    </html>
+    <div style={{ fontFamily: 'sans-serif', textAlign: 'center' }}>
+      <h1>Counter: {count}</h1>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
   );
 };
