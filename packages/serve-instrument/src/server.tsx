@@ -32,7 +32,7 @@ async function generateBootstrapScript(props: RootProps): Promise<string> {
   return result.outputFiles.find((output) => output.path === '<stdout>')!.text;
 }
 
-export async function createServer(port: number) {
+export async function createServer(port: number, encodedBundle: string) {
   const metadata = await generateMetadata();
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -50,13 +50,15 @@ export async function createServer(port: number) {
             </head>
             <body>
               <div id="root">
-                <Root />
+                <Root encodedBundle={encodedBundle} />
               </div>
             </body>
-            <script dangerouslySetInnerHTML={{ __html: await generateBootstrapScript({}) }} type="module" />
+            <script
+              dangerouslySetInnerHTML={{ __html: await generateBootstrapScript({ encodedBundle }) }}
+              type="module"
+            />
           </html>
         );
-        console.log(await generateBootstrapScript({}));
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(html);
       } else if (req.url?.startsWith('/runtime')) {

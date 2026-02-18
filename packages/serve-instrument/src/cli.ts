@@ -61,7 +61,7 @@ program.action(async (target: string) => {
     return encodeUnicodeToBase64(await bundle({ inputs }));
   };
 
-  await createServer(port);
+  await createServer(port, await getEncodedBundle());
 });
 
 program.parse();

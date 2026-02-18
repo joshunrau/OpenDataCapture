@@ -1,19 +1,28 @@
 import type React from 'react';
-import { StrictMode, useState } from 'react';
+import { StrictMode } from 'react';
+
+import { CoreProvider } from '@douglasneuroinformatics/libui/providers';
+import { ScalarInstrumentRenderer } from '@opendatacapture/react-core';
+import { decodeBase64ToUnicode } from '@opendatacapture/runtime-internal';
 
 export type RootProps = {
-  [key: string]: never;
+  encodedBundle: string;
 };
 
-export const Root: React.FC<RootProps> = () => {
-  const [count, setCount] = useState(0);
-
+export const Root: React.FC<RootProps> = ({ encodedBundle }) => {
   return (
     <StrictMode>
-      <div style={{ fontFamily: 'sans-serif', textAlign: 'center' }}>
-        <h1>Counter: {count}</h1>
-        <button onClick={() => setCount(count + 1)}>Increment</button>
-      </div>
+      <CoreProvider>
+        <div className="container h-screen py-16">
+          <ScalarInstrumentRenderer
+            target={{ bundle: decodeBase64ToUnicode(encodedBundle), id: null! }}
+            onSubmit={({ data }) => {
+              // eslint-disable-next-line no-alert
+              alert(JSON.stringify({ _message: 'The following data will be submitted', data }, null, 2));
+            }}
+          />
+        </div>
+      </CoreProvider>
     </StrictMode>
   );
 };
