@@ -1103,6 +1103,9 @@ importers:
       '@opendatacapture/runtime-internal':
         specifier: workspace:*
         version: link:../runtime-internal
+      '@opendatacapture/runtime-meta':
+        specifier: workspace:*
+        version: link:../runtime-meta
       '@opendatacapture/runtime-v1':
         specifier: workspace:*
         version: link:../../runtime/v1
