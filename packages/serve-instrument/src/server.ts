@@ -15,8 +15,6 @@ export async function createServer(port: number) {
         res.end('<h1>Hello World</h1>');
       } else if (req.url?.startsWith('/runtime')) {
         const asset = await resolveRuntimeAsset(req.url.replace(/^\/?runtime\//, ''), metadata);
-        // console.log(metadata, asset);
-        console.log(asset);
         if (!asset) {
           res.writeHead(404, { 'Content-Type': 'text/plain' });
           res.end('Not Found');
