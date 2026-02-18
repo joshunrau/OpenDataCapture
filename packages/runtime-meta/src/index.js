@@ -69,3 +69,43 @@ export async function generateMetadata() {
   }
   return metadata;
 }
+
+/** @type {import('.').resolveRuntimeAsset} */
+export async function resolveRuntimeAsset(url, metadata) {
+  const [version, ...paths] = url?.split('/').filter(Boolean) ?? [];
+  const filepath = paths.join('/');
+  if (!(version && filepath) || !metadata.has(version)) {
+    return null;
+  }
+
+  const { baseDir, manifest } = /** @type {import('.').RuntimeVersionMetadata} */ (metadata.get(version));
+
+  if (filepath === MANIFEST_FILENAME) {
+    return {
+      content: JSON.stringify(manifest),
+      contentType: 'application/json'
+    };
+  } else if (manifest.declarations.includes(filepath)) {
+    return {
+      content: await fs.promises.readFile(path.resolve(baseDir, filepath), 'utf-8'),
+      contentType: 'text/plain'
+    };
+  } else if (manifest.html.includes(filepath)) {
+    return {
+      content: await fs.promises.readFile(path.resolve(baseDir, filepath), 'utf-8'),
+      contentType: 'text/html'
+    };
+  } else if (manifest.styles.includes(filepath)) {
+    return {
+      content: await fs.promises.readFile(path.resolve(baseDir, filepath), 'utf-8'),
+      contentType: 'text/css'
+    };
+  } else if (manifest.sources.includes(filepath)) {
+    return {
+      content: await fs.promises.readFile(path.resolve(baseDir, filepath), 'utf-8'),
+      contentType: 'text/javascript'
+    };
+  }
+
+  return null;
+}

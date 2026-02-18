@@ -46,6 +46,8 @@ export type RuntimeVersionMetadata = {
   manifest: RuntimeManifest;
 };
 
+export type RuntimeMetadataMap = Map<string, RuntimeVersionMetadata>;
+
 export type RuntimeOptions = {
   disabled?: boolean;
 };
@@ -75,4 +77,9 @@ export declare function generateMetadataForVersion(version: string): Promise<Run
  * Generate metadata for all available runtime versions.
  * @returns A Map keyed by version name, with corresponding metadata.
  */
-export declare function generateMetadata(): Promise<Map<string, RuntimeVersionMetadata>>;
+export declare function generateMetadata(): Promise<RuntimeMetadataMap>;
+
+export declare function resolveRuntimeAsset(
+  url: string | undefined,
+  metadata: RuntimeMetadataMap
+): Promise<null | { content: string; contentType: string }>;
