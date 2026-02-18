@@ -6,6 +6,10 @@
   "bin": {
     "serve-instrument": "./dist/cli.js"
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "node scripts/build.js",
     "format": "prettier --write src",
