@@ -5,8 +5,6 @@ import * as esbuild from 'esbuild';
 
 const outdir = path.resolve(import.meta.dirname, '../dist');
 
-import pkg from '../package.json' with { type: 'json' };
-
 await fs.promises.rm(outdir, { force: true, recursive: true });
 
 await esbuild.build({
@@ -15,9 +13,28 @@ await esbuild.build({
   },
   bundle: true,
   entryPoints: [path.resolve(import.meta.dirname, '../src/cli.ts')],
-  external: Object.keys(pkg.dependencies),
   format: 'esm',
+  loader: {
+    '.node': 'copy'
+  },
   minify: false,
   outdir,
-  platform: 'node'
+  platform: 'node',
+  plugins: [
+    {
+      name: 'external',
+      setup(build) {
+        build.onResolve({ filter: /.*/, namespace: 'file' }, async (args) => {
+          const resolved = await build.resolve(args.path, {
+            kind: args.kind,
+            resolveDir: args.resolveDir
+          });
+          if (resolved.path.includes('node_modules')) {
+            return { external: true, path: args.path };
+          }
+          return null;
+        });
+      }
+    }
+  ]
 });
