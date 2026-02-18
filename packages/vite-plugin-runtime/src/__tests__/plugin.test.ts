@@ -1,8 +1,9 @@
 import * as path from 'path';
 
+import { MANIFEST_FILENAME, RUNTIME_DIR, RUNTIME_DIST_DIRNAME } from '@opendatacapture/runtime-meta';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 
-import { generateMetadataForVersion, MANIFEST_FILENAME, plugin, RUNTIME_DIR, RUNTIME_DIST_DIRNAME } from '../plugin';
+import { plugin } from '../plugin';
 
 const fs = vi.hoisted(() => ({
   existsSync: vi.fn().mockReturnValue(true),
@@ -31,18 +32,6 @@ const fs = vi.hoisted(() => ({
 }));
 
 vi.mock('fs', () => fs);
-
-describe('generateMetadataForVersion', () => {
-  it('should throw if the resolved baseDir does not exist', async () => {
-    fs.existsSync.mockReturnValueOnce(false);
-    await expect(() => generateMetadataForVersion('v0')).rejects.toThrow('Not a directory');
-  });
-
-  it('should throw if the resolved baseDir is not a directory', async () => {
-    fs.lstatSync.mockReturnValueOnce({ isDirectory: () => false });
-    await expect(() => generateMetadataForVersion('v0')).rejects.toThrow('Not a directory');
-  });
-});
 
 describe('plugin', () => {
   let result: any;
