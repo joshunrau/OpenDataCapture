@@ -3,10 +3,34 @@
 import { renderToString } from 'react-dom/server';
 
 import * as http from 'node:http';
+import * as path from 'node:path';
 
 import { generateMetadata, resolveRuntimeAsset } from '@opendatacapture/runtime-meta';
+import * as esbuild from 'esbuild';
 
 import { Root } from './Root';
+
+import type { RootProps } from './Root';
+
+async function generateBootstrapScript(props: RootProps): Promise<string> {
+  const result = await esbuild.build({
+    bundle: true,
+    define: {
+      __ROOT_PROPS__: JSON.stringify(props)
+    },
+    entryPoints: [path.resolve(import.meta.dirname, 'entry-client.tsx')],
+    format: 'esm',
+    jsx: 'automatic',
+    minify: false,
+    platform: 'browser',
+    target: 'es2022',
+    write: false
+  });
+
+  console.log(result);
+
+  return result.outputFiles.find((output) => output.path === '<stdout>')!.text;
+}
 
 export async function createServer(port: number) {
   const metadata = await generateMetadata();
@@ -30,6 +54,7 @@ export async function createServer(port: number) {
             </body>
           </html>
         );
+        console.log(await generateBootstrapScript({}));
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(html);
       } else if (req.url?.startsWith('/runtime')) {
