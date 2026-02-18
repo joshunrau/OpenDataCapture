@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { generateMetadata, MANIFEST_FILENAME } from '@opendatacapture/runtime-meta';
+import { generateMetadata, MANIFEST_FILENAME, resolveRuntimeAsset } from '@opendatacapture/runtime-meta';
 
 /**
  * @param {import('@opendatacapture/runtime-meta').RuntimeOptions} [options]
@@ -27,48 +27,13 @@ export async function plugin(options) {
     }),
     configureServer: (server) => {
       server.middlewares.use('/runtime', async (req, res, next) => {
-        const [version, ...paths] = req.url?.split('/').filter(Boolean) ?? [];
-        const filepath = paths.join('/');
-        if (!(version && filepath) || !metadata.has(version)) {
+        const asset = await resolveRuntimeAsset(req.url, metadata);
+        if (!asset) {
           return next();
         }
 
-        const { baseDir, manifest } = /** @type {import('@opendatacapture/runtime-meta').RuntimeVersionMetadata} */ (
-          metadata.get(version)
-        );
-
-        /** @type {{ content: string; contentType: string; }} */
-        let resource;
-        if (filepath === MANIFEST_FILENAME) {
-          resource = {
-            content: JSON.stringify(manifest),
-            contentType: 'application/json'
-          };
-        } else if (manifest.declarations.includes(filepath)) {
-          resource = {
-            content: await fs.promises.readFile(path.resolve(baseDir, filepath), 'utf-8'),
-            contentType: 'text/plain'
-          };
-        } else if (manifest.html.includes(filepath)) {
-          resource = {
-            content: await fs.promises.readFile(path.resolve(baseDir, filepath), 'utf-8'),
-            contentType: 'text/html'
-          };
-        } else if (manifest.styles.includes(filepath)) {
-          resource = {
-            content: await fs.promises.readFile(path.resolve(baseDir, filepath), 'utf-8'),
-            contentType: 'text/css'
-          };
-        } else if (manifest.sources.includes(filepath)) {
-          resource = {
-            content: await fs.promises.readFile(path.resolve(baseDir, filepath), 'utf-8'),
-            contentType: 'text/javascript'
-          };
-        } else {
-          return next();
-        }
-        res.writeHead(200, { 'Content-Type': resource.contentType });
-        res.end(resource.content);
+        res.writeHead(200, { 'Content-Type': asset.contentType });
+        res.end(asset.content);
       });
     },
     name: 'vite-plugin-runtime'
