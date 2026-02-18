@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-import esbuild from 'esbuild';
+import * as esbuild from 'esbuild';
 
 const outdir = path.resolve(import.meta.dirname, '../dist');
 
