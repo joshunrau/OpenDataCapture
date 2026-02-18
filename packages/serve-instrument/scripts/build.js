@@ -8,7 +8,12 @@ const outdir = path.resolve(import.meta.dirname, '../dist');
 await fs.promises.rm(outdir, { force: true, recursive: true });
 
 await esbuild.build({
+  banner: {
+    js: '#!/usr/bin/env node'
+  },
+  // bundle: true,
   entryPoints: [path.resolve(import.meta.dirname, '../src/cli.ts')],
-  minify: true,
-  outdir
+  minify: false,
+  outdir,
+  platform: 'node'
 });
