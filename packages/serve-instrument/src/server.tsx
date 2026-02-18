@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
 
+import { renderToString } from 'react-dom/server';
+
 import * as http from 'node:http';
 
 import { generateMetadata, resolveRuntimeAsset } from '@opendatacapture/runtime-meta';
 
-import { render } from './entry-server';
+import { Root } from './Root';
 
 export async function createServer(port: number) {
   const metadata = await generateMetadata();
@@ -13,7 +15,21 @@ export async function createServer(port: number) {
   const server = http.createServer(async (req, res) => {
     if (req.method === 'GET') {
       if (req.url === '/') {
-        const html = render({});
+        let html = '<!DOCTYPE html>\n';
+        html += renderToString(
+          <html lang="en">
+            <head>
+              <meta charSet="UTF-8" />
+              <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+              <title>Open Data Capture</title>
+            </head>
+            <body>
+              <div id="root">
+                <Root />
+              </div>
+            </body>
+          </html>
+        );
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(html);
       } else if (req.url?.startsWith('/runtime')) {
