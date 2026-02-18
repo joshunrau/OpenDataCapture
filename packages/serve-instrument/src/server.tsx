@@ -52,6 +52,7 @@ export async function createServer(port: number) {
                 <Root />
               </div>
             </body>
+            <script dangerouslySetInnerHTML={{ __html: await generateBootstrapScript({}) }} type="module" />
           </html>
         );
         console.log(await generateBootstrapScript({}));
