@@ -2,7 +2,7 @@
 
 import * as http from 'node:http';
 
-import { generateMetadata } from '@opendatacapture/runtime-meta';
+import { generateMetadata, resolveRuntimeAsset } from '@opendatacapture/runtime-meta';
 
 export async function createServer(port: number) {
   const metadata = await generateMetadata();
@@ -14,14 +14,16 @@ export async function createServer(port: number) {
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end('<h1>Hello World</h1>');
       } else if (req.url?.startsWith('/runtime')) {
-        const [version, ...paths] = req.url.split('/').filter(Boolean) ?? [];
-        const filepath = paths.join('/');
-        if (!(version && filepath) || !metadata.has(version)) {
+        const asset = await resolveRuntimeAsset(req.url.replace(/^\/?runtime\//, ''), metadata);
+        // console.log(metadata, asset);
+        console.log(asset);
+        if (!asset) {
           res.writeHead(404, { 'Content-Type': 'text/plain' });
           res.end('Not Found');
+        } else {
+          res.writeHead(200, { 'Content-Type': asset.contentType });
+          res.end(asset.content);
         }
-
-        const { baseDir, manifest } = metadata.get(version!)!;
       } else {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('Not Found');

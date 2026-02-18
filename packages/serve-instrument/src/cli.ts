@@ -6,12 +6,10 @@ import * as path from 'node:path';
 import { bundle, BUNDLER_FILE_EXT_REGEX, inferLoader } from '@opendatacapture/instrument-bundler';
 import type { BundlerInput } from '@opendatacapture/instrument-bundler';
 import { encodeUnicodeToBase64 } from '@opendatacapture/runtime-internal';
-import runtime from '@opendatacapture/vite-plugin-runtime';
-import tailwindcss from '@tailwindcss/vite';
 import { Command, InvalidArgumentError } from 'commander';
-import { createServer } from 'vite';
 
 import { name, version } from '../package.json';
+import { createServer } from './server';
 
 console.log(name, version);
 
@@ -63,41 +61,7 @@ program.action(async (target: string) => {
     return encodeUnicodeToBase64(await bundle({ inputs }));
   };
 
-  const server = await createServer({
-    forceOptimizeDeps: force,
-    plugins: [
-      {
-        configureServer: (server): void => {
-          server.watcher.add(target);
-        },
-        async handleHotUpdate({ file, server }) {
-          if (file.startsWith(target)) {
-            server.ws.send({
-              data: {
-                encodedBundle: await getEncodedBundle()
-              },
-              event: 'update-bundle',
-              type: 'custom'
-            });
-          }
-        },
-        name: 'serve-instrument',
-        async transformIndexHtml(html) {
-          return html.replace('{{BUNDLE}}', await getEncodedBundle());
-        }
-      },
-      runtime(),
-      tailwindcss()
-    ],
-    root: path.join(import.meta.dirname, 'client'),
-    server: {
-      open: false,
-      port
-    }
-  });
-  await server.listen();
-
-  console.log(`Listening on http://localhost:${port}`);
+  await createServer(port);
 });
 
 program.parse();

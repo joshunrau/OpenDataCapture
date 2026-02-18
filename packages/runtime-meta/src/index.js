@@ -72,8 +72,6 @@ export async function generateMetadata() {
 
 /** @type {import('.').resolveRuntimeAsset} */
 export async function resolveRuntimeAsset(url, metadata) {
-  url = url?.replace(/^\/?runtime\//, '');
-
   const [version, ...paths] = url?.split('/').filter(Boolean) ?? [];
   const filepath = paths.join('/');
 
