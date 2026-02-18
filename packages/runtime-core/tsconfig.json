@@ -3,8 +3,11 @@
   "compilerOptions": {
     "checkJs": false,
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "module": "Node16",
-    "moduleResolution": "Node16"
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "paths": {
+      "/runtime/v1/*": ["../../runtime/v1/dist/*"]
+    }
   },
-  "include": ["lib/**/*", "src/**/*"]
+  "include": ["examples/**/*", "lib/**/*", "src/**/*"]
 }
