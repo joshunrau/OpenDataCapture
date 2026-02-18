@@ -1,12 +1,10 @@
 /* eslint-disable no-console */
 
-import { renderToString } from 'react-dom/server';
-
 import * as http from 'node:http';
 
 import { generateMetadata, resolveRuntimeAsset } from '@opendatacapture/runtime-meta';
 
-import { Root } from './Root';
+import { render } from './entry-server';
 
 export async function createServer(port: number) {
   const metadata = await generateMetadata();
@@ -15,7 +13,7 @@ export async function createServer(port: number) {
   const server = http.createServer(async (req, res) => {
     if (req.method === 'GET') {
       if (req.url === '/') {
-        const html = renderToString(Root());
+        const html = render({});
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(html);
       } else if (req.url?.startsWith('/runtime')) {
