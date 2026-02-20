@@ -19,7 +19,8 @@ await esbuild.build({
   format: 'esm',
   minify: false,
   outdir,
-  platform: 'node'
+  platform: 'node',
+  target: 'es2022'
 });
 
 await fs.promises.cp(path.resolve(import.meta.dirname, '../src/client'), path.resolve(outdir, 'client'), {
