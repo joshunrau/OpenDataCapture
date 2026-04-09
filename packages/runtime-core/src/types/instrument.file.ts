@@ -1,0 +1,41 @@
+/* eslint-disable @typescript-eslint/no-namespace */
+
+import type { Merge } from 'type-fest';
+
+import type { FILE_TYPES } from '../constants.js';
+import type { Language } from './core.js';
+import type { BaseInstrument, InstrumentLanguage, InstrumentUIOption } from './instrument.base.js';
+
+type FileType = (typeof FILE_TYPES)[keyof typeof FILE_TYPES][number];
+
+/** @public */
+declare namespace FileInstrument {
+  export type FileGroup<TLanguage extends InstrumentLanguage = InstrumentLanguage> = {
+    basename: string;
+    count: number;
+    id: string;
+    label: InstrumentUIOption<TLanguage, string>;
+    type: FileType | null;
+  };
+
+  export type Content<TLanguage extends InstrumentLanguage = InstrumentLanguage> = {
+    fileGroups: FileGroup<TLanguage>[];
+  };
+}
+
+/** @public */
+declare type FileInstrument<TLanguage extends InstrumentLanguage = InstrumentLanguage> = Merge<
+  BaseInstrument<TLanguage>,
+  {
+    content: FileInstrument.Content<TLanguage>;
+    kind: 'FILE';
+  }
+>;
+
+/** @internal */
+type AnyUnilingualFileInstrument = FileInstrument<Language>;
+
+/** @internal */
+type AnyMultilingualFileInstrument = FileInstrument<Language[]>;
+
+export type { AnyMultilingualFileInstrument, AnyUnilingualFileInstrument, FileInstrument };
