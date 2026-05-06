@@ -1,5 +1,5 @@
-import { FILE_TYPES } from '@opendatacapture/runtime-core';
 import type { FileInstrument, InstrumentLanguage } from '@opendatacapture/runtime-core';
+import { FILE_TYPES } from '@opendatacapture/runtime-core/constants';
 import { z } from 'zod/v4';
 
 import { $$InstrumentUIOption, $$ScalarInstrument } from './instrument.base.js';
