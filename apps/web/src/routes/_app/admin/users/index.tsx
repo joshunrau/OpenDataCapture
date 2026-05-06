@@ -19,12 +19,16 @@ import { groupsQueryOptions, useGroupsQuery } from '@/hooks/useGroupsQuery';
 import { useUpdateUserMutation } from '@/hooks/useUpdateUserMutation';
 import { usersQueryOptions, useUsersQuery } from '@/hooks/useUsersQuery';
 import { useAppStore } from '@/store';
+import { PHONE_REGEX } from '@/utils/validation';
 
 type UpdateUserFormData = {
   additionalPermissions?: Partial<UserPermission>[];
   confirmPassword?: string | undefined;
+  disabled?: boolean;
+  email?: string | undefined;
   groupIds: Set<string>;
   password?: string | undefined;
+  phoneNumber?: string | undefined;
 };
 
 type UpdateUserFormInputData = {
@@ -48,8 +52,12 @@ const UpdateUserForm: React.FC<{
     return z
       .object({
         additionalPermissions: z.array($UserPermission.partial()).optional(),
+        confirmPassword: z.string().min(1).optional(),
+        disabled: z.boolean().optional(),
+        email: z.union([z.literal(''), z.email()]).optional(),
         groupIds: z.set(z.string()),
-        password: z.string().min(1).optional()
+        password: z.string().min(1).optional(),
+        phoneNumber: z.union([z.literal(''), z.string().regex(PHONE_REGEX)]).optional()
       })
       .transform((arg) => {
         const firstPermission = arg.additionalPermissions?.[0];
@@ -82,6 +90,16 @@ const UpdateUserForm: React.FC<{
             }
           });
         });
+      })
+      .check((ctx) => {
+        if (ctx.value.confirmPassword !== ctx.value.password) {
+          ctx.issues.push({
+            code: 'custom',
+            input: ctx.value.confirmPassword,
+            message: t('common.passwordsMustMatch'),
+            path: ['confirmPassword']
+          });
+        }
       }) satisfies z.ZodType<UpdateUserFormData>;
   }, [resolvedLanguage]);
 
@@ -107,11 +125,35 @@ const UpdateUserForm: React.FC<{
                 kind: 'string',
                 label: t('common.password'),
                 variant: 'password'
+              },
+              // eslint-disable-next-line perfectionist/sort-objects
+              confirmPassword: {
+                kind: 'string',
+                label: t('common.confirmPassword'),
+                variant: 'password'
               }
             },
             title: t({
               en: 'Login Credentials',
               fr: 'Identifiants de connexion'
+            })
+          },
+          {
+            fields: {
+              email: {
+                kind: 'string',
+                label: t('common.email'),
+                variant: 'input'
+              },
+              phoneNumber: {
+                kind: 'string',
+                label: t('common.phoneNumber'),
+                variant: 'input'
+              }
+            },
+            title: t({
+              en: 'Update Contact Information',
+              fr: 'Mettre à jour les coordonnées'
             })
           },
           {
@@ -135,7 +177,7 @@ const UpdateUserForm: React.FC<{
                       }),
                       delete: t({
                         en: 'Delete',
-                        fr: 'Effacer'
+                        fr: 'Supprimer'
                       }),
                       manage: t({
                         en: 'Manage (All)',
@@ -147,7 +189,7 @@ const UpdateUserForm: React.FC<{
                       }),
                       update: t({
                         en: 'Update',
-                        fr: 'Mettre à jour'
+                        fr: 'Modifier'
                       })
                     },
                     variant: 'select'
@@ -156,7 +198,7 @@ const UpdateUserForm: React.FC<{
                     kind: 'string',
                     label: t({
                       en: 'Resource',
-                      fr: 'Resource'
+                      fr: 'Ressource'
                     }),
                     options: {
                       all: t({
@@ -165,7 +207,7 @@ const UpdateUserForm: React.FC<{
                       }),
                       Assignment: t({
                         en: 'Assignment',
-                        fr: 'Devoir'
+                        fr: 'Assignation'
                       }),
                       Group: t({
                         en: 'Group',
@@ -198,8 +240,20 @@ const UpdateUserForm: React.FC<{
                 kind: 'record-array',
                 label: t({
                   en: 'Permission',
-                  fr: 'Autorisations supplémentaires'
+                  fr: 'Autorisation'
                 })
+              },
+              disabled: {
+                description: t({
+                  en: 'Use this option if the user is not intended to log in, for example, when the account is used solely to identify the author of uploaded data.',
+                  fr: 'Utilisez cette option si l’utilisateur n’a pas vocation à se connecter, par exemple lorsque le compte sert uniquement à identifier l’auteur de données téléversées.'
+                }),
+                kind: 'boolean',
+                label: t({
+                  en: 'Disabled',
+                  fr: 'Désactivé'
+                }),
+                variant: 'radio'
               }
             },
             title: t({
@@ -223,7 +277,10 @@ const UpdateUserForm: React.FC<{
           }
         ]}
         data-testid="update-user-form"
-        initialValues={initialValues}
+        initialValues={{
+          ...initialValues,
+          disabled: initialValues?.disabled ?? false
+        }}
         key={JSON.stringify(initialValues)}
         submitBtnLabel={t('core.save')}
         validationSchema={$UpdateUserFormData}
@@ -280,9 +337,16 @@ const RouteComponent = () => {
         groupOptions: Object.fromEntries(groups.map((group) => [group.id, group.name])),
         initialValues: selectedUser?.additionalPermissions.length
           ? {
-              additionalPermissions: selectedUser.additionalPermissions
+              additionalPermissions: selectedUser.additionalPermissions,
+              email: selectedUser.email ?? undefined,
+              groupIds: new Set(selectedUser.groupIds),
+              phoneNumber: selectedUser.phoneNumber ?? undefined
             }
-          : undefined
+          : {
+              email: selectedUser.email ?? undefined,
+              groupIds: new Set(selectedUser.groupIds),
+              phoneNumber: selectedUser.phoneNumber ?? undefined
+            }
       });
     }
   }, [groupsQuery.data, selectedUser]);
@@ -343,7 +407,7 @@ const RouteComponent = () => {
           <Sheet.Description>
             {t({
               en: 'Make changes to this user here. Click save when you are done.',
-              fr: 'Apportez des modifications à cet utilisateur ici. Cliquez sur enregistrer lorsque vous avez terminé.'
+              fr: 'Apportez des modifications à cet utilisateur ici. Cliquez sur « Enregistrer » lorsque vous avez terminé.'
             })}
           </Sheet.Description>
         </Sheet.Header>
@@ -357,7 +421,7 @@ const RouteComponent = () => {
                 deleteUserMutation.mutate({ id: selectedUser!.id });
                 setSelectedUser(null);
               },
-              onSubmit: ({ groupIds, ...data }) => {
+              onSubmit: ({ confirmPassword: _, groupIds, ...data }) => {
                 void updateUserMutation
                   .mutateAsync({ data: { groupIds: Array.from(groupIds), ...data }, id: selectedUser!.id })
                   .then(() => {

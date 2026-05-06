@@ -12,6 +12,7 @@ import { z } from 'zod/v4';
 import { PageHeader } from '@/components/PageHeader';
 import { useCreateUserMutation } from '@/hooks/useCreateUserMutation';
 import { groupsQueryOptions, useGroupsQuery } from '@/hooks/useGroupsQuery';
+import { PHONE_REGEX } from '@/utils/validation';
 
 const RouteComponent = () => {
   const { t } = useTranslation();
@@ -78,6 +79,24 @@ const RouteComponent = () => {
             })
           },
           {
+            fields: {
+              email: {
+                kind: 'string',
+                label: t('common.email'),
+                variant: 'input'
+              },
+              phoneNumber: {
+                kind: 'string',
+                label: t('common.phoneNumber'),
+                variant: 'input'
+              }
+            },
+            title: t({
+              en: 'Contact information',
+              fr: 'Coordonnées'
+            })
+          },
+          {
             title: t({
               en: 'Permissions',
               fr: 'Autorisations'
@@ -92,6 +111,18 @@ const RouteComponent = () => {
                   STANDARD: t('common.standard')
                 },
                 variant: 'select'
+              },
+              disabled: {
+                kind: 'boolean',
+                description: t({
+                  en: 'Use this option if the user is not intended to log in, for example, when the account is used solely to identify the author of uploaded data.',
+                  fr: 'Utilisez cette option si l’utilisateur n’a pas vocation à se connecter, par exemple lorsque le compte sert uniquement à identifier l’auteur de données téléversées.'
+                }),
+                label: t({
+                  en: 'Disabled',
+                  fr: 'Désactivé'
+                }),
+                variant: 'radio'
               },
               groupIds: {
                 kind: 'dynamic',
@@ -142,6 +173,9 @@ const RouteComponent = () => {
             })
           }
         ]}
+        initialValues={{
+          disabled: false
+        }}
         validationSchema={$CreateUserData
           .omit({
             groupIds: true
@@ -168,6 +202,17 @@ const RouteComponent = () => {
                 input: ctx.value.confirmPassword,
                 message: t('common.passwordsMustMatch'),
                 path: ['confirmPassword']
+              });
+            }
+            if (ctx.value.phoneNumber && !PHONE_REGEX.test(ctx.value.phoneNumber)) {
+              ctx.issues.push({
+                code: 'custom',
+                input: ctx.value.phoneNumber,
+                message: t({
+                  en: 'Invalid Phone number',
+                  fr: 'Numéro de téléphone invalide'
+                }),
+                path: ['phoneNumber']
               });
             }
           })}

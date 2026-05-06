@@ -13,7 +13,7 @@
   },
   "assignment": {
     "en": "Assignment",
-    "fr": "Devoir"
+    "fr": "Assignation"
   },
   "auditLogs": {
     "en": "Audit Logs",
@@ -46,6 +46,10 @@
   "delete": {
     "en": "Delete",
     "fr": "Supprimer"
+  },
+  "email": {
+    "en": "Email",
+    "fr": "Adresse courriel"
   },
   "entity": {
     "en": "Entity",
@@ -145,6 +149,10 @@
     "en": "Personal Information",
     "fr": "Renseignements personnels"
   },
+  "phoneNumber": {
+    "en": "Phone Number",
+    "fr": "Numéro de téléphone"
+  },
   "research": {
     "en": "Research",
     "fr": "Recherche"
@@ -213,7 +221,7 @@
   },
   "uploadSuccessful": {
     "en": "Upload Successful",
-    "fr": "Téléchargement réussi"
+    "fr": "Téléversement réussi"
   },
   "user": {
     "en": "User",

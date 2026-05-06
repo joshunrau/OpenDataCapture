@@ -12,9 +12,12 @@ export const $User = $BaseModel.extend({
   additionalPermissions: $Permissions,
   basePermissionLevel: $BasePermissionLevel.nullable(),
   dateOfBirth: z.coerce.date().nullish(),
+  disabled: z.boolean().nullish(),
+  email: z.email().nullish(),
   firstName: z.string().min(1),
   groupIds: z.array(z.string()),
   lastName: z.string().min(1),
+  phoneNumber: z.string().nullish(),
   sex: $Sex.nullish(),
   username: z.string().min(1)
 });
@@ -30,7 +33,10 @@ export const $CreateUserData = $User
   })
   .extend({
     dateOfBirth: z.coerce.date().optional(),
+    disabled: z.boolean().optional(),
+    email: z.email().optional(),
     password: z.string().min(1),
+    phoneNumber: z.string().optional(),
     sex: $Sex.optional()
   });
 
@@ -38,3 +44,16 @@ export type UpdateUserData = z.infer<typeof $UpdateUserData>;
 export const $UpdateUserData = $CreateUserData.partial().extend({
   additionalPermissions: $Permissions.optional()
 });
+
+export type $SelfUpdateUserData = z.infer<typeof $SelfUpdateUserData>;
+export const $SelfUpdateUserData = $UpdateUserData
+  .pick({
+    dateOfBirth: true,
+    email: true,
+    firstName: true,
+    lastName: true,
+    password: true,
+    phoneNumber: true,
+    sex: true
+  })
+  .partial();

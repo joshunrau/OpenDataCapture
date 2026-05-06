@@ -243,6 +243,9 @@ model User {
   username              String
   sex                   Sex?
   dateOfBirth           DateTime?            @db.Date
+  phoneNumber           String?
+  email                 String?
+  disabled              Boolean?
 
   @@map("UserModel")
 }

@@ -125,9 +125,23 @@ export class SubjectsService {
     return { success: true };
   }
 
-  async find({ groupId }: { groupId?: string } = {}, { ability }: EntityOperationOptions = {}) {
+  async find(
+    { groupId, hasRecord }: { groupId?: string; hasRecord?: boolean } = {},
+    { ability }: EntityOperationOptions = {}
+  ) {
     const groupInput = groupId ? { groupIds: { has: groupId } } : {};
-    return await this.subjectModel.findMany({
+    if (hasRecord) {
+      return this.subjectModel.findMany({
+        where: {
+          AND: [
+            accessibleQuery(ability, 'read', 'Subject'),
+            groupInput,
+            { id: { in: await this.querySubjectIdsWithRecords(groupId) } }
+          ]
+        }
+      });
+    }
+    return this.subjectModel.findMany({
       where: {
         AND: [accessibleQuery(ability, 'read', 'Subject'), groupInput]
       }
@@ -142,5 +156,14 @@ export class SubjectsService {
       throw new NotFoundException(`Failed to find subject with id: ${id}`);
     }
     return subject;
+  }
+
+  private async querySubjectIdsWithRecords(groupId?: string): Promise<string[]> {
+    const records = await this.prismaClient.instrumentRecord.findMany({
+      distinct: ['subjectId'],
+      select: { subjectId: true },
+      where: groupId ? { groupId } : {}
+    });
+    return records.map((r) => r.subjectId);
   }
 }

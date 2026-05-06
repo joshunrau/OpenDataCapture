@@ -8,8 +8,9 @@
     "jsx": "react-jsx",
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["node"]
   },
-  "include": ["knip.ts", "vitest.config.ts", "vitest.workspace.ts"],
+  "include": ["knip.ts", "vitest.config.ts"],
   "exclude": ["docs/*", "**/dist", "**/node_modules", "vendor/**/*"]
 }
