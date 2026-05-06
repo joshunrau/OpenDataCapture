@@ -23,7 +23,8 @@ export type InterpretedInstrumentState<T extends AnyUnilingualInstrument = AnyUn
 export type SubjectDisplayInfo = Pick<Subject, 'dateOfBirth' | 'firstName' | 'id' | 'lastName' | 'sex'>;
 
 export type InstrumentSubmitHandler = (
-  arg0:
+  result:
     | { data: Json; index: number; instrumentId: string; kind: 'SERIES' }
-    | { data: Json; instrumentId: string; kind?: 'SCALAR' }
+    | { data: Json; instrumentId: string; kind?: 'SCALAR' },
+  onFileUploadProgress?: (progress: number) => void
 ) => Promisable<void>;
