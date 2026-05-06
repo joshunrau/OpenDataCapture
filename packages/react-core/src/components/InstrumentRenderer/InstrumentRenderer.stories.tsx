@@ -1,4 +1,5 @@
 import { Card } from '@douglasneuroinformatics/libui/components';
+import { bilingualFileInstrument } from '@opendatacapture/instrument-stubs/file';
 import { bilingualFormInstrument, unilingualFormInstrument } from '@opendatacapture/instrument-stubs/forms';
 import { interactiveInstrument } from '@opendatacapture/instrument-stubs/interactive';
 import { seriesInstrument } from '@opendatacapture/instrument-stubs/series';
@@ -19,6 +20,12 @@ const unilingualInteractiveTarget: ScalarInstrumentBundleContainer = {
   bundle: interactiveInstrument.bundle,
   id: crypto.randomUUID(),
   kind: 'INTERACTIVE'
+};
+
+const bilingualFileTarget: ScalarInstrumentBundleContainer = {
+  bundle: bilingualFileInstrument.bundle,
+  id: crypto.randomUUID(),
+  kind: 'FILE'
 };
 
 export default {
@@ -50,6 +57,12 @@ export const BilingualForm: Story = {
       id: crypto.randomUUID(),
       kind: 'FORM'
     }
+  }
+};
+
+export const BilingualFile: Story = {
+  args: {
+    target: bilingualFileTarget
   }
 };
 
