@@ -28,7 +28,7 @@ const $AnyDynamicFunction: z.ZodType<(...args: any[]) => any> = z
   .any()
   .refine((arg) => typeof arg === 'function', 'must be function');
 
-const $InstrumentKind = z.enum(['FORM', 'INTERACTIVE', 'SERIES']) satisfies z.ZodType<InstrumentKind>;
+const $InstrumentKind = z.enum(['FILE', 'FORM', 'INTERACTIVE', 'SERIES']) satisfies z.ZodType<InstrumentKind>;
 
 const $$InstrumentLanguage = <const TLanguage extends InstrumentLanguage>(language?: TLanguage) => {
   let resolvedSchema: z.ZodTypeAny = z.never();
