@@ -264,7 +264,7 @@ const $BaseInstrumentBundleContainer = z.object({
 type ScalarInstrumentBundleContainer = z.infer<typeof $ScalarInstrumentBundleContainer>;
 const $ScalarInstrumentBundleContainer = $BaseInstrumentBundleContainer.extend({
   bundle: z.string(),
-  kind: z.enum(['FORM', 'INTERACTIVE'])
+  kind: z.enum(['FILE', 'FORM', 'INTERACTIVE'])
 });
 
 type SeriesInstrumentBundleContainer = z.infer<typeof $SeriesInstrumentBundleContainer>;
