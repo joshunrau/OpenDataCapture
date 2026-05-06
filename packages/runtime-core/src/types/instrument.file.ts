@@ -6,10 +6,10 @@ import type { FILE_TYPES } from '../constants.js';
 import type { Language } from './core.js';
 import type { BaseInstrument, InstrumentLanguage, InstrumentUIOption } from './instrument.base.js';
 
-type FileType = (typeof FILE_TYPES)[keyof typeof FILE_TYPES][number];
-
 /** @public */
 declare namespace FileInstrument {
+  export type FileType = (typeof FILE_TYPES)[keyof typeof FILE_TYPES][number];
+
   export type FileGroup<TLanguage extends InstrumentLanguage = InstrumentLanguage> = {
     basename: string;
     count: number;

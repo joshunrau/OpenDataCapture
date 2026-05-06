@@ -1,0 +1,33 @@
+import { FILE_TYPES } from '@opendatacapture/runtime-core';
+import type { FileInstrument, InstrumentLanguage } from '@opendatacapture/runtime-core';
+import { z } from 'zod/v4';
+
+import { $$BaseInstrument, $$InstrumentUIOption } from './instrument.base.js';
+
+type $FileType = z.infer<typeof $FileType>;
+const $FileType = z.enum(
+  [FILE_TYPES.binary, FILE_TYPES.documents, FILE_TYPES.images, FILE_TYPES.spreadsheets, FILE_TYPES.structured].flat()
+) satisfies z.ZodType<FileInstrument.FileType>;
+
+const $$FileGroup = <TLanguage extends InstrumentLanguage>(language?: TLanguage) => {
+  return z.object({
+    basename: z.string(),
+    count: z.int().min(1),
+    id: z.string(),
+    label: $$InstrumentUIOption(z.string(), language),
+    type: $FileType.nullable()
+  }) satisfies z.ZodType<FileInstrument.FileGroup>;
+};
+
+const $$FileInstrument = <TLanguage extends InstrumentLanguage>(language?: TLanguage) => {
+  return $$BaseInstrument(language).extend({
+    content: z.object({
+      fileGroups: z.array($$FileGroup(language))
+    }),
+    kind: z.literal('FILE')
+  }) satisfies z.ZodType<FileInstrument<TLanguage>>;
+};
+
+const $FileInstrument = $$FileInstrument() satisfies z.ZodType<FileInstrument>;
+
+export { $$FileInstrument, $FileInstrument };
