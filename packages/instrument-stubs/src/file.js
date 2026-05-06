@@ -1,6 +1,6 @@
 import { createInstrumentStub } from './utils.js';
 
-/** @type {import('./utils.js').InstrumentStub<import('@opendatacapture/runtime-core').FileInstrument<Language[]>>} */
+/** @type {import('./utils.js').InstrumentStub<import('@opendatacapture/runtime-core').FileInstrument<import('@opendatacapture/runtime-core').Language[]>>} */
 export const bilingualFileInstrument = await createInstrumentStub(async () => {
   const { z } = await import('zod/v4');
   return {
