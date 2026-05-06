@@ -1,3 +1,4 @@
+/** @public */
 export const FILE_TYPES = Object.freeze({
   binary: Object.freeze(['application/octet-stream'] as const),
   documents: Object.freeze([
