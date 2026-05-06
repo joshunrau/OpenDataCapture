@@ -9,6 +9,7 @@ import type { ScalarInstrumentBundleContainer } from '@opendatacapture/schemas/i
 import { match } from 'ts-pattern';
 
 import { useInterpretedInstrument } from '../../hooks/useInterpretedInstrument';
+import { FileInstrumentContent } from '../FileInstrumentContent';
 import { FormContent } from '../FormContent';
 import { InstrumentOverview } from '../InstrumentOverview';
 import { InstrumentSummary } from '../InstrumentSummary';
@@ -85,6 +86,9 @@ export const ScalarInstrumentRenderer = ({
                 onSubmit={handleSubmit}
               />
             ))
+            .with({ index: 1, instrument: { kind: 'FILE' } }, ({ instrument }) => {
+              return <FileInstrumentContent instrument={instrument} onSubmit={handleSubmit} />;
+            })
             .with({ index: 2 }, () => (
               <InstrumentSummary data={data} instrument={instrument} subject={subject} timeCollected={Date.now()} />
             ))
