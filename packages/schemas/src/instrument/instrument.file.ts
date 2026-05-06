@@ -2,7 +2,7 @@ import { FILE_TYPES } from '@opendatacapture/runtime-core';
 import type { FileInstrument, InstrumentLanguage } from '@opendatacapture/runtime-core';
 import { z } from 'zod/v4';
 
-import { $$BaseInstrument, $$InstrumentUIOption } from './instrument.base.js';
+import { $$InstrumentUIOption, $$ScalarInstrument } from './instrument.base.js';
 
 type $FileType = z.infer<typeof $FileType>;
 const $FileType = z.enum(
@@ -20,7 +20,7 @@ const $$FileGroup = <TLanguage extends InstrumentLanguage>(language?: TLanguage)
 };
 
 const $$FileInstrument = <TLanguage extends InstrumentLanguage>(language?: TLanguage) => {
-  return $$BaseInstrument(language).extend({
+  return $$ScalarInstrument(language).extend({
     content: z.object({
       fileGroups: z.array($$FileGroup(language))
     }),

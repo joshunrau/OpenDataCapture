@@ -4,10 +4,14 @@ import type { Merge } from 'type-fest';
 
 import type { FILE_TYPES } from '../constants.js';
 import type { Language } from './core.js';
-import type { BaseInstrument, InstrumentLanguage, InstrumentUIOption } from './instrument.base.js';
+import type { InstrumentLanguage, InstrumentUIOption, ScalarInstrument } from './instrument.base.js';
 
 /** @public */
 declare namespace FileInstrument {
+  export type Data = {
+    [key: string]: never;
+  };
+
   export type FileType = (typeof FILE_TYPES)[keyof typeof FILE_TYPES][number];
 
   export type FileGroup<TLanguage extends InstrumentLanguage = InstrumentLanguage> = {
@@ -25,7 +29,7 @@ declare namespace FileInstrument {
 
 /** @public */
 declare type FileInstrument<TLanguage extends InstrumentLanguage = InstrumentLanguage> = Merge<
-  BaseInstrument<TLanguage>,
+  ScalarInstrument<FileInstrument.Data, TLanguage>,
   {
     content: FileInstrument.Content<TLanguage>;
     kind: 'FILE';
