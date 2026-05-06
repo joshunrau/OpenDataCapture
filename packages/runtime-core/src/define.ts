@@ -24,8 +24,8 @@ type InternalLicensingRequirements = OpenDataCaptureContext extends { isRepo: tr
 /** @public */
 // prettier-ignore
 export type DiscriminatedInstrument<
-  TKind extends InstrumentKind,
-  TLanguage extends InstrumentLanguage,
+  TKind extends InstrumentKind, 
+  TLanguage extends InstrumentLanguage, 
   TData
 > = [TKind] extends ['FORM']
   ? TData extends FormInstrument.Data
@@ -34,10 +34,10 @@ export type DiscriminatedInstrument<
   : [TKind] extends ['INTERACTIVE']
     ? TData extends InteractiveInstrument.Data
       ? InteractiveInstrument<TData, TLanguage>
-      : [TKind] extends ['FILE']
-        ? FileInstrument<TLanguage>
-        : never
-    : never;
+      : never
+    : [TKind] extends ['FILE']
+      ? FileInstrument<TLanguage>
+      : never;
 
 /** @public */
 export type InstrumentDef<
