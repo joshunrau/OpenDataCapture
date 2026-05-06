@@ -13,7 +13,13 @@ export const $Env = $BaseEnv
     GATEWAY_ENABLED: $BooleanLike,
     GATEWAY_INTERNAL_NETWORK_URL: $UrlLike.optional(),
     GATEWAY_REFRESH_INTERVAL: $NumberLike.pipe(z.number().positive().int()),
-    GATEWAY_SITE_ADDRESS: $UrlLike.optional()
+    GATEWAY_SITE_ADDRESS: $UrlLike.optional(),
+    STORAGE_ACCESS_KEY: z.string().optional(),
+    STORAGE_BUCKET: z.string().optional(),
+    STORAGE_ENDPOINT: $UrlLike.optional(),
+    STORAGE_PUBLIC_ENDPOINT: $UrlLike.optional(),
+    STORAGE_REGION: z.string().optional(),
+    STORAGE_SECRET_KEY: z.string().optional()
   })
   .transform((env, ctx) => {
     if (env.NODE_ENV === 'production') {
