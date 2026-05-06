@@ -78,6 +78,9 @@ catalogs:
     prisma:
       specifier: ^6.9.0
       version: 6.19.2
+    react-dropzone:
+      specifier: ^14.3.8
+      version: 14.4.1
     serialize-error:
       specifier: ^11.0.3
       version: 11.0.3
@@ -597,7 +600,7 @@ importers:
         specifier: workspace:react-dom__19.x@*
         version: link:../../vendor/react-dom@19.x
       react-dropzone:
-        specifier: ^14.3.8
+        specifier: 'catalog:'
         version: 14.4.1(react@vendor+react@19.x)
       react-error-boundary:
         specifier: ^5.0.0
@@ -981,6 +984,9 @@ importers:
       react-dom:
         specifier: workspace:react-dom__19.x@*
         version: link:../../vendor/react-dom@19.x
+      react-dropzone:
+        specifier: 'catalog:'
+        version: 14.4.1(react@vendor+react@19.x)
       serialize-error:
         specifier: 'catalog:'
         version: 11.0.3
