@@ -1,0 +1,51 @@
+{
+  "name": "@opendatacapture/serialize-instrument",
+  "type": "module",
+  "version": "2.2.3",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DouglasNeuroInformatics/OpenDataCapture.git",
+    "directory": "packages/serialize-instrument"
+  },
+  "sideEffects": [
+    "**/cli.ts"
+  ],
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "bin": {
+    "serialize-instrument": "./dist/cli.js"
+  },
+  "files": [
+    "/dist",
+    "/src",
+    "!/src/__tests__"
+  ],
+  "scripts": {
+    "build": "node scripts/build.js",
+    "format": "prettier --write src",
+    "lint": "tsc && eslint --fix src",
+    "test": "vitest"
+  },
+  "peerDependencies": {
+    "@opendatacapture/runtime-v1": "workspace:*"
+  },
+  "dependencies": {
+    "commander": "catalog:",
+    "esbuild": "catalog:"
+  },
+  "devDependencies": {
+    "@douglasneuroinformatics/libjs": "catalog:",
+    "@opendatacapture/instrument-bundler": "workspace:*",
+    "@opendatacapture/instrument-interpreter": "workspace:*",
+    "@opendatacapture/instrument-utils": "workspace:*",
+    "@opendatacapture/runtime-core": "workspace:*",
+    "ts-pattern": "workspace:ts-pattern__5.x@*",
+    "type-fest": "workspace:type-fest__4.x@*",
+    "zod": "workspace:zod__3.x@*"
+  }
+}

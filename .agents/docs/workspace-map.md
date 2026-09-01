@@ -8,8 +8,8 @@ it. Read the `AGENTS.md` in a directory before editing it; this file only says w
 - **Workspace globs are `apps/*`, `packages/*`, `runtime/*`, `storybook`, `testing`, `vendor/**/\*`**
 (`pnpm-workspace.yaml`). A new directory under one of those is a workspace the moment it has a
 `package.json`. `cli/`, `docs/`, `blog/`and`.agents/` are not workspaces.
-- There are **27 first-party workspaces plus 38 under `vendor/`** — 66 entries including the root, as
-  reported by `pnpm ls -r --depth -1`. The tables below cover the 27; `vendor/` is described as one
+- There are **28 first-party workspaces plus 38 under `vendor/`** — 67 entries including the root, as
+  reported by `pnpm ls -r --depth -1`. The tables below cover the 28; `vendor/` is described as one
   group because every entry there follows the same shape.
 - **Most packages are source-only** and export `./src/*.ts` directly. Their consumers compile them.
   The few that export `./dist` must be built first — see [Built vs source-only](#built-vs-source-only).
@@ -55,6 +55,7 @@ Nothing depends on an app. All five are leaves.
 | `runtime-internal`       | Internal runtime execution primitives (interactive-task iframe/worker bootstrap)     | no                                                           | none                     | instrument-bundler, instrument-interpreter, react-core, runtime-v1, serve-instrument, subject-utils                                       |
 | `runtime-meta`           | Runtime version list and per-version asset manifest types                            | no                                                           | `runtime-meta`           | outreach, serve-instrument, vite-plugin-runtime                                                                                           |
 | `schemas`                | Zod schemas/types shared across tiers, one export per domain                         | no                                                           | `schemas`                | api, demo, gateway, instrument-interpreter, instrument-utils, outreach, playground, react-core, release-info, subject-utils, testing, web |
+| `serialize-instrument`   | Converts a form instrument to plain JSON; provides the `serialize-instrument` bin    | **yes** — esbuild → `dist/cli.js` (the `bin`)                | `serialize-instrument`   | nothing (published for external use)                                                                                                      |
 | `serve-instrument`       | CLI/server for previewing one instrument outside the full app                        | **yes** — esbuild → `dist/cli.js` (the `bin`)                | none                     | nothing (published for external use)                                                                                                      |
 | `subject-utils`          | Subject identification (deriving/hashing clinical subject IDs)                       | no                                                           | `subject-utils`          | api, react-core, web                                                                                                                      |
 | `vite-plugin-runtime`    | Vite plugin wiring the instrument runtime into an app build                          | no                                                           | `vite-plugin-runtime`    | gateway, playground, storybook, web                                                                                                       |
@@ -97,13 +98,13 @@ placed in `storybook/` or `testing/` would never run.
 
 This is the one distinction that changes how you import a workspace.
 
-- **Source-only** (the default — 15 of the 19 packages have no `build` script at all): `exports`
+- **Source-only** (the default — 15 of the 20 packages have no `build` script at all): `exports`
   points at `./src/...` and the consumer's bundler compiles it. Nothing to build, no stale `dist`,
   and a change is visible immediately.
 - **Built**: `instrument-library`, `runtime-core`, `runtime/v1` publish `dist`/`lib` and **cannot be
-  imported until built**. `playground-url` and `serve-instrument` build only their `bin`;
-  `playground-url`'s library export stays source, and `serve-instrument` has no `exports` at all —
-  it is bin-only.
+  imported until built**. `playground-url`, `serialize-instrument` and `serve-instrument` build only
+  their `bin`; the first two keep a source `.` export alongside it, and `serve-instrument` has no
+  `exports` at all — it is bin-only.
 
 Turbo handles ordering (`build` depends on `^build` and `db:generate`), so `pnpm build` and
 `pnpm lint` from the root are always correct. Running `tsc` inside a single package after a clean
@@ -111,12 +112,12 @@ checkout is not — build its dependencies first.
 
 ## Published to npm
 
-Five workspaces, determined at release time by `scripts/list-publishable.sh`: a package is
+Six workspaces, determined at release time by `scripts/list-publishable.sh`: a package is
 publishable when it is **not private and declares `publishConfig`**. There is no hard-coded list.
 Cutting one: `.agents/docs/playbooks/cut-a-release.md`.
 
-`instrument-bundler`, `instrument-guidelines`, `playground-url`, `runtime-v1`, `serve-instrument` —
-all versioned together (`2.1.4` at time of writing, bumped by `scripts/increment-version.sh`; the
+`instrument-bundler`, `instrument-guidelines`, `playground-url`, `runtime-v1`, `serialize-instrument`,
+`serve-instrument` — all versioned together (`2.1.4` at time of writing, bumped by `scripts/increment-version.sh`; the
 root `package.json` version can run ahead of them). Everything else is `0.0.0` and internal.
 
 ## `vendor/`

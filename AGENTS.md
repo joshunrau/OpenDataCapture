@@ -1,7 +1,7 @@
 # Open Data Capture
 
 An electronic data capture platform for administering remote and in-person clinical instruments.
-It is a pnpm/Turborepo monorepo written in TypeScript: 27 first-party workspaces under `apps/`,
+It is a pnpm/Turborepo monorepo written in TypeScript: 28 first-party workspaces under `apps/`,
 `packages/`, `runtime/`, `storybook/` and `testing/`, plus 38 thin version-pinned wrappers under
 `vendor/` that are also workspaces.
 
@@ -81,6 +81,7 @@ here? `.agents/skills/odc-orientation/SKILL.md` is the reading order.
 | Building the library catalog instruments import | `packages/runtime-bundler/AGENTS.md`      |
 | The `defineInstrument` public API               | `packages/runtime-core/AGENTS.md`         |
 | Adding or editing a built-in instrument         | `packages/instrument-library/AGENTS.md`   |
+| Exporting an instrument as plain JSON           | `packages/serialize-instrument/AGENTS.md` |
 | Pinned library wrappers instruments import      | `vendor/AGENTS.md`                        |
 | The published runtime artifact                  | `runtime/v1/AGENTS.md`                    |
 | End-to-end tests                                | `testing/AGENTS.md`                       |

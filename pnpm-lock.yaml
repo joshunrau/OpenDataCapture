@@ -1163,6 +1163,43 @@ importers:
         specifier: workspace:type-fest__4.x@*
         version: link:../../vendor/type-fest@4.x
 
+  packages/serialize-instrument:
+    dependencies:
+      '@opendatacapture/runtime-v1':
+        specifier: workspace:*
+        version: link:../../runtime/v1
+      commander:
+        specifier: 'catalog:'
+        version: 12.1.0
+      esbuild:
+        specifier: 'catalog:'
+        version: 0.23.1
+    devDependencies:
+      '@douglasneuroinformatics/libjs':
+        specifier: 'catalog:'
+        version: 3.2.1(neverthrow@8.2.0)(zod@vendor+zod@3.x)
+      '@opendatacapture/instrument-bundler':
+        specifier: workspace:*
+        version: link:../instrument-bundler
+      '@opendatacapture/instrument-interpreter':
+        specifier: workspace:*
+        version: link:../instrument-interpreter
+      '@opendatacapture/instrument-utils':
+        specifier: workspace:*
+        version: link:../instrument-utils
+      '@opendatacapture/runtime-core':
+        specifier: workspace:*
+        version: link:../runtime-core
+      ts-pattern:
+        specifier: workspace:ts-pattern__5.x@*
+        version: link:../../vendor/ts-pattern@5.x
+      type-fest:
+        specifier: workspace:type-fest__4.x@*
+        version: link:../../vendor/type-fest@4.x
+      zod:
+        specifier: workspace:zod__3.x@*
+        version: link:../../vendor/zod@3.x
+
   packages/serve-instrument:
     dependencies:
       '@opendatacapture/runtime-v1':

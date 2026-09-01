@@ -28,7 +28,7 @@ path exercised against a real database is Playwright.
 
 ## Vitest projects
 
-Thirteen. Scope a run with `pnpm exec vitest --project <name>`; the name is the `name` field in that
+Fourteen. Scope a run with `pnpm exec vitest --project <name>`; the name is the `name` field in that
 package's config, which is **not** always the directory name.
 
 | Project                  | Package                           | Notable config                                                              |
@@ -43,6 +43,7 @@ package's config, which is **not** always the directory name.
 | `runtime-bundler`        | `packages/runtime-bundler`        |                                                                             |
 | `runtime-meta`           | `packages/runtime-meta`           |                                                                             |
 | `schemas`                | `packages/schemas`                |                                                                             |
+| `serialize-instrument`   | `packages/serialize-instrument`   |                                                                             |
 | `subject-utils`          | `packages/subject-utils`          |                                                                             |
 | `vite-plugin-runtime`    | `packages/vite-plugin-runtime`    |                                                                             |
 | `runtime-v1`             | `runtime/v1`                      | directory is `v1`, project is `runtime-v1`                                  |
